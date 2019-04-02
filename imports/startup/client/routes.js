@@ -14,7 +14,7 @@ const hist = createBrowserHistory();
 export const renderRoutes = () => (
   <Router history={hist}>
     <Switch>
-      <Route path="/" component={PublicLayout} />
+      <Route exact path="/" component={PublicLayout} />
       {/*<Route path="/auth" component={AuthLayout} />
       <Route path="/admin" component={AdminLayout} />
       <Redirect from="/" to="/admin/dashboard" />*/}

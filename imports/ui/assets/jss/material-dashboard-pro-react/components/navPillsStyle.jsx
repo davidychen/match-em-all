@@ -33,15 +33,6 @@ const navPillsStyle = theme => ({
   horizontalDisplay: {
     display: "block"
   },
-  landingLine: {
-    background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, " +
-    "rgba(0,0,0,0) calc(50% - 35.8px), " +
-    // "rgba(" + hexToRgb(blackColor) + ",1) calc(50% - 35px), " +
-    "rgba(" + hexToRgb(grayColor[6]) + ",1) calc(50% - 35px), " +
-    "rgba(" + hexToRgb(grayColor[6]) + ",1) calc(50% + 10px), " +
-    "rgba(0,0,0,0) calc(50% + 10.8px), " +
-    "rgba(0,0,0,0) 100%)"
-  },
   pills: {
     float: "left",
     position: "relative",

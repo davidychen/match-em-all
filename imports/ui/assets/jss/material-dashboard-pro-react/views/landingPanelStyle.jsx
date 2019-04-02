@@ -6,7 +6,8 @@ import {
   infoColor,
   roseColor,
   grayColor,
-  cardTitle
+  cardTitle,
+  hexToRgb
 } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 const landingPanelStyle = () => ({

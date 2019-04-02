@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
+import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -104,4 +106,14 @@ Pages.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(pagesStyle)(Pages);
+export default withRouter(
+  withTracker(() => {
+    const user = Meteor.user();
+    const userDataAvailable = user !== undefined;
+    const loggedIn = user && userDataAvailable;
+    return {
+      user: user,
+      loggedIn: loggedIn
+    };
+  })(withStyles(pagesStyle)(Pages))
+);

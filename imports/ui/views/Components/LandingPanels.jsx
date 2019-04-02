@@ -42,7 +42,7 @@ class LandingPanels extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <GridContainer justify="center">
+      <GridContainer justify="center" landing>
         <GridItem xs={12} sm={12} md={8}>
           <NavPills
             color="black"
@@ -78,7 +78,7 @@ class LandingPanels extends React.Component {
                 tabIcon: PieChart,
                 tabContent: (
                   <Card>
-                    <CardHeader plain>
+                    <CardHeader color="white">
                       <ChartistGraph
                         data={pieChart.data}
                         type="Pie"
@@ -95,13 +95,11 @@ class LandingPanels extends React.Component {
                     </CardBody>
                     <CardFooter stats className={classes.cardFooter}>
                       <h6 className={classes.legendTitle}>Legend</h6>
-                      <i className={"fas fa-circle " + classes.info} /> Fire
-                      {" "}
-                      <i className={"fas fa-circle " + classes.warning} />{" "}
-                      Water
-                      {" "}
-                      <i className={"fas fa-circle " + classes.danger} />{" "}
-                      Grass{" "}
+                      <i
+                        className={"fas fa-circle " + classes.info}
+                      /> Fire{" "}
+                      <i className={"fas fa-circle " + classes.warning} /> Water{" "}
+                      <i className={"fas fa-circle " + classes.danger} /> Grass{" "}
                     </CardFooter>
                   </Card>
                 )

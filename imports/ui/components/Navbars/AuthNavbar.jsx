@@ -1,7 +1,7 @@
 import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -53,10 +53,10 @@ class AuthNavbar extends React.Component {
     var list = (
       <List className={classes.list}>
         <ListItem className={classes.listItem}>
-          <NavLink to={"/admin/dashboard"} className={classes.navLink}>
+          <NavLink to={"/"} className={classes.navLink}>
             <Dashboard className={classes.listItemIcon} />
             <ListItemText
-              primary={"Dashboard"}
+              primary={"Home"}
               disableTypography={true}
               className={classes.listItemText}
             />
@@ -64,7 +64,7 @@ class AuthNavbar extends React.Component {
         </ListItem>
         <ListItem className={classes.listItem}>
           <NavLink
-            to={"/auth/register-page"}
+            to={"/register-page"}
             className={cx(classes.navLink, {
               [classes.navLinkActive]: this.activeRoute("/auth/register-page")
             })}
@@ -79,9 +79,9 @@ class AuthNavbar extends React.Component {
         </ListItem>
         <ListItem className={classes.listItem}>
           <NavLink
-            to={"/auth/login-page"}
+            to={"/login-page"}
             className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute("/auth/login-page")
+              [classes.navLinkActive]: this.activeRoute("/login-page")
             })}
           >
             <Fingerprint className={classes.listItemIcon} />
@@ -99,16 +99,20 @@ class AuthNavbar extends React.Component {
         <Toolbar className={classes.container}>
           <Hidden smDown>
             <div className={classes.flex}>
-              <Button href="#" className={classes.title} color="transparent">
-                {brandText}
-              </Button>
+              <Link to="/">
+                <Button className={classes.title} color="transparent">
+                  {brandText}
+                </Button>
+              </Link>
             </div>
           </Hidden>
           <Hidden mdUp>
             <div className={classes.flex}>
-              <Button href="#" className={classes.title} color="transparent">
-                Match &apos;Em All
-              </Button>
+              <Link to="/">
+                <Button className={classes.title} color="transparent">
+                  Match &apos;Em All
+                </Button>
+              </Link>
             </div>
           </Hidden>
           <Hidden smDown>{list}</Hidden>
@@ -150,7 +154,8 @@ class AuthNavbar extends React.Component {
 AuthNavbar.propTypes = {
   classes: PropTypes.object.isRequired,
   color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
-  brandText: PropTypes.string
+  brandText: PropTypes.string,
+  location: PropTypes.object
 };
 
 export default withStyles(authNavbarStyle)(AuthNavbar);

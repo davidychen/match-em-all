@@ -55,7 +55,7 @@ var dashRoutes = [
     views: [
       {
         path: "/",
-        name: "Landing Page",
+        name: "Match 'Em All",
         mini: "LP",
         component: LandingPage,
         layout: "/public"

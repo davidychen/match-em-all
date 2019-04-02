@@ -41,8 +41,7 @@ class NavPills extends React.Component {
     } = this.props;
     const flexContainerClasses = classNames({
       [classes.flexContainer]: true,
-      [classes.horizontalDisplay]: horizontal !== undefined,
-      [classes.landingLine]: landing
+      [classes.horizontalDisplay]: horizontal !== undefined
     });
     const tabButtons = (
       <Tabs
