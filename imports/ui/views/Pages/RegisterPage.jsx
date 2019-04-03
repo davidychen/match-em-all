@@ -1,192 +1,162 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { NavLink, Link, withRouter, Redirect } from "react-router-dom";
+import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
+import { Accounts } from "meteor/accounts-base";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
-import Timeline from "@material-ui/icons/Timeline";
-import Code from "@material-ui/icons/Code";
-import Group from "@material-ui/icons/Group";
+import AddAlert from "@material-ui/icons/AddAlert";
 import Face from "@material-ui/icons/Face";
 import Email from "@material-ui/icons/Email";
 // import LockOutline from "@material-ui/icons/LockOutline";
-import Check from "@material-ui/icons/Check";
 
 // core components
 import GridContainer from "../../components/Grid/GridContainer.jsx";
 import GridItem from "../../components/Grid/GridItem.jsx";
-import Button from "../../components/CustomButtons/Button.jsx";
 import CustomInput from "../../components/CustomInput/CustomInput.jsx";
-import InfoArea from "../../components/InfoArea/InfoArea.jsx";
+import Button from "../../components/CustomButtons/Button.jsx";
 import Card from "../../components/Card/Card.jsx";
 import CardBody from "../../components/Card/CardBody.jsx";
+import CardHeader from "../../components/Card/CardHeader.jsx";
+import CardFooter from "../../components/Card/CardFooter.jsx";
+import Snackbar from "../../components/Snackbar/Snackbar.jsx";
 
-import registerPageStyle from "../../assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+import loginPageStyle from "../../assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 
 class RegisterPage extends React.Component {
   constructor(props) {
     super(props);
+    // we use this to make the card to appear after the page has been rendered
     this.state = {
-      checked: []
+      cardAnimaton: "cardHidden",
+      error: "",
+      errorVisible: false,
+      redirectToReferrer: false
     };
-    this.handleToggle = this.handleToggle.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleToggle(value) {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    this.setState({
-      checked: newChecked
+  componentDidMount() {
+    // we add a hidden class to the card and after 700 ms we delete it and the transition appears
+    this.timeOutFunction = setTimeout(
+      function() {
+        this.setState({ cardAnimaton: "" });
+      }.bind(this),
+      700
+    );
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timeOutFunction);
+    this.timeOutFunction = null;
+    clearTimeout(this.errorTimeOutFunction);
+    this.errorTimeOutFunction = null;
+  }
+  handleSubmit(e) {
+    e.preventDefault();
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+    Accounts.createUser({ username: username, password: password }, err => {
+      if (err) {
+        this.setState({
+          error: err.reason,
+          errorVisible: true
+        });
+        clearTimeout(this.errorTimeOutFunction);
+        this.errorTimeOutFunction = setTimeout(
+          function() {
+            this.setState({ error: "", errorVisible: false });
+          }.bind(this),
+          6000
+        );
+      } else {
+        this.setState({ redirectToReferrer: true });
+        // this.props.history.push("/login");
+      }
     });
   }
   render() {
     const { classes } = this.props;
+    const error = this.state.error;
+    let fromRoute = this.props.location.state || { pathname: "/admin/game" };
+
+    let redirectToReferrer = this.state.redirectToReferrer;
+    if (this.props.loggedIn || redirectToReferrer) {
+      return <Redirect to={fromRoute} />;
+    }
     return (
       <div className={classes.container}>
         <GridContainer justify="center">
-          <GridItem xs={12} sm={12} md={10}>
-            <Card className={classes.cardSignup}>
-              <h2 className={classes.cardTitle}>Register</h2>
-              <CardBody>
-                <GridContainer justify="center">
-                  <GridItem xs={12} sm={12} md={5}>
-                    <InfoArea
-                      title="Marketing"
-                      description="We've created the marketing campaign of the website. It was a very interesting collaboration."
-                      icon={Timeline}
-                      iconColor="rose"
-                    />
-                    <InfoArea
-                      title="Fully Coded in HTML5"
-                      description="We've developed the website with HTML5 and CSS3. The client has access to the code using GitHub."
-                      icon={Code}
-                      iconColor="primary"
-                    />
-                    <InfoArea
-                      title="Built Audience"
-                      description="There is also a Fully Customizable CMS Admin Dashboard for this product."
-                      icon={Group}
-                      iconColor="info"
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={8} md={5}>
-                    <div className={classes.center}>
-                      <Button justIcon round color="twitter">
-                        <i className="fab fa-twitter" />
-                      </Button>
-                      {` `}
-                      <Button justIcon round color="dribbble">
-                        <i className="fab fa-dribbble" />
-                      </Button>
-                      {` `}
-                      <Button justIcon round color="facebook">
-                        <i className="fab fa-facebook-f" />
-                      </Button>
-                      {` `}
-                      <h4 className={classes.socialTitle}>or be classical</h4>
-                    </div>
-                    <form className={classes.form}>
-                      <CustomInput
-                        formControlProps={{
-                          fullWidth: true,
-                          className: classes.customFormControlClasses
-                        }}
-                        inputProps={{
-                          startAdornment: (
-                            <InputAdornment
-                              position="start"
-                              className={classes.inputAdornment}
-                            >
-                              <Face className={classes.inputAdornmentIcon} />
-                            </InputAdornment>
-                          ),
-                          placeholder: "First Name..."
-                        }}
-                      />
-                      <CustomInput
-                        formControlProps={{
-                          fullWidth: true,
-                          className: classes.customFormControlClasses
-                        }}
-                        inputProps={{
-                          startAdornment: (
-                            <InputAdornment
-                              position="start"
-                              className={classes.inputAdornment}
-                            >
-                              <Email className={classes.inputAdornmentIcon} />
-                            </InputAdornment>
-                          ),
-                          placeholder: "Email..."
-                        }}
-                      />
-                      <CustomInput
-                        formControlProps={{
-                          fullWidth: true,
-                          className: classes.customFormControlClasses
-                        }}
-                        inputProps={{
-                          startAdornment: (
-                            <InputAdornment
-                              position="start"
-                              className={classes.inputAdornment}
-                            >
-                              <Icon className={classes.inputAdornmentIcon}>
-                                lock_outline
-                              </Icon>
-                            </InputAdornment>
-                          ),
-                          placeholder: "Password..."
-                        }}
-                      />
-                      <FormControlLabel
-                        classes={{
-                          root: classes.checkboxLabelControl,
-                          label: classes.checkboxLabel
-                        }}
-                        control={
-                          <Checkbox
-                            tabIndex={-1}
-                            onClick={() => this.handleToggle(1)}
-                            checkedIcon={
-                              <Check className={classes.checkedIcon} />
-                            }
-                            icon={<Check className={classes.uncheckedIcon} />}
-                            classes={{
-                              checked: classes.checked,
-                              root: classes.checkRoot
-                            }}
-                          />
-                        }
-                        label={
-                          <span>
-                            I agree to the{" "}
-                            <a href="#pablo">terms and conditions</a>.
-                          </span>
-                        }
-                      />
-                      <div className={classes.center}>
-                        <Button round color="primary">
-                          Get started
-                        </Button>
-                      </div>
-                    </form>
-                  </GridItem>
-                </GridContainer>
-              </CardBody>
-            </Card>
+          <GridItem xs={12} sm={6} md={4}>
+            <form>
+              <Card login className={classes[this.state.cardAnimaton]}>
+                <CardHeader
+                  className={`${classes.cardHeader} ${classes.textCenter}`}
+                  color="primary"
+                >
+                  <h4 className={classes.cardTitle}>Register</h4>
+                </CardHeader>
+                <CardBody>
+                  <Snackbar
+                    place="tc"
+                    color="danger"
+                    icon={AddAlert}
+                    message={"ERROR - " + error}
+                    open={this.state.errorVisible}
+                    closeNotification={() =>
+                      this.setState({ errorVisible: false })
+                    }
+                    close
+                  />
+                  <CustomInput
+                    labelText="User Name.."
+                    id="username"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    inputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Face className={classes.inputAdornmentIcon} />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  <CustomInput
+                    labelText="Password"
+                    id="password"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    inputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Icon className={classes.inputAdornmentIcon}>
+                            lock_outline
+                          </Icon>
+                        </InputAdornment>
+                      ),
+                      type: "password"
+                    }}
+                  />
+                </CardBody>
+                <CardFooter className={classes.justifyContentCenter}>
+                  <Button
+                    color="primary"
+                    round
+                    size="lg"
+                    block
+                    onClick={this.handleSubmit}
+                  >
+                    Get Started
+                  </Button>
+                </CardFooter>
+              </Card>
+            </form>
           </GridItem>
         </GridContainer>
       </div>
@@ -195,7 +165,19 @@ class RegisterPage extends React.Component {
 }
 
 RegisterPage.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  location: PropTypes.object,
+  loggedIn: PropTypes.bool
 };
 
-export default withStyles(registerPageStyle)(RegisterPage);
+export default withRouter(
+  withTracker(() => {
+    const user = Meteor.user();
+    const userDataAvailable = user !== undefined;
+    const loggedIn = user && userDataAvailable;
+    return {
+      user: user,
+      loggedIn: loggedIn
+    };
+  })(withStyles(loginPageStyle)(RegisterPage))
+);

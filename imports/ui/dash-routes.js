@@ -2,6 +2,7 @@
 import Calendar from "views/Calendar/Calendar.jsx";
 import Charts from "views/Charts/Charts.jsx";*/
 /*import Dashboard from "./views/Dashboard/Dashboard.jsx";*/
+import Game from "./views/Game/Game.jsx";
 import ErrorPage from "./views/Pages/ErrorPage.jsx";
 /*import ExtendedForms from "views/Forms/ExtendedForms.jsx";
 import ExtendedTables from "views/Tables/ExtendedTables.jsx";
@@ -38,25 +39,27 @@ import Image from "@material-ui/icons/Image";
 import Place from "@material-ui/icons/Place";
 import Timeline from "@material-ui/icons/Timeline";
 import WidgetsIcon from "@material-ui/icons/Widgets";
+import VideogameAsset from "@material-ui/icons/VideogameAsset";
 
 var dashRoutes = [
-  /*{
-    path: "/match",
-    name: "Match Game",
-    icon: DashboardIcon,
-    component: Dashboard,
-    layout: "/protected"
-  },*/
+  {
+    path: "/game",
+    name: "Game",
+    icon: VideogameAsset,
+    component: Game,
+    layout: "/admin"
+  },
   {
     collapse: true,
     name: "Pages",
     icon: Image,
     state: "pageCollapse",
+    layout: "/public",
     views: [
       {
-        path: "/",
+        path: "/landing-page",
         name: "Match 'Em All",
-        mini: "LP",
+        mini: "M",
         component: LandingPage,
         layout: "/public"
       },

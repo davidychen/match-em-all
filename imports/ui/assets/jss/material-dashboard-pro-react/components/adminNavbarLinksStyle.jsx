@@ -2,9 +2,9 @@ import {
   defaultFont,
   dangerColor,
   whiteColor
-} from "assets/jss/material-dashboard-pro-react.jsx";
+} from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
-import customDropdownStyle from "assets/jss/material-dashboard-pro-react/components/customDropdownStyle.jsx";
+import customDropdownStyle from "../../../../assets/jss/material-dashboard-pro-react/components/customDropdownStyle.jsx";
 
 const adminNavbarLinksStyle = theme => ({
   ...customDropdownStyle(theme),

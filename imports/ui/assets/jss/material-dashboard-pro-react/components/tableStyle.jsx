@@ -9,7 +9,7 @@ import {
   blackColor,
   defaultFont,
   hexToRgb
-} from "assets/jss/material-dashboard-pro-react.jsx";
+} from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 const tableStyle = theme => ({
   warning: {

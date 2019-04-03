@@ -6,7 +6,7 @@ import {
   warningColor,
   dangerColor,
   grayColor
-} from "assets/jss/material-dashboard-pro-react.jsx";
+} from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 const typographyStyle = {
   defaultFontStyle: {

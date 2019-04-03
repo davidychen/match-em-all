@@ -32,6 +32,58 @@ const cardStyle = {
     background: "transparent",
     boxShadow: "none"
   },
+  cardGame: {
+    transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
+    borderRadius: "30px",
+    "&:hover": {
+      boxShadow:
+        "0 16px 38px -12px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.56), 0 4px 25px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.12), 0 8px 10px -5px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.2)"
+    }
+  },
+  cardBack: {
+    background:
+      "linear-gradient(" + primaryColor[0] + " 50%, " + whiteColor + " 50%)",
+    borderRadius: "30px",
+    display: "flex"
+  },
+  cardBackDivider: {
+    height: "2.8rem",
+    width: "100%",
+    backgroundColor: grayColor[6],
+    alignSelf: "center",
+    transition: "width 0.3s 0.1s ease, height 0.3s 0.3s ease",
+    "&:hover": {
+      height: "5rem"
+    }
+  },
+  // cardGame: {
+  //   /*width: "10vw",
+  //   height: "10vw",*/
+  //   textAlign: "center",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   position: "relative",
+  //   "&:before": {
+  //     content: "''",
+  //     width: "0",
+  //     paddingTop: "100%",
+  //     display: "block"
+  //   }
+  //   /*"& square": {
+  //     width: "100%",
+  //     maxWidth: "150px",
+  //     "&:after": {
+  //       content: "''",
+  //       paddingBottom: "100%"
+  //     }
+  //   }*/
+  // },
   cardProfile: {
     marginTop: "30px",
     textAlign: "center"

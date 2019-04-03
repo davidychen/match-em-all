@@ -16,6 +16,8 @@ function Card({ ...props }) {
     className,
     children,
     plain,
+    game,
+    back,
     profile,
     blog,
     raised,
@@ -31,6 +33,8 @@ function Card({ ...props }) {
   const cardClasses = classNames({
     [classes.card]: true,
     [classes.cardPlain]: plain,
+    [classes.cardGame]: game,
+    [classes.cardBack]: back,
     [classes.cardProfile]: profile || testimonial,
     [classes.cardBlog]: blog,
     [classes.cardRaised]: raised,
@@ -44,17 +48,26 @@ function Card({ ...props }) {
     [classes.cardLogin]: login,
     [className]: className !== undefined
   });
-  return (
-    <div className={cardClasses} {...rest}>
+  if (back) {
+    return (
+      <div className={cardClasses} {...rest}>
+        <div className={classes.cardBackDivider} />
+        <div className={classes.cardBackCircle} />
+      </div>
+    );
+  } else {
+    return <div className={cardClasses} {...rest}>
       {children}
-    </div>
-  );
+    </div>;
+  }
 }
 
 Card.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
   plain: PropTypes.bool,
+  game: PropTypes.bool,
+  back: PropTypes.bool,
   profile: PropTypes.bool,
   blog: PropTypes.bool,
   raised: PropTypes.bool,

@@ -44,7 +44,7 @@ import {
   completedTasksChart
 } from "../../variables/charts";
 
-import dashboardStyle from "../../assets/jss/material-dashboard-pro-react/views/dashboardStyle";
+import gameStyle from "../../assets/jss/material-dashboard-pro-react/views/gameStyle";
 
 var mapData = {
   AU: 760,
@@ -75,28 +75,77 @@ class Dashboard extends React.Component {
     return (
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card>
-              <CardHeader color="warning" stats icon>
-                <CardIcon color="warning">
-                  <Icon>content_copy</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>Used Space</p>
-                <h3 className={classes.cardTitle}>
-                  49/50 <small>GB</small>
-                </h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <Danger>
-                    <Warning />
-                  </Danger>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    Get more space
-                  </a>
+          <GridItem xs={6} sm={3} md={2} lg={2}>
+            <Card game>
+              <div style={{ position: "relative" }}>
+                <div className={classes.cardBack}>
+                  <div className={classes.cardBackDivider} />
+                  <div className={classes.cardBackCircle} />
                 </div>
-              </CardFooter>
+              </div>
             </Card>
+          </GridItem>
+          <GridItem xs={6} sm={3} md={2} lg={2}>
+            <Card>
+              <div className={classes.imageSquare}>
+                <img src="http://pokestadium.com/sprites/xy/sceptile.gif" />
+              </div>
+            </Card>
+          </GridItem>
+          <GridItem xs={6} sm={3} md={2} lg={2}>
+            <Card>
+              <div className={classes.cardSquare}>
+                <div className={classes.imageSquare}>
+                  <img src="http://pokestadium.com/sprites/xy/sceptile.gif" />
+                </div>
+              </div>
+            </Card>
+          </GridItem>
+          <GridItem xs={6} sm={3} md={2} lg={2}>
+            <Card game>
+              <div className={classes.cardSquare}>
+                <div className={classes.imageSquare}>
+                  <img src="http://pokestadium.com/sprites/xy/sceptile.gif" />
+                </div>
+              </div>
+            </Card>
+          </GridItem>
+          <GridItem xs={6} sm={3} md={2} lg={2}>
+            <Card game>
+              <div className={classes.cardSquare}>
+                <div className={classes.imageSquare}>
+                  <img src="http://pokestadium.com/sprites/xy/sceptile.gif" />
+                </div>
+              </div>
+            </Card>
+          </GridItem>
+          <GridItem xs={6} sm={3} md={2} lg={2}>
+            <Card plain>
+              <div className={classes.cardSquare}>
+                <div className={classes.imageSquare} />
+              </div>
+            </Card>
+          </GridItem>
+          <GridItem xs={6} sm={3} md={2} lg={2}>
+            <Card>
+              <div className={classes.cardSquare}>
+                <div className={classes.imageSquare}>
+                  <img src="/favicon.png" />
+                </div>
+              </div>
+            </Card>
+          </GridItem>
+          <GridItem xs={6} sm={3} md={2} lg={2}>
+            <Card>
+              <div className={classes.cardSquare}>
+                <div className={classes.imageSquare}>
+                  <img src="http://pokestadium.com/sprites/xy/sceptile.gif" />
+                </div>
+              </div>
+            </Card>
+          </GridItem>
+          <GridItem xs={6} sm={3} md={2} lg={2}>
+            <Card game plain />
           </GridItem>
           <GridItem xs={12} sm={6} md={6} lg={3}>
             <Card>
@@ -159,4 +208,4 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(Dashboard);
+export default withStyles(gameStyle)(Dashboard);

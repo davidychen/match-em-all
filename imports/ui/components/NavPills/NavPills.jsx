@@ -64,7 +64,7 @@ class NavPills extends React.Component {
             [classes.pills]: true,
             [classes.horizontalPills]: horizontal !== undefined,
             [classes.pillsWithIcons]: prop.tabIcon !== undefined,
-            [classes.landing]: landing,
+            [classes.landing]: landing
           });
           return (
             <Tab

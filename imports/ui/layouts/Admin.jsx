@@ -10,17 +10,16 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // core components
-import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
-import Footer from "components/Footer/Footer.jsx";
-import Sidebar from "components/Sidebar/Sidebar.jsx";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
+import AdminNavbar from "../components/Navbars/AdminNavbar.jsx";
+import Footer from "../components/Footer/Footer.jsx";
+import Sidebar from "../components/Sidebar/Sidebar.jsx";
+// import FixedPlugin from "../../components/FixedPlugin/FixedPlugin.jsx";
 
-import routes from "routes.js";
+import routes from "../dash-routes.js";
 
-import appStyle from "assets/jss/material-dashboard-pro-react/layouts/adminStyle.jsx";
+import appStyle from "../assets/jss/material-dashboard-pro-react/layouts/adminStyle.jsx";
 
-import image from "assets/img/sidebar-2.jpg";
-import logo from "assets/img/logo-white.svg";
+// import logo from "../assets/img/logo-white.svg";
 
 var ps;
 
@@ -30,17 +29,17 @@ class Dashboard extends React.Component {
     this.state = {
       mobileOpen: false,
       miniActive: false,
-      image: image,
-      color: "blue",
+      color: "red",
       bgColor: "black",
       hasImage: true,
       fixedClasses: "dropdown"
     };
     this.resizeFunction = this.resizeFunction.bind(this);
+    this.mainPanelRef;
   }
   componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(this.refs.mainPanel, {
+      ps = new PerfectScrollbar(this.mainPanelRef, {
         suppressScrollX: true,
         suppressScrollY: false
       });
@@ -56,15 +55,12 @@ class Dashboard extends React.Component {
   }
   componentDidUpdate(e) {
     if (e.history.location.pathname !== e.location.pathname) {
-      this.refs.mainPanel.scrollTop = 0;
+      this.mainPanelRef.scrollTop = 0;
       if (this.state.mobileOpen) {
         this.setState({ mobileOpen: false });
       }
     }
   }
-  handleImageClick = image => {
-    this.setState({ image: image });
-  };
   handleColorClick = color => {
     this.setState({ color: color });
   };
@@ -129,6 +125,7 @@ class Dashboard extends React.Component {
     }
   }
   render() {
+    let mainPanelRefFunc = el => (this.mainPanelRef = el);
     const { classes, ...rest } = this.props;
     const mainPanel =
       classes.mainPanel +
@@ -142,9 +139,8 @@ class Dashboard extends React.Component {
       <div className={classes.wrapper}>
         <Sidebar
           routes={routes}
-          logoText={"Creative Tim"}
-          logo={logo}
-          image={this.state.image}
+          logoText={"Match 'Em All"}
+          logo={"/favicon.png"}
           handleDrawerToggle={this.handleDrawerToggle}
           open={this.state.mobileOpen}
           color={this.state.color}
@@ -152,7 +148,7 @@ class Dashboard extends React.Component {
           miniActive={this.state.miniActive}
           {...rest}
         />
-        <div className={mainPanel} ref="mainPanel">
+        <div className={mainPanel} ref={mainPanelRefFunc}>
           <AdminNavbar
             sidebarMinimize={this.sidebarMinimize.bind(this)}
             miniActive={this.state.miniActive}
@@ -161,31 +157,14 @@ class Dashboard extends React.Component {
             {...rest}
           />
           {/* On the /maps/full-screen-maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-          {this.getRoute() ? (
-            <div className={classes.content}>
-              <div className={classes.container}>
-                <Switch>{this.getRoutes(routes)}</Switch>
-              </div>
-            </div>
-          ) : (
-            <div className={classes.map}>
+
+          <div className={classes.content}>
+            <div className={classes.container}>
               <Switch>{this.getRoutes(routes)}</Switch>
             </div>
-          )}
-          {this.getRoute() ? <Footer fluid /> : null}
-          <FixedPlugin
-            handleImageClick={this.handleImageClick}
-            handleColorClick={this.handleColorClick}
-            handleBgColorClick={this.handleBgColorClick}
-            handleHasImage={this.handleHasImage}
-            color={this.state["color"]}
-            bgColor={this.state["bgColor"]}
-            bgImage={this.state["image"]}
-            handleFixedClick={this.handleFixedClick}
-            fixedClasses={this.state.fixedClasses}
-            sidebarMinimize={this.sidebarMinimize.bind(this)}
-            miniActive={this.state.miniActive}
-          />
+          </div>
+
+          <Footer fluid />
         </div>
       </div>
     );
@@ -193,7 +172,8 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  location: PropTypes.object
 };
 
 export default withStyles(appStyle)(Dashboard);

@@ -1,7 +1,9 @@
 import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, withRouter } from "react-router-dom";
+import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -32,6 +34,7 @@ class AuthNavbar extends React.Component {
     this.state = {
       open: false
     };
+    this.logout = this.logout.bind(this);
   }
   handleDrawerToggle = () => {
     this.setState({ open: !this.state.open });
@@ -45,6 +48,16 @@ class AuthNavbar extends React.Component {
       this.setState({ open: false });
     }
   }
+  logout(e) {
+    e.preventDefault();
+    Meteor.logout(err => {
+      if (err) {
+        console.log(err.reason);
+      } else {
+        this.props.history.push("/public/login-page");
+      }
+    });
+  }
   render() {
     const { classes, color, brandText } = this.props;
     const appBarClasses = cx({
@@ -53,7 +66,12 @@ class AuthNavbar extends React.Component {
     var list = (
       <List className={classes.list}>
         <ListItem className={classes.listItem}>
-          <NavLink to={"/"} className={classes.navLink}>
+          <NavLink
+            to={"/public/landing-page"}
+            className={cx(classes.navLink, {
+              [classes.navLinkActive]: this.activeRoute("/public/landing-page")
+            })}
+          >
             <Dashboard className={classes.listItemIcon} />
             <ListItemText
               primary={"Home"}
@@ -62,36 +80,52 @@ class AuthNavbar extends React.Component {
             />
           </NavLink>
         </ListItem>
-        <ListItem className={classes.listItem}>
-          <NavLink
-            to={"/register-page"}
-            className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute("/auth/register-page")
-            })}
-          >
-            <PersonAdd className={classes.listItemIcon} />
-            <ListItemText
-              primary={"Register"}
-              disableTypography={true}
-              className={classes.listItemText}
-            />
-          </NavLink>
-        </ListItem>
-        <ListItem className={classes.listItem}>
-          <NavLink
-            to={"/login-page"}
-            className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute("/login-page")
-            })}
-          >
-            <Fingerprint className={classes.listItemIcon} />
-            <ListItemText
-              primary={"Login"}
-              disableTypography={true}
-              className={classes.listItemText}
-            />
-          </NavLink>
-        </ListItem>
+        {!this.props.loggedIn && (
+          <ListItem className={classes.listItem}>
+            <NavLink
+              to={"/public/register-page"}
+              className={cx(classes.navLink, {
+                [classes.navLinkActive]: this.activeRoute("/public/register-page")
+              })}
+            >
+              <PersonAdd className={classes.listItemIcon} />
+              <ListItemText
+                primary={"Register"}
+                disableTypography={true}
+                className={classes.listItemText}
+              />
+            </NavLink>
+          </ListItem>
+        )}
+        {!this.props.loggedIn && (
+          <ListItem className={classes.listItem}>
+            <NavLink
+              to={"/public/login-page"}
+              className={cx(classes.navLink, {
+                [classes.navLinkActive]: this.activeRoute("/public/login-page")
+              })}
+            >
+              <Fingerprint className={classes.listItemIcon} />
+              <ListItemText
+                primary={"Login"}
+                disableTypography={true}
+                className={classes.listItemText}
+              />
+            </NavLink>
+          </ListItem>
+        )}
+        {this.props.loggedIn && (
+          <ListItem className={classes.listItem}>
+            <a onClick={this.logout} className={classes.navLink} style={{cursor: "pointer"}}>
+              <LockOpen className={classes.listItemIcon} />
+              <ListItemText
+                primary={"Logout"}
+                disableTypography={true}
+                className={classes.listItemText}
+              />
+            </a>
+          </ListItem>
+        )}
       </List>
     );
     return (
@@ -155,7 +189,20 @@ AuthNavbar.propTypes = {
   classes: PropTypes.object.isRequired,
   color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
   brandText: PropTypes.string,
-  location: PropTypes.object
+  location: PropTypes.object,
+  user: PropTypes.object,
+  loggedIn: PropTypes.bool,
+  history: PropTypes.object
 };
 
-export default withStyles(authNavbarStyle)(AuthNavbar);
+export default withRouter(
+  withTracker(() => {
+    const user = Meteor.user();
+    const userDataAvailable = user !== undefined;
+    const loggedIn = user && userDataAvailable;
+    return {
+      user: user,
+      loggedIn: loggedIn
+    };
+  })(withStyles(authNavbarStyle)(AuthNavbar))
+);

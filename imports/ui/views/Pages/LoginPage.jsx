@@ -1,5 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { NavLink, Link, withRouter, Redirect } from "react-router-dom";
+import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -7,8 +10,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
+import AddAlert from "@material-ui/icons/AddAlert";
 import Face from "@material-ui/icons/Face";
-import Email from "@material-ui/icons/Email";
+// import Email from "@material-ui/icons/Email";
 // import LockOutline from "@material-ui/icons/LockOutline";
 
 // core components
@@ -20,6 +24,7 @@ import Card from "../../components/Card/Card.jsx";
 import CardBody from "../../components/Card/CardBody.jsx";
 import CardHeader from "../../components/Card/CardHeader.jsx";
 import CardFooter from "../../components/Card/CardFooter.jsx";
+import Snackbar from "../../components/Snackbar/Snackbar.jsx";
 
 import loginPageStyle from "../../assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 
@@ -28,8 +33,12 @@ class LoginPage extends React.Component {
     super(props);
     // we use this to make the card to appear after the page has been rendered
     this.state = {
-      cardAnimaton: "cardHidden"
+      cardAnimaton: "cardHidden",
+      error: "",
+      errorVisible: false,
+      redirectToReferrer: false
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
     // we add a hidden class to the card and after 700 ms we delete it and the transition appears
@@ -39,13 +48,61 @@ class LoginPage extends React.Component {
       }.bind(this),
       700
     );
+    if (this.props.location.state) {
+      if (this.props.location.state.from.pathname != "/public/login-page") {
+        this.setState({
+          error: "You need to log in to view the content. ",
+          errorVisible: true
+        });
+        clearTimeout(this.errorTimeOutFunction);
+        this.errorTimeOutFunction = setTimeout(
+          function() {
+            this.setState({ error: "", errorVisible: false });
+          }.bind(this),
+          6000
+        );
+      }
+    }
   }
   componentWillUnmount() {
     clearTimeout(this.timeOutFunction);
     this.timeOutFunction = null;
+    clearTimeout(this.errorTimeOutFunction);
+    this.errorTimeOutFunction = null;
   }
+  handleSubmit(e) {
+    e.preventDefault();
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+    Meteor.loginWithPassword(username, password, err => {
+      if (err) {
+        this.setState({
+          error: err.reason,
+          errorVisible: true
+        });
+        clearTimeout(this.errorTimeOutFunction);
+        this.errorTimeOutFunction = setTimeout(
+          function() {
+            this.setState({ error: "", errorVisible: false });
+          }.bind(this),
+          6000
+        );
+      } else {
+        this.setState({ redirectToReferrer: true });
+        // this.props.history.push("/");
+      }
+    });
+  }
+
   render() {
     const { classes } = this.props;
+    const error = this.state.error;
+    let fromRoute = this.props.location.state || { pathname: "/admin/game" };
+
+    let redirectToReferrer = this.state.redirectToReferrer;
+    if (this.props.loggedIn || redirectToReferrer) {
+      return <Redirect to={fromRoute} />;
+    }
     return (
       <div className={classes.container}>
         <GridContainer justify="center">
@@ -54,32 +111,25 @@ class LoginPage extends React.Component {
               <Card login className={classes[this.state.cardAnimaton]}>
                 <CardHeader
                   className={`${classes.cardHeader} ${classes.textCenter}`}
-                  color="rose"
+                  color="primary"
                 >
                   <h4 className={classes.cardTitle}>Log in</h4>
-                  <div className={classes.socialLine}>
-                    {[
-                      "fab fa-facebook-square",
-                      "fab fa-twitter",
-                      "fab fa-google-plus"
-                    ].map((prop, key) => {
-                      return (
-                        <Button
-                          color="transparent"
-                          justIcon
-                          key={key}
-                          className={classes.customButtonClass}
-                        >
-                          <i className={prop} />
-                        </Button>
-                      );
-                    })}
-                  </div>
                 </CardHeader>
                 <CardBody>
+                  <Snackbar
+                    place="tc"
+                    color="danger"
+                    icon={AddAlert}
+                    message={"ERROR - " + error}
+                    open={this.state.errorVisible}
+                    closeNotification={() =>
+                      this.setState({ errorVisible: false })
+                    }
+                    close
+                  />
                   <CustomInput
-                    labelText="First Name.."
-                    id="firstname"
+                    labelText="User Name.."
+                    id="username"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -87,20 +137,6 @@ class LoginPage extends React.Component {
                       endAdornment: (
                         <InputAdornment position="end">
                           <Face className={classes.inputAdornmentIcon} />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                  <CustomInput
-                    labelText="Email..."
-                    id="email"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Email className={classes.inputAdornmentIcon} />
                         </InputAdornment>
                       )
                     }}
@@ -118,13 +154,20 @@ class LoginPage extends React.Component {
                             lock_outline
                           </Icon>
                         </InputAdornment>
-                      )
+                      ),
+                      type: "password"
                     }}
                   />
                 </CardBody>
                 <CardFooter className={classes.justifyContentCenter}>
-                  <Button color="rose" simple size="lg" block>
-                    Let's Go
+                  <Button
+                    color="primary"
+                    round
+                    size="lg"
+                    block
+                    onClick={this.handleSubmit}
+                  >
+                    Let&apos;s Go
                   </Button>
                 </CardFooter>
               </Card>
@@ -137,7 +180,19 @@ class LoginPage extends React.Component {
 }
 
 LoginPage.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  location: PropTypes.object,
+  loggedIn: PropTypes.bool
 };
 
-export default withStyles(loginPageStyle)(LoginPage);
+export default withRouter(
+  withTracker(() => {
+    const user = Meteor.user();
+    const userDataAvailable = user !== undefined;
+    const loggedIn = user && userDataAvailable;
+    return {
+      user: user,
+      loggedIn: loggedIn
+    };
+  })(withStyles(loginPageStyle)(LoginPage))
+);

@@ -15,7 +15,7 @@ import {
   blackColor,
   grayColor,
   hexToRgb
-} from "assets/jss/material-dashboard-pro-react.jsx";
+} from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 const sidebarStyle = theme => ({
   drawerPaperRTL: {

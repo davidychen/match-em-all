@@ -20,10 +20,10 @@ import Dashboard from "@material-ui/icons/Dashboard";
 import Search from "@material-ui/icons/Search";
 
 // core components
-import CustomInput from "components/CustomInput/CustomInput.jsx";
-import Button from "components/CustomButtons/Button.jsx";
+import CustomInput from "../../components/CustomInput/CustomInput.jsx";
+import Button from "../../components/CustomButtons/Button.jsx";
 
-import adminNavbarLinksStyle from "assets/jss/material-dashboard-pro-react/components/adminNavbarLinksStyle.jsx";
+import adminNavbarLinksStyle from "../../assets/jss/material-dashboard-pro-react/components/adminNavbarLinksStyle.jsx";
 
 class HeaderLinks extends React.Component {
   state = {

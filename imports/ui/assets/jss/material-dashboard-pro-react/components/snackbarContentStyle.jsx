@@ -16,7 +16,7 @@ import {
   roseColor,
   grayColor,
   hexToRgb
-} from "assets/jss/material-dashboard-pro-react.jsx";
+} from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 const snackbarContentStyle = {
   root: {
@@ -40,7 +40,9 @@ const snackbarContentStyle = {
       ", 0.2)"
   },
   top20: {
-    top: "20px"
+    top: "20px",
+    /*added*/
+    position: "relative"
   },
   top40: {
     top: "40px"
