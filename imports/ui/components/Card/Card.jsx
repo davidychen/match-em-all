@@ -48,18 +48,11 @@ function Card({ ...props }) {
     [classes.cardLogin]: login,
     [className]: className !== undefined
   });
-  if (back) {
-    return (
-      <div className={cardClasses} {...rest}>
-        <div className={classes.cardBackDivider} />
-        <div className={classes.cardBackCircle} />
-      </div>
-    );
-  } else {
-    return <div className={cardClasses} {...rest}>
+  return (
+    <div className={cardClasses} {...rest}>
       {children}
-    </div>;
-  }
+    </div>
+  );
 }
 
 Card.propTypes = {

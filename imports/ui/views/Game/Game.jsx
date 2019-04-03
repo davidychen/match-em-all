@@ -33,6 +33,8 @@ import Table from "../../components/Table/Table.jsx";
 import Button from "../../components/CustomButtons/Button.jsx";
 import Danger from "../../components/Typography/Danger.jsx";
 import Card from "../../components/Card/Card.jsx";
+import GameCardFront from "../../components/Card/GameCardFront.jsx";
+import GameCardBack from "../../components/Card/GameCardBack.jsx";
 import CardHeader from "../../components/Card/CardHeader.jsx";
 import CardIcon from "../../components/Card/CardIcon.jsx";
 import CardBody from "../../components/Card/CardBody.jsx";
@@ -76,127 +78,23 @@ class Dashboard extends React.Component {
       <div>
         <GridContainer>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <Card game>
-              <div style={{ position: "relative" }}>
-                <div className={classes.cardBack}>
-                  <div className={classes.cardBackDivider} />
-                  <div className={classes.cardBackCircle} />
-                </div>
-              </div>
-            </Card>
+            <GameCardBack/>
           </GridItem>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <Card>
-              <div className={classes.imageSquare}>
-                <img src="http://pokestadium.com/sprites/xy/sceptile.gif" />
-              </div>
-            </Card>
+            <GameCardBack/>
           </GridItem>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <Card>
-              <div className={classes.cardSquare}>
-                <div className={classes.imageSquare}>
-                  <img src="http://pokestadium.com/sprites/xy/sceptile.gif" />
-                </div>
-              </div>
-            </Card>
+            <GameCardBack/>
+          </GridItem>
+
+          <GridItem xs={6} sm={3} md={2} lg={2}>
+            <GameCardFront name={"pikachu"}/>
           </GridItem>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <Card game>
-              <div className={classes.cardSquare}>
-                <div className={classes.imageSquare}>
-                  <img src="http://pokestadium.com/sprites/xy/sceptile.gif" />
-                </div>
-              </div>
-            </Card>
+            <GameCardFront name={"sceptile"}/>
           </GridItem>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <Card game>
-              <div className={classes.cardSquare}>
-                <div className={classes.imageSquare}>
-                  <img src="http://pokestadium.com/sprites/xy/sceptile.gif" />
-                </div>
-              </div>
-            </Card>
-          </GridItem>
-          <GridItem xs={6} sm={3} md={2} lg={2}>
-            <Card plain>
-              <div className={classes.cardSquare}>
-                <div className={classes.imageSquare} />
-              </div>
-            </Card>
-          </GridItem>
-          <GridItem xs={6} sm={3} md={2} lg={2}>
-            <Card>
-              <div className={classes.cardSquare}>
-                <div className={classes.imageSquare}>
-                  <img src="/favicon.png" />
-                </div>
-              </div>
-            </Card>
-          </GridItem>
-          <GridItem xs={6} sm={3} md={2} lg={2}>
-            <Card>
-              <div className={classes.cardSquare}>
-                <div className={classes.imageSquare}>
-                  <img src="http://pokestadium.com/sprites/xy/sceptile.gif" />
-                </div>
-              </div>
-            </Card>
-          </GridItem>
-          <GridItem xs={6} sm={3} md={2} lg={2}>
-            <Card game plain />
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card>
-              <CardHeader color="success" stats icon>
-                <CardIcon color="success">
-                  <Store />
-                </CardIcon>
-                <p className={classes.cardCategory}>Revenue</p>
-                <h3 className={classes.cardTitle}>$34,245</h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <DateRange />
-                  Last 24 Hours
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card>
-              <CardHeader color="danger" stats icon>
-                <CardIcon color="danger">
-                  <Icon>info_outline</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>Fixed Issues</p>
-                <h3 className={classes.cardTitle}>75</h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <LocalOffer />
-                  Tracked from Github
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card>
-              <CardHeader color="info" stats icon>
-                <CardIcon color="info">
-                  <i className="fab fa-twitter" />
-                </CardIcon>
-                <p className={classes.cardCategory}>Followers</p>
-                <h3 className={classes.cardTitle}>+245</h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <Update />
-                  Just Updated
-                </div>
-              </CardFooter>
-            </Card>
+            <GameCardFront name={"sceptile"}/>
           </GridItem>
         </GridContainer>
       </div>
