@@ -90,12 +90,12 @@ class Game extends React.Component {
   renderCards() {
     if (this.props.pokemon) {
       const cards = this.props.pokemon.board.map((card, idx) => {
-        console.log(card);
+        /*console.log(card);*/
         return (
           <GridItem xs={6} sm={3} md={2} lg={2} key={idx}>
             <GameCard
               name={card.name}
-              back={card.user === ""}
+              back={card.ownerId === ""}
               onClick={this.onClick.bind(this, idx)}
             />
           </GridItem>
