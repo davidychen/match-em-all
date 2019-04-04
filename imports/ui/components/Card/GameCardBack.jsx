@@ -14,7 +14,7 @@ import {
 
 // core components
 import Card from "../../components/Card/Card.jsx";
-const style = {
+const style = theme => ({
   cardBack: {
     position: "relative",
     overflow: "hidden",
@@ -38,8 +38,8 @@ const style = {
     transform: "translate(-50%, -50%)"
   },
   cardBackCircle: {
-    width: "4.1rem",
-    height: "4.1rem",
+    width: "50%",
+    height: "50%",
     borderRadius: "2000rem",
     border: "0.6rem solid " + grayColor[6],
     backgroundColor: whiteColor,
@@ -47,9 +47,9 @@ const style = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    transition: "all 0.3s ease"
+    transition: "all 0.3s ease",
   }
-};
+});
 
 function GameCardBack({ ...props }) {
   const { classes } = props;

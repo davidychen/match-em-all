@@ -56,6 +56,9 @@ const cardStyle = {
   cardBlog: {
     marginTop: "60px"
   },
+  cardSelected: {
+    transform: "rotateY(180deg)"
+  }, 
   cardRaised: {
     boxShadow:
       "0 16px 38px -12px rgba(" +
@@ -78,7 +81,7 @@ const cardStyle = {
       display: "block",
       left: "0",
       top: "0",
-      content: '""',
+      content: "''",
       backgroundColor: "rgba(" + hexToRgb(blackColor) + ", 0.56)",
       borderRadius: "6px"
     },
