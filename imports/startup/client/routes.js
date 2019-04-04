@@ -43,7 +43,8 @@ export const renderRoutes = () => (
     <Switch>
       <Route path="/public" component={PublicLayout} />
       <ProtectedRoute path="/admin" component={AdminLayout} />
-      <Redirect from="/" to="/admin/game" />
+      <Redirect from="/" to="/public/landing-page" />
+      <Redirect from="*" to="/public/error-page" />
     </Switch>
   </Router>
 );

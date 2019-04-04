@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 
@@ -37,7 +37,8 @@ class Pages extends React.Component {
       if (prop.layout === "/public") {
         return (
           <Route
-            exact path={prop.layout + prop.path}
+            exact
+            path={prop.layout + prop.path}
             component={prop.component}
             key={key}
           />
@@ -63,7 +64,7 @@ class Pages extends React.Component {
     }
   };*/
   getActiveRoute = routes => {
-    let activeRoute = "Default Brand Text";
+    let activeRoute = "Match 'Em All";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = this.getActiveRoute(routes[i].views);
@@ -72,9 +73,7 @@ class Pages extends React.Component {
         }
       } else {
         if (
-          window.location.href.indexOf(
-            routes[i].layout +  routes[i].path
-          ) !== -1
+          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
         ) {
           return routes[i].name;
         }
@@ -93,7 +92,10 @@ class Pages extends React.Component {
             className={classes.fullPage}
             // style={{ backgroundImage: "url(" + this.getBgImage() + ")" }}
           >
-            <Switch>{this.getRoutes(routes)}</Switch>
+            <Switch>
+              {this.getRoutes(routes)}
+              <Redirect from="*" to="/public/error-page" />
+            </Switch>
             <Footer white />
           </div>
         </div>

@@ -22,6 +22,7 @@ import PersonAdd from "@material-ui/icons/PersonAdd";
 import Fingerprint from "@material-ui/icons/Fingerprint";
 import LockOpen from "@material-ui/icons/LockOpen";
 import MonetizationOn from "@material-ui/icons/MonetizationOn";
+import VideogameAsset from "@material-ui/icons/VideogameAsset";
 
 // core components
 import Button from "../../components/CustomButtons/Button";
@@ -108,6 +109,23 @@ class AuthNavbar extends React.Component {
               <Fingerprint className={classes.listItemIcon} />
               <ListItemText
                 primary={"Login"}
+                disableTypography={true}
+                className={classes.listItemText}
+              />
+            </NavLink>
+          </ListItem>
+        )}
+        {this.props.loggedIn && (
+          <ListItem className={classes.listItem}>
+            <NavLink
+              to={"/admin/game"}
+              className={cx(classes.navLink, {
+                [classes.navLinkActive]: this.activeRoute("/admin/game")
+              })}
+            >
+              <VideogameAsset className={classes.listItemIcon} />
+              <ListItemText
+                primary={"Game"}
                 disableTypography={true}
                 className={classes.listItemText}
               />

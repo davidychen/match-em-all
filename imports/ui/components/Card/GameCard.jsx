@@ -12,7 +12,8 @@ import {
   whiteColor,
   primaryColor,
   hexToRgb,
-  blackColor
+  blackColor,
+  selectColor
 } from "../../assets/jss/material-dashboard-pro-react.jsx";
 
 // core components
@@ -86,6 +87,23 @@ const style = () => ({
       left: "50%",
       transform: "translateX(-50%) translateY(-50%)"
     }
+  },
+  cardMatch: {
+    opacity: "0",
+    transition: "all 250ms linear"
+  },
+  cardSelected: {
+    transition: "all 0.3s ease 0.4s",
+    boxShadow:
+      "0 0 5px 10px " +
+      selectColor +
+      ", 0 16px 38px -12px rgba(" +
+				hexToRgb(blackColor) +
+				", 0.56), 0 4px 25px 0px rgba(" +
+				hexToRgb(blackColor) +
+				", 0.12), 0 8px 10px -5px rgba(" +
+				hexToRgb(blackColor) +
+				", 0.2)"
   }
 });
 
@@ -104,67 +122,45 @@ class GameCard extends React.Component {
       this.selected = true;
     }
   }
-  tt() {
-    /*<Card className={gameCardClasses} game selected={!this.props.back} onClick={onClick}>
-        {back && (
-          <div className={classes.cardBack}>
-            <div className={classes.cardBackDivider} />
-            <div className={classes.cardBackCircle} />
-          </div>
-        )}
-        {!back && (
-          <div className={classes.cardFront}>
-            <div className={classes.imageSquare}>
-              <img
-                src={
-                  "http://pokestadium.com/sprites/xy/" +
-								name +
-								".gif"
-                }
-              />
-            </div>
-          </div>
-        )}
-      </Card>*/
-  }
   render() {
     const { classes, onClick, back, name } = this.props;
-    const gameCardClasses = classNames({
-      [classes.back]: this.props.back
+    const gameCardFrontClasses = classNames({
+      [classes.cardFront]: true,
+      [classes.cardSelected]: !back
     });
     return (
-    	<div style={{marginTop:"30px", marginBottom: "30px"}}>
-      <ReactCardFlip  isFlipped={this.props.back}>
-        <Card
-          key="back"
-          className={gameCardClasses}
-          game
-          onClick={onClick}
-        >
-          <div className={classes.cardBack}>
-            <div className={classes.cardBackDivider} />
-            <div className={classes.cardBackCircle} />
-          </div>
-        </Card>
-        <Card
-          key="front"
-          className={gameCardClasses}
-          game
-          onClick={onClick}
-        >
-          <div className={classes.cardFront}>
-            <div className={classes.imageSquare}>
-              <img
-                src={
-                  "http://pokestadium.com/sprites/xy/" +
-									name +
-									".gif"
-                }
-              />
-            </div>
-          </div>
-        </Card>
-      </ReactCardFlip>
+      <div style={{ marginTop: "30px", marginBottom: "30px" }}>
+        <ReactCardFlip isFlipped={back}>
+          <Card
+            key="back"
+            game
+            className={classes.cardBack}
+            onClick={onClick}
+          >
+            
+              <div className={classes.cardBackDivider} />
+              <div className={classes.cardBackCircle} />
+            
+          </Card>
+          <Card
+            key="front"
+            game
+            className={gameCardFrontClasses}
+            onClick={onClick}
+          >
+            
+              <div className={classes.imageSquare}>
+                <img
+                  src={
+                    "http://pokestadium.com/sprites/xy/" +
+										name +
+										".gif"
+                  }
+                />
+              </div>
+            
+          </Card>
+        </ReactCardFlip>
       </div>
     );
   }

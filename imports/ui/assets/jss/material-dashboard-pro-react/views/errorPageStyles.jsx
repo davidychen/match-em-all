@@ -1,6 +1,17 @@
-import { title, whiteColor } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
+import { title, whiteColor, container } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 const errorPageStyles = theme => ({
+  container: {
+    ...container,
+    zIndex: "4",
+    width: "100%", /**/
+    [theme.breakpoints.down("sm")]: {
+      paddingBottom: "100px"
+    },
+    position: "relative",
+    alignItems: "center",
+    display: "flex",
+  },
   contentCenter: {
     position: "absolute",
     top: "50%",

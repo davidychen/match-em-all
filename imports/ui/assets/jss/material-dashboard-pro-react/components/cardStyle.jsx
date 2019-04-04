@@ -40,7 +40,7 @@ const cardStyle = {
     marginBottom: "0",
     borderRadius: "30px"
   },
-  cardBack: {
+  /*cardBack: {
     "&:hover": {
       cursor: "pointer",
       boxShadow:
@@ -52,7 +52,7 @@ const cardStyle = {
         hexToRgb(blackColor) +
         ", 0.2)"
     }
-  },
+  },*/
   cardProfile: {
     marginTop: "30px",
     textAlign: "center"

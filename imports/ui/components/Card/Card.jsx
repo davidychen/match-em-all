@@ -35,7 +35,7 @@ function Card({ ...props }) {
     [classes.card]: true,
     [classes.cardPlain]: plain,
     [classes.cardGame]: game,
-    [classes.cardBack]: back,
+    /*[classes.cardBack]: back,*/
     [classes.cardSelected]: selected,
     [classes.cardProfile]: profile || testimonial,
     [classes.cardBlog]: blog,

@@ -9,6 +9,14 @@ import {
 
 const footerStyle = {
   block: {},
+  navLink: {
+    /*color: primaryColor[0],*/
+    textDecoration: "none",
+    backgroundColor: "transparent",
+    "&:hover,&:focus": {
+      color: primaryColor[0]
+    }
+  },
   left: {
     float: "left!important",
     display: "block"
@@ -39,7 +47,10 @@ const footerStyle = {
   a: {
     color: primaryColor[0],
     textDecoration: "none",
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
+    "&:hover,&:focus": {
+      color: primaryColor[0]
+    }
   },
   list: {
     marginBottom: "0",

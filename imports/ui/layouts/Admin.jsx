@@ -1,7 +1,7 @@
 import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -106,7 +106,7 @@ class Dashboard extends React.Component {
       if (prop.layout === "/admin") {
         return (
           <Route
-            path={prop.layout + prop.path}
+            exact path={prop.layout + prop.path}
             component={prop.component}
             key={key}
           />
@@ -160,7 +160,7 @@ class Dashboard extends React.Component {
 
           <div className={classes.content}>
             <div className={classes.container}>
-              <Switch>{this.getRoutes(routes)}</Switch>
+              <Switch>{this.getRoutes(routes)}<Redirect from="*" to="/public/error-page" /></Switch>
             </div>
           </div>
 

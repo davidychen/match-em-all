@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import ChartistGraph from "react-chartist";
 // react plugin for creating vector maps
 import { VectorMap } from "react-jvectormap";
+import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
+import { Pokemon } from "../../../api/pokemon.js";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -63,7 +66,7 @@ var mapData = {
   US: 2920
 };
 
-class Dashboard extends React.Component {
+class Game extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -80,36 +83,47 @@ class Dashboard extends React.Component {
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
-  onClick() {
-    this.setState({flip: !this.state.flip});
+  onClick(i) {
+    this.setState({ flip: !this.state.flip });
+    Meteor.call("pokemon.flip", i);
   }
+  renderCards() {
+    if (this.props.pokemon) {
+      const cards = this.props.pokemon.board.map((card, idx) => {
+        console.log(card);
+        return (
+          <GridItem xs={6} sm={3} md={2} lg={2} key={idx}>
+            <GameCard
+              name={card.name}
+              back={card.user === ""}
+              onClick={this.onClick.bind(this, idx)}
+            />
+          </GridItem>
+        );
+      });
+      return <GridContainer>{cards}</GridContainer>;
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
       <div>
-        <GridContainer>
-          <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
-          </GridItem>
-          <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
-          </GridItem><GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
-          </GridItem><GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
-          </GridItem><GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
-          </GridItem><GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
-          </GridItem>
-        </GridContainer>
+      {this.renderCards()}
+        
       </div>
     );
   }
 }
 
-Dashboard.propTypes = {
+Game.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(gameStyle)(Dashboard);
+export default withTracker(() => {
+  const handle = Meteor.subscribe("pokemon");
+  return {
+    pokemon: Pokemon.find({}).fetch()[0],
+    ready: handle.ready()
+  };
+})(withStyles(gameStyle)(Game));
