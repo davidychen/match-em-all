@@ -26,10 +26,10 @@ const style = {
 };
 
 function GameCardFront({ ...props }) {
-  const { classes, name } = props;
+  const { classes, name, selected } = props;
   return (
-    <Card game>
-      <div className={classes.imageSquare}>
+    <Card game selected={selected}>
+      <div className={classes.imageSquare} >
         <img src={"http://pokestadium.com/sprites/xy/" + name + ".gif"} />
       </div>
     </Card>
@@ -38,7 +38,8 @@ function GameCardFront({ ...props }) {
 
 GameCardFront.propTypes = {
   classes: PropTypes.object.isRequired,
-  name: PropTypes.string
+  name: PropTypes.string,
+  selected: PropTypes.bool
 };
 
 export default withStyles(style)(GameCardFront);

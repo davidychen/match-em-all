@@ -63,6 +63,13 @@ var mapData = {
 };
 
 class Dashboard extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      flip: false
+    };
+    this.onClick = this.onClick.bind(this);
+  }
   state = {
     value: 0
   };
@@ -72,29 +79,32 @@ class Dashboard extends React.Component {
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
+  onClick() {
+    this.setState({flip: !this.state.flip});
+  }
   render() {
     const { classes } = this.props;
     return (
       <div>
         <GridContainer>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardBack/>
+            <GameCardBack onClick={this.onClick} />
           </GridItem>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardBack/>
+            <GameCardBack onClick={this.onClick}/>
           </GridItem>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardBack/>
+            <GameCardBack onClick={this.onClick}/>
           </GridItem>
 
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardFront name={"pikachu"}/>
+            <GameCardFront selected={this.state.flip} name={"pikachu"}/>
           </GridItem>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardFront name={"sceptile"}/>
+            <GameCardFront selected={this.state.flip} name={"sceptile"}/>
           </GridItem>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardFront name={"sceptile"}/>
+            <GameCardFront selected={this.state.flip} name={"sceptile"}/>
           </GridItem>
         </GridContainer>
       </div>

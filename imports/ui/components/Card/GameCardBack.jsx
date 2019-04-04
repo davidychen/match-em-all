@@ -52,9 +52,9 @@ const style = theme => ({
 });
 
 function GameCardBack({ ...props }) {
-  const { classes } = props;
+  const { classes, onClick } = props;
   return (
-    <Card game back>
+    <Card game back onClick={onClick}>
       <div className={classes.cardBack}>
         <div className={classes.cardBackDivider} />
         <div className={classes.cardBackCircle} />
@@ -64,7 +64,8 @@ function GameCardBack({ ...props }) {
 }
 
 GameCardBack.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  onClick: PropTypes.func
 };
 
 export default withStyles(style)(GameCardBack);
