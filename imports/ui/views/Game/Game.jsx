@@ -90,13 +90,13 @@ class Game extends React.Component {
   renderCards() {
     if (this.props.pokemon) {
       const cards = this.props.pokemon.board.map((card, idx) => {
-        /*console.log(card);*/
         return (
           <GridItem xs={6} sm={3} md={2} lg={2} key={idx}>
             <GameCard
               name={card.name}
               back={card.ownerId === ""}
               onClick={this.onClick.bind(this, idx)}
+              selected={card.ownerId === this.props.user._id}
             />
           </GridItem>
         );
@@ -117,13 +117,16 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  user: PropTypes.object
 };
 
 export default withTracker(() => {
+  const user = Meteor.user();
   const handle = Meteor.subscribe("pokemon");
   return {
     pokemon: Pokemon.find({}).fetch()[0],
-    ready: handle.ready()
+    ready: handle.ready(),
+    user: user
   };
 })(withStyles(gameStyle)(Game));

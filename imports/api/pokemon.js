@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const Pokemon = new Mongo.Collection("pokemon");
 export const Collect = new Mongo.Collection("collect");
-const total = 10;
+const total = 36;
 function shuffle(arra1) {
   var ctr = arra1.length,
     temp,
@@ -45,7 +45,8 @@ function init() {
                   id: data.data.id,
                   /*pict: data.data.sprites.front_default,*/
                   name: data.data.name,
-                  ownerId: ""
+                  ownerId: "",
+                  match: false
                 }
               }
             }
@@ -112,23 +113,23 @@ Meteor.methods({
       ) {
         //flip it back
 
-        key = "board." + i.toString() + ".ownerId";
+        key = "board." + i.toString() + ".match";
 
         Pokemon.update(
           {},
           {
             $set: {
-              [key]: "done"
+              [key]: true
             }
           }
         );
-        key = "board." + index.toString() + ".ownerId";
+        key = "board." + index.toString() + ".match";
 
         Pokemon.update(
           {},
           {
             $set: {
-              [key]: "done"
+              [key]: true
             }
           }
         );
@@ -176,7 +177,7 @@ Meteor.methods({
       Meteor.setTimeout(function flipBack() {
         //flip it back after 5 seconds
         board = Pokemon.findOne({}).board;
-        if (board[index].ownerId != "done") {
+        if (!board[index].match) {
           key = "board." + index.toString() + ".ownerId";
           Pokemon.update(
             {},

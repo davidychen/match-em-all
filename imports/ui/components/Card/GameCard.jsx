@@ -123,10 +123,10 @@ class GameCard extends React.Component {
     }
   }
   render() {
-    const { classes, onClick, back, name } = this.props;
+    const { classes, onClick, back, name, selected } = this.props;
     const gameCardFrontClasses = classNames({
       [classes.cardFront]: true,
-      [classes.cardSelected]: !back
+      [classes.cardSelected]: selected
     });
     return (
       <div style={{ marginTop: "30px", marginBottom: "30px" }}>
@@ -170,7 +170,8 @@ GameCard.propTypes = {
   classes: PropTypes.object.isRequired,
   back: PropTypes.bool,
   name: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  selected: PropTypes.bool
 };
 
 export default withStyles(style)(GameCard);
