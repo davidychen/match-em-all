@@ -33,6 +33,7 @@ import Table from "../../components/Table/Table.jsx";
 import Button from "../../components/CustomButtons/Button.jsx";
 import Danger from "../../components/Typography/Danger.jsx";
 import Card from "../../components/Card/Card.jsx";
+import GameCard from "../../components/Card/GameCard.jsx";
 import GameCardFront from "../../components/Card/GameCardFront.jsx";
 import GameCardBack from "../../components/Card/GameCardBack.jsx";
 import CardHeader from "../../components/Card/CardHeader.jsx";
@@ -88,23 +89,18 @@ class Dashboard extends React.Component {
       <div>
         <GridContainer>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardBack onClick={this.onClick} />
+            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
           </GridItem>
           <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardBack onClick={this.onClick}/>
-          </GridItem>
-          <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardBack onClick={this.onClick}/>
-          </GridItem>
-
-          <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardFront selected={this.state.flip} name={"pikachu"}/>
-          </GridItem>
-          <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardFront selected={this.state.flip} name={"sceptile"}/>
-          </GridItem>
-          <GridItem xs={6} sm={3} md={2} lg={2}>
-            <GameCardFront selected={this.state.flip} name={"sceptile"}/>
+            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
+          </GridItem><GridItem xs={6} sm={3} md={2} lg={2}>
+            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
+          </GridItem><GridItem xs={6} sm={3} md={2} lg={2}>
+            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
+          </GridItem><GridItem xs={6} sm={3} md={2} lg={2}>
+            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
+          </GridItem><GridItem xs={6} sm={3} md={2} lg={2}>
+            <GameCard name="pikachu" back={this.state.flip} onClick={this.onClick}/>
           </GridItem>
         </GridContainer>
       </div>

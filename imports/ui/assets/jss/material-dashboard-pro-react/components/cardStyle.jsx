@@ -33,7 +33,11 @@ const cardStyle = {
     boxShadow: "none"
   },
   cardGame: {
-    transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
+    /*transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",*/
+    transition: "all .4s linear",
+    // transformStyle: "preserve-3d",
+    marginTop: "0",
+    marginBottom: "0",
     borderRadius: "30px"
   },
   cardBack: {
@@ -57,7 +61,7 @@ const cardStyle = {
     marginTop: "60px"
   },
   cardSelected: {
-    transform: "rotateY(180deg)"
+    // transform: "rotateY(180deg)"
   }, 
   cardRaised: {
     boxShadow:
