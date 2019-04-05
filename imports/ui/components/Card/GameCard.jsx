@@ -146,6 +146,11 @@ class GameCard extends React.Component {
       this.selected = true;
     }
   }
+  componentDidMount() {
+    if (this.props.back) {
+      this.imgLink = "/question-mark.png";
+    }
+  }
   render() {
     const { classes, onClick, back, name, selected, matched, matchedOwn } = this.props;
     const gameCardFrontClasses = classNames({
@@ -163,6 +168,7 @@ class GameCard extends React.Component {
       tempName = "nidoranf";
       break;
     }
+    this.imgLink = tempName ? ("http://pokestadium.com/sprites/xy/" + tempName + ".gif") : "/question-mark.png";
     return (
       <div style={{ marginTop: "30px", marginBottom: "30px" }}>
         <ReactCardFlip isFlipped={back}>
@@ -177,7 +183,7 @@ class GameCard extends React.Component {
             onClick={onClick}
           >
             <div className={classes.imageSquare}>
-              <img src={"http://pokestadium.com/sprites/xy/" + tempName + ".gif"} />
+              <img src={this.imgLink} />
             </div>
           </Card>
         </ReactCardFlip>

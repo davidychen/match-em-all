@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const Pokemon = new Mongo.Collection("pokemon");
 export const Collect = new Mongo.Collection("collect");
-const total = 36;
+const total = 4;
 const timeouts = [];
 function shuffle(arra1) {
   var ctr = arra1.length,
@@ -20,10 +20,11 @@ function shuffle(arra1) {
   }
   return arra1;
 }
-function init() {
+async function init() {
   if (Meteor.isServer) {
     var count = 0;
     var matrix = [];
+    Pokemon.update({}, { count: count, board: matrix });
     for (var i = 0; i < total / 2; i++) {
       var now = Math.floor(Math.random() * (721 - 1)) + 1;
       matrix.push(now);
@@ -283,7 +284,9 @@ Meteor.methods({
 
     nowFlip = [];*/
     if (count == total) {
-      init();
+      Meteor.setTimeout(function restart() {
+        init();
+      }, 5000);
     }
   }
 });
