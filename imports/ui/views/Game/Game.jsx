@@ -94,7 +94,7 @@ class Game extends React.Component {
           <GridItem xs={6} sm={3} md={2} lg={2} key={idx}>
             <GameCard
               name={card.name}
-              back={card.ownerId === "" && !card.match}
+              back={card.ownerId === ""}
               onClick={this.onClick.bind(this, idx)}
               selected={card.ownerId === this.props.user._id}
             />
