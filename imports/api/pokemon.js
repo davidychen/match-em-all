@@ -132,6 +132,21 @@ Meteor.methods({
           }
         );
       });
+      timeouts[index] = Meteor.setTimeout(function flipBack() {
+        //flip it back after 5 seconds
+        board = Pokemon.findOne({}).board;
+        if (!board[index].match) {
+          key = "board." + index.toString() + ".ownerId";
+          Pokemon.update(
+            {},
+            {
+              $set: {
+                [key]: ""
+              }
+            }
+          );
+        }
+      }, 3000);
     } else if (foundSelect.length === 1) {
       const i = foundSelect[0];
       //find two match
