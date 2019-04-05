@@ -97,6 +97,7 @@ class Game extends React.Component {
               back={card.ownerId === ""}
               onClick={this.onClick.bind(this, idx)}
               selected={card.ownerId === this.props.user._id}
+              matched={card.match && card.ownerId !== this.props.user._id}
             />
           </GridItem>
         );

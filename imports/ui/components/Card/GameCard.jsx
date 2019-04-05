@@ -13,7 +13,8 @@ import {
   primaryColor,
   hexToRgb,
   blackColor,
-  selectColor
+  selectColor,
+  dangerColor
 } from "../../assets/jss/material-dashboard-pro-react.jsx";
 
 // core components
@@ -104,6 +105,19 @@ const style = () => ({
 				", 0.12), 0 8px 10px -5px rgba(" +
 				hexToRgb(blackColor) +
 				", 0.2)"
+  },
+  cardMatched: {
+    transition: "all 0.3s ease 0.4s",
+    boxShadow:
+      "0 0 5px 10px " +
+      dangerColor[0] +
+      ", 0 16px 38px -12px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.56), 0 4px 25px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.12), 0 8px 10px -5px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.2)"
   }
 });
 
@@ -123,10 +137,11 @@ class GameCard extends React.Component {
     }
   }
   render() {
-    const { classes, onClick, back, name, selected } = this.props;
+    const { classes, onClick, back, name, selected, matched } = this.props;
     const gameCardFrontClasses = classNames({
       [classes.cardFront]: true,
-      [classes.cardSelected]: selected
+      [classes.cardSelected]: selected,
+      [classes.cardMatched]: matched
     });
     return (
       <div style={{ marginTop: "30px", marginBottom: "30px" }}>
@@ -171,7 +186,8 @@ GameCard.propTypes = {
   back: PropTypes.bool,
   name: PropTypes.string,
   onClick: PropTypes.func,
-  selected: PropTypes.bool
+  selected: PropTypes.bool,
+  matched: PropTypes.bool
 };
 
 export default withStyles(style)(GameCard);
