@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const Pokemon = new Mongo.Collection("pokemon");
 export const Collect = new Mongo.Collection("collect");
-const total = 36;
+const total = 6;
 const timeouts = [];
 function shuffle(arra1) {
   var ctr = arra1.length,
@@ -82,8 +82,27 @@ async function init() {
                       id: data.data.id,
                       name: data.data.name,
                       ownerId: "",
-                      match: false
+                      match: false,
+                      color: data.data.color.name
                     }
+                  }
+                }
+              );
+            });
+          axios
+            .get("https://pokeapi.co/api/v2/pokemon/" + tmp.toString())
+            .then(data => {
+              var key = "board." + i.toString() + ".type";
+              //console.log(key);
+              var type = [];
+              for (let j = 0 ;j < data.data.types.length;j++) {
+                type.push(data.data.types[j].type.name);
+              }
+              Pokemon.update(
+                {},
+                {
+                  $set: {
+                    [key]: type
                   }
                 }
               );
