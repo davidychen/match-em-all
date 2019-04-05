@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const Pokemon = new Mongo.Collection("pokemon");
 export const Collect = new Mongo.Collection("collect");
-const total = 36;
+const total = 6;
 function shuffle(arra1) {
   var ctr = arra1.length,
     temp,
@@ -111,7 +111,7 @@ Meteor.methods({
         board[i].ownerId == this.userId &&
         i != index
       ) {
-        //flip it back
+        //find two match
 
         key = "board." + i.toString() + ".match";
 
@@ -150,17 +150,18 @@ Meteor.methods({
             }
           }
         );
+        break;
       }
     }
 
     board = Pokemon.findOne({}).board;
     var nowFlip = [];
     for (let i = 0; i < board.length; i++) {
-      if (board[i].ownerId == this.userId) {
+      if (board[i].ownerId == this.userId && !board[i].match) {
         nowFlip.push(i);
       }
     }
-    if (nowFlip.length >= 3) {
+    if (nowFlip.length >= 4) {
       //flip it back after 3 times
       for (let i = 0; i < nowFlip.length; i++) {
         key = "board." + nowFlip[i].toString() + ".ownerId";
