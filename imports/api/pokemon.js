@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const Pokemon = new Mongo.Collection("pokemon");
 export const Collect = new Mongo.Collection("collect");
-const total = 6;
+const total = 36;
 const timeouts = [];
 function shuffle(arra1) {
   var ctr = arra1.length,
