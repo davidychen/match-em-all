@@ -140,7 +140,7 @@ class Dashboard extends React.Component {
         <Sidebar
           routes={routes}
           logoText={"Match 'Em All"}
-          logo={"/favicon.png"}
+          logo={"/logo.png"}
           handleDrawerToggle={this.handleDrawerToggle}
           open={this.state.mobileOpen}
           color={this.state.color}

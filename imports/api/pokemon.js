@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const Pokemon = new Mongo.Collection("pokemon");
 export const Collect = new Mongo.Collection("collect");
-const total = 36;
+const total = 6;
 const timeouts = [];
 function shuffle(arra1) {
   var ctr = arra1.length,
@@ -20,17 +20,79 @@ function shuffle(arra1) {
   }
   return arra1;
 }
+
+function getOne(count, callback) {
+  var now = Math.floor(Math.random() * (721 - 1)) + 1;
+  if (count == 0) return now;
+  axios
+    .get("https://pokeapi.co/api/v2/pokemon-species/" + now.toString())
+    .then(data => {
+      const rate = data.data.capture_rate;
+      var rand = Math.floor(Math.random() * 65536);
+      const compare =
+        (Math.pow(2, 20) - Math.pow(2, 4)) /
+        Math.sqrt(Math.sqrt((Math.pow(2, 24) - Math.pow(2, 16)) / rate));
+      // console.log(count, rand <= compare, rand, compare);
+      if (rand <= compare) {
+        callback(now);
+        // return now;
+      } else {
+        getOne(count - 1, callback);
+      }
+    });
+}
+async function getByRarity(n, callback) {
+  // console.log(callback);
+  for (let i = 0; i < n / 2; i++) {
+    getOne(5, callback);
+  }
+}
 async function init() {
   if (Meteor.isServer) {
     var count = 0;
     var matrix = [];
     Pokemon.update({}, { count: count, board: matrix });
-    for (var i = 0; i < total / 2; i++) {
+    /*let i = 0;
+    while (i < total / 2) {
       var now = Math.floor(Math.random() * (721 - 1)) + 1;
       matrix.push(now);
       matrix.push(now);
+      i++;
     }
-    matrix = shuffle(matrix);
+    let matrix = [];*/
+    getByRarity(total, n => {
+      matrix.push(n);
+      matrix.push(n);
+      if (matrix.length == total) {
+        // console.log(matrix);
+        matrix = shuffle(matrix);
+        Pokemon.update({}, { count: count, board: matrix });
+        for (let i = 0; i < matrix.length; i++) {
+          var tmp = matrix[i];
+          axios
+            .get("https://pokeapi.co/api/v2/pokemon-species/" + tmp.toString())
+            .then(data => {
+              var key = "board." + i.toString();
+              //console.log(key);
+              Pokemon.update(
+                {},
+                {
+                  $set: {
+                    [key]: {
+                      id: data.data.id,
+                      name: data.data.name,
+                      ownerId: "",
+                      match: false
+                    }
+                  }
+                }
+              );
+            });
+        }
+      }
+    });
+
+    /*matrix = shuffle(matrix);
     Pokemon.update({}, { count: count, board: matrix });
     for (let i = 0; i < matrix.length; i++) {
       var tmp = matrix[i];
@@ -45,7 +107,6 @@ async function init() {
               $set: {
                 [key]: {
                   id: data.data.id,
-                  /*pict: data.data.sprites.front_default,*/
                   name: data.data.name,
                   ownerId: "",
                   match: false
@@ -54,7 +115,7 @@ async function init() {
             }
           );
         });
-    }
+    }*/
   } else {
     throw new Meteor.Error("not-server");
   }
