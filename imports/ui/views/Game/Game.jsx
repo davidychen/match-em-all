@@ -96,8 +96,9 @@ class Game extends React.Component {
               name={card.name}
               back={card.ownerId === ""}
               onClick={this.onClick.bind(this, idx)}
-              selected={card.ownerId === this.props.user._id}
+              selected={!card.match && card.ownerId === this.props.user._id}
               matched={card.match && card.ownerId !== this.props.user._id}
+              matchedOwn={card.match && card.ownerId === this.props.user._id}
             />
           </GridItem>
         );
@@ -108,18 +109,14 @@ class Game extends React.Component {
 
   render() {
     const { classes } = this.props;
-    return (
-      <div>
-      {this.renderCards()}
-        
-      </div>
-    );
+    return <div>{this.renderCards()}</div>;
   }
 }
 
 Game.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object,
+  pokemon: PropTypes.object
 };
 
 export default withTracker(() => {

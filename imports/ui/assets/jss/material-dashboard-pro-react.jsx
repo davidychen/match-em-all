@@ -137,7 +137,8 @@ const infoColor = [
   "#00d3ee",
   "#0097a7",
   "#c4e3f3",
-  "#d9edf7"
+  "#d9edf7",
+  "#52C6FF"
 ];
 const roseColor = ["#e91e63", "#ec407a", "#d81b60", "#eb3573", "#c2185b"];
 const grayColor = [

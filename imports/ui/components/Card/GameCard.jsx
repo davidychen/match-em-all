@@ -14,7 +14,8 @@ import {
   hexToRgb,
   blackColor,
   selectColor,
-  dangerColor
+  dangerColor,
+  infoColor
 } from "../../assets/jss/material-dashboard-pro-react.jsx";
 
 // core components
@@ -31,11 +32,7 @@ const style = () => ({
     overflow: "hidden",
     paddingBottom: "100%",
     background:
-			"linear-gradient(" +
-			primaryColor[0] +
-			" 50%, " +
-			whiteColor +
-			" 50%)",
+      "linear-gradient(" + primaryColor[0] + " 50%, " + whiteColor + " 50%)",
     borderRadius: "30px",
     display: "flex",
     "&:hover $cardBackDivider": {
@@ -45,13 +42,13 @@ const style = () => ({
       transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
       cursor: "pointer",
       boxShadow:
-				"0 16px 38px -12px rgba(" +
-				hexToRgb(blackColor) +
-				", 0.56), 0 4px 25px 0px rgba(" +
-				hexToRgb(blackColor) +
-				", 0.12), 0 8px 10px -5px rgba(" +
-				hexToRgb(blackColor) +
-				", 0.2)"
+        "0 16px 38px -12px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.56), 0 4px 25px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.12), 0 8px 10px -5px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.2)"
     }
   },
   cardBackDivider: {
@@ -97,14 +94,14 @@ const style = () => ({
     transition: "all 0.3s ease 0.4s",
     boxShadow:
       "0 0 5px 10px " +
-      selectColor +
+      infoColor[7] +
       ", 0 16px 38px -12px rgba(" +
-				hexToRgb(blackColor) +
-				", 0.56), 0 4px 25px 0px rgba(" +
-				hexToRgb(blackColor) +
-				", 0.12), 0 8px 10px -5px rgba(" +
-				hexToRgb(blackColor) +
-				", 0.2)"
+      hexToRgb(blackColor) +
+      ", 0.56), 0 4px 25px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.12), 0 8px 10px -5px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.2)"
   },
   cardMatched: {
     transition: "all 0.3s ease 0.4s",
@@ -112,12 +109,25 @@ const style = () => ({
       "0 0 5px 10px " +
       dangerColor[0] +
       ", 0 16px 38px -12px rgba(" +
-        hexToRgb(blackColor) +
-        ", 0.56), 0 4px 25px 0px rgba(" +
-        hexToRgb(blackColor) +
-        ", 0.12), 0 8px 10px -5px rgba(" +
-        hexToRgb(blackColor) +
-        ", 0.2)"
+      hexToRgb(blackColor) +
+      ", 0.56), 0 4px 25px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.12), 0 8px 10px -5px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.2)"
+  },
+  cardMatchedOwn: {
+    transition: "all 0.3s ease 0.4s",
+    boxShadow:
+      "0 0 5px 10px " +
+      selectColor +
+      ", 0 16px 38px -12px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.56), 0 4px 25px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.12), 0 8px 10px -5px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.2)"
   }
 });
 
@@ -137,25 +147,28 @@ class GameCard extends React.Component {
     }
   }
   render() {
-    const { classes, onClick, back, name, selected, matched } = this.props;
+    const { classes, onClick, back, name, selected, matched, matchedOwn } = this.props;
     const gameCardFrontClasses = classNames({
       [classes.cardFront]: true,
       [classes.cardSelected]: selected,
-      [classes.cardMatched]: matched
+      [classes.cardMatched]: matched,
+      [classes.cardMatchedOwn]: matchedOwn,
     });
+    let tempName = name;
+    switch (name) {
+    case "nidoran-m":
+      tempName = "nidoranm";
+      break;
+    case "nidoran-f":
+      tempName = "nidoranf";
+      break;
+    }
     return (
       <div style={{ marginTop: "30px", marginBottom: "30px" }}>
         <ReactCardFlip isFlipped={back}>
-          <Card
-            key="back"
-            game
-            className={classes.cardBack}
-            onClick={onClick}
-          >
-            
-              <div className={classes.cardBackDivider} />
-              <div className={classes.cardBackCircle} />
-            
+          <Card key="back" game className={classes.cardBack} onClick={onClick}>
+            <div className={classes.cardBackDivider} />
+            <div className={classes.cardBackCircle} />
           </Card>
           <Card
             key="front"
@@ -163,17 +176,9 @@ class GameCard extends React.Component {
             className={gameCardFrontClasses}
             onClick={onClick}
           >
-            
-              <div className={classes.imageSquare}>
-                <img
-                  src={
-                    "http://pokestadium.com/sprites/xy/" +
-										name +
-										".gif"
-                  }
-                />
-              </div>
-            
+            <div className={classes.imageSquare}>
+              <img src={"http://pokestadium.com/sprites/xy/" + tempName + ".gif"} />
+            </div>
           </Card>
         </ReactCardFlip>
       </div>
@@ -187,7 +192,8 @@ GameCard.propTypes = {
   name: PropTypes.string,
   onClick: PropTypes.func,
   selected: PropTypes.bool,
-  matched: PropTypes.bool
+  matched: PropTypes.bool,
+  matchedOwn: PropTypes.bool
 };
 
 export default withStyles(style)(GameCard);
