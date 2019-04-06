@@ -31,14 +31,14 @@ import Widgets from "views/Widgets/Widgets.jsx";
 import Wizard from "views/Forms/Wizard.jsx";*/
 
 // @material-ui/icons
-import Apps from "@material-ui/icons/Apps";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import DateRange from "@material-ui/icons/DateRange";
-import GridOn from "@material-ui/icons/GridOn";
+//import Apps from "@material-ui/icons/Apps";
+//import DashboardIcon from "@material-ui/icons/Dashboard";
+//import DateRange from "@material-ui/icons/DateRange";
+//import GridOn from "@material-ui/icons/GridOn";
 import Image from "@material-ui/icons/Image";
-import Place from "@material-ui/icons/Place";
-import Timeline from "@material-ui/icons/Timeline";
-import WidgetsIcon from "@material-ui/icons/Widgets";
+//import Place from "@material-ui/icons/Place";
+//import Timeline from "@material-ui/icons/Timeline";
+//import WidgetsIcon from "@material-ui/icons/Widgets";
 import VideogameAsset from "@material-ui/icons/VideogameAsset";
 
 var dashRoutes = [
