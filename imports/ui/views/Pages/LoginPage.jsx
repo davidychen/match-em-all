@@ -74,7 +74,7 @@ class LoginPage extends React.Component {
     e.preventDefault();
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
-    Meteor.loginWithPassword(username, password, err => {
+    Meteor.loginWithPassword({username: username}, password, err => {
       if (err) {
         this.setState({
           error: err.reason,
