@@ -6,7 +6,7 @@ import axios from "axios";
 export const Pokemon = new Mongo.Collection("pokemon");
 export const Collect = new Mongo.Collection("collect");
 
-const total = 4;
+const total = 36;
 const timeouts = [];
 const legendary = new Set([
   144,
