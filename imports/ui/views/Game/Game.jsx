@@ -93,12 +93,14 @@ class Game extends React.Component {
         return (
           <GridItem xs={6} sm={3} md={2} lg={2} key={idx}>
             <GameCard
+              idx={idx}
               name={card.name}
               back={card.ownerId === ""}
               onClick={this.onClick.bind(this, idx)}
               selected={!card.match && card.ownerId === this.props.user._id}
               matched={card.match && card.ownerId !== this.props.user._id}
               matchedOwn={card.match && card.ownerId === this.props.user._id}
+              star={card.legendary}
             />
           </GridItem>
         );

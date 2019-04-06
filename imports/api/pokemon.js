@@ -8,6 +8,76 @@ export const Collect = new Mongo.Collection("collect");
 
 const total = 4;
 const timeouts = [];
+const legendary = new Set([
+  144,
+  145,
+  146,
+  150,
+  /*generation i (4)*/
+  243,
+  244,
+  245,
+  249,
+  250,
+  /*generation ii (9)*/
+  377,
+  378,
+  379,
+  380,
+  381,
+  382,
+  383,
+  384,
+  /*generation iii (17)*/
+  480,
+  481,
+  482,
+  483,
+  484,
+  485,
+  486,
+  487,
+  488,
+  /*generation iv (26)*/
+  638,
+  639,
+  640,
+  641,
+  642,
+  643,
+  644,
+  645,
+  646,
+  /*generation v (35)*/
+  716,
+  717,
+  718
+  /*generation vi (38)*/
+]);
+const mythical = new Set([
+  151,
+  /*generation i (1)*/
+  251,
+  /*generation ii (1)*/
+  385,
+  386,
+  /*generation iii (2)*/
+  489,
+  490,
+  491,
+  492,
+  493,
+  /*generation iv (5)*/
+  494,
+  647,
+  648,
+  649,
+  /*generation v (4)*/
+  719,
+  720,
+  721
+  /*generation vi (4)*/
+]);
 
 function shuffle(array) {
   let ctr = array.length,
@@ -23,38 +93,91 @@ function shuffle(array) {
   return array;
 }
 
-function getOne(count, callback) {
+function searchTree(chain, name) {
+  if (chain.species.name === name) {
+    return chain.evolves_to.map(poke =>
+      parseInt(poke.species.url.match(/pokemon-species\/(.*?)\//)[1])
+    );
+  } else if (chain.evolves_to.length !== 0) {
+    let i;
+    let result = undefined;
+    for (i = 0; result === undefined && i < chain.evolves_to.length; i++) {
+      result = searchTree(chain.evolves_to[i], name);
+    }
+    return result;
+  }
+  return [];
+}
+
+function getOne(count, prev, callback) {
   let pokeId = Math.floor(Math.random() * (721 - 1)) + 1;
   axios
     .get("https://pokeapi.co/api/v2/pokemon-species/" + pokeId.toString())
     .then(resSpecies => {
       const rate = resSpecies.data.capture_rate;
-      let rand = Math.floor(Math.random() * 65536);
-      const compare = Math.floor(
-        (Math.pow(2, 20) - Math.pow(2, 4)) /
-          Math.sqrt(Math.sqrt((Math.pow(2, 24) - Math.pow(2, 16)) / rate))
-      );
-      // console.log(count, rand <= compare, rand, compare);
+      let rand = Math.random();
+      const compare = rate / 255;
+      /*console.log(
+        count,
+        resSpecies.data.name,
+        rate,
+        rand <= compare,
+        rand,
+        compare
+      );*/
       if (rand <= compare || count == 0) {
+        if (rand > compare) {
+          resSpecies = prev.resSpecies;
+        }
+
         axios
           .get("https://pokeapi.co/api/v2/pokemon/" + pokeId.toString())
           .then(resType => {
-            const type = resType.data.types.map(t => t.type.name);
-            const pokeInfo = {
-              id: resSpecies.data.id,
-              name: resSpecies.data.name,
-              ownerId: "",
-              match: false,
-              color: resSpecies.data.color.name,
-              type: type
-            };
+            const chainUrl = resSpecies.data.evolution_chain.url;
+            const chainId = parseInt(
+              chainUrl.match(/evolution-chain\/(.*?)\//)[1]
+            );
+            axios
+              .get(
+                "https://pokeapi.co/api/v2/evolution-chain/" +
+                  chainId.toString()
+              )
+              .then(resEvolve => {
+                const type = resType.data.types.map(t => t.type.name);
+                const evolves_to = searchTree(
+                  resEvolve.data.chain,
+                  resSpecies.data.name
+                );
+                const pokeInfo = {
+                  id: resSpecies.data.id,
+                  name: resSpecies.data.name,
+                  ownerId: "",
+                  match: false,
+                  color: resSpecies.data.color.name,
+                  type: type,
+                  rate: rate,
+                  legendary:
+                    legendary.has(resSpecies.data.id) ||
+                    mythical.has(resSpecies.data.id),
+                  evolves_to: evolves_to
+                };
 
-            callback(pokeInfo);
+                callback(pokeInfo);
+              });
           });
 
         // return now;
       } else {
-        getOne(count - 1, callback);
+        let next = {
+          rate: rate,
+          resSpecies: resSpecies
+        };
+
+        if (prev !== undefined && prev.rate > rate) {
+          next = prev;
+        }
+
+        getOne(count - 1, next, callback);
       }
     });
 }
@@ -62,7 +185,7 @@ function getOne(count, callback) {
 async function getByRarity(n, callback) {
   // console.log(callback);
   for (let i = 0; i < n / 2; i++) {
-    getOne(5, callback);
+    getOne(3, undefined, callback);
   }
 }
 
@@ -87,85 +210,19 @@ async function init() {
         matrix = shuffle(matrix);
 
         Pokemon.update({}, { count: count, board: matrix });
-
-        /*for (let i = 0; i < matrix.length; i++) {
-          let tmp = matrix[i];
-          axios
-            .get("https://pokeapi.co/api/v2/pokemon-species/" + tmp.toString())
-            .then(data => {
-              axios
-                .get("https://pokeapi.co/api/v2/pokemon/" + tmp.toString())
-                .then(typeData => {
-                  let key = "board." + i.toString();
-                  //console.log(key);
-                  let type = [];
-                  for (let j = 0; j < typeData.data.types.length; j++) {
-                    type.push(typeData.data.types[j].type.name);
-                  }
-                  Pokemon.update(
-                    {},
-                    {
-                      $set: {
-                        [key]: {
-                          id: data.data.id,
-                          name: data.data.name,
-                          ownerId: "",
-                          match: false,
-                          color: data.data.color.name,
-                          type: type
-                        }
-                      }
-                    }
-                  );
-                });
-            });
-        }*/
       }
     });
-
-    /*matrix = shuffle(matrix);
-    Pokemon.update({}, { count: count, board: matrix });
-    for (let i = 0; i < matrix.length; i++) {
-      let tmp = matrix[i];
-      axios
-        .get("https://pokeapi.co/api/v2/pokemon-species/" + tmp.toString())
-        .then(data => {
-          let key = "board." + i.toString();
-          //console.log(key);
-          Pokemon.update(
-            {},
-            {
-              $set: {
-                [key]: {
-                  id: data.data.id,
-                  name: data.data.name,
-                  ownerId: "",
-                  match: false
-                }
-              }
-            }
-          );
-        });
-    }*/
   } else {
     throw new Meteor.Error("not-server");
   }
 }
+
 if (Meteor.isServer) {
   if (Pokemon.find({}) == undefined || Pokemon.find({}).count() == 0) {
     Pokemon.insert({ count: 0, board: [] });
   }
   init();
   Meteor.publish("pokemon", function Publish() {
-    // console.log(Pokemon.find({}));
-    // let board = Pokemon.find({}).board;
-    // for (let i = 0;i<board.length;i++) {
-    //   for (let j = 0;j<board[i].length;j++){
-    //     board[i][j] = {id:0, pict:"", name:"", user:board[i][j].user};
-    //   }
-    // }
-    // console.log({board});
-    // return {board};
     return Pokemon.find({}, { board: 0 });
   });
   Meteor.publish("collect", function Publish() {
@@ -336,45 +393,6 @@ Meteor.methods({
       }, 5000);
     }
 
-    /*board = Pokemon.findOne({}).board;
-    let nowFlip = [];
-    for (let i = 0; i < board.length; i++) {
-      if (board[i].ownerId == this.userId && !board[i].match) {
-        nowFlip.push(i);
-      }
-    }
-    if (nowFlip.length >= 4) {
-      //flip it back after 3 times
-      for (let i = 0; i < nowFlip.length; i++) {
-        key = "board." + nowFlip[i].toString() + ".ownerId";
-        Pokemon.update(
-          {},
-          {
-            $set: {
-              [key]: ""
-            }
-          }
-        );
-      }
-    } else {
-      timeouts[index] = Meteor.setTimeout(function flipBack() {
-        //flip it back after 5 seconds
-        board = Pokemon.findOne({}).board;
-        if (!board[index].match) {
-          key = "board." + index.toString() + ".ownerId";
-          Pokemon.update(
-            {},
-            {
-              $set: {
-                [key]: ""
-              }
-            }
-          );
-        }
-      }, 5000);
-    }
-
-    nowFlip = [];*/
     if (count == total) {
       Meteor.setTimeout(function restart() {
         init();

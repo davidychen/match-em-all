@@ -35,10 +35,10 @@ const style = () => ({
       "linear-gradient(" + primaryColor[0] + " 50%, " + whiteColor + " 50%)",
     borderRadius: "30px",
     display: "flex",
-    "&:hover $cardBackDivider": {
+    "&:hover,&:focus $cardBackDivider": {
       height: "2.4rem"
     },
-    "&:hover": {
+    "&:hover,&:focus": {
       transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
       cursor: "pointer",
       boxShadow:
@@ -76,14 +76,27 @@ const style = () => ({
   imageSquare: {
     position: "relative",
     overflow: "hidden",
-    paddingBottom: "100%",
+    paddingBottom: "100%"
+  },
+  sprite: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    maxWidth: "100%",
+    maxHeight: "100%",
+    transform: "translateX(-50%) translateY(-50%)",
+    overflow: "auto"
+  },
+  star: {
+    position: "absolute",
+    width: "20%",
+    height: "20%",
+    top: "10%",
+    right: "10%",
+    overflow: "auto",
     "& img": {
-      position: "absolute",
       maxWidth: "100%",
-      maxHeight: "100%",
-      top: "50%",
-      left: "50%",
-      transform: "translateX(-50%) translateY(-50%)"
+      maxHeight: "100%"
     }
   },
   cardMatch: {
@@ -152,23 +165,35 @@ class GameCard extends React.Component {
     }
   }
   render() {
-    const { classes, onClick, back, name, selected, matched, matchedOwn } = this.props;
+    const {
+      classes,
+      idx,
+      onClick,
+      back,
+      name,
+      selected,
+      matched,
+      matchedOwn,
+      star
+    } = this.props;
     const gameCardFrontClasses = classNames({
       [classes.cardFront]: true,
       [classes.cardSelected]: selected,
       [classes.cardMatched]: matched,
-      [classes.cardMatchedOwn]: matchedOwn,
+      [classes.cardMatchedOwn]: matchedOwn
     });
     let tempName = name;
     switch (name) {
-    case "nidoran-m":
-      tempName = "nidoranm";
-      break;
-    case "nidoran-f":
-      tempName = "nidoranf";
-      break;
+      case "nidoran-m":
+        tempName = "nidoranm";
+        break;
+      case "nidoran-f":
+        tempName = "nidoranf";
+        break;
     }
-    this.imgLink = tempName ? ("http://pokestadium.com/sprites/xy/" + tempName + ".gif") : "/question-mark.png";
+    this.imgLink = tempName
+      ? "http://pokestadium.com/sprites/xy/" + tempName + ".gif"
+      : "/question-mark.png";
     return (
       <div style={{ marginTop: "30px", marginBottom: "30px" }}>
         <ReactCardFlip isFlipped={back}>
@@ -183,7 +208,16 @@ class GameCard extends React.Component {
             onClick={onClick}
           >
             <div className={classes.imageSquare}>
-              <img src={this.imgLink} />
+              <img
+                className={classes.sprite}
+                src={this.imgLink}
+                alt={tempName ? tempName : "guess " + idx}
+              />
+              {star && (
+                <div className={classes.star}>
+                  <img src={"/star3.png"} alt={"star " + idx} />
+                </div>
+              )}
             </div>
           </Card>
         </ReactCardFlip>
@@ -194,12 +228,14 @@ class GameCard extends React.Component {
 
 GameCard.propTypes = {
   classes: PropTypes.object.isRequired,
+  idx: PropTypes.number,
   back: PropTypes.bool,
   name: PropTypes.string,
   onClick: PropTypes.func,
   selected: PropTypes.bool,
   matched: PropTypes.bool,
-  matchedOwn: PropTypes.bool
+  matchedOwn: PropTypes.bool,
+  star: PropTypes.bool
 };
 
 export default withStyles(style)(GameCard);
