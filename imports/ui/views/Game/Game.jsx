@@ -95,7 +95,7 @@ class Game extends React.Component {
             <GameCard
               idx={idx}
               name={card.name}
-              back={card.ownerId === ""}
+              back={card.ownerId === undefined}
               onClick={this.onClick.bind(this, idx)}
               selected={!card.match && card.ownerId === this.props.user._id}
               matched={card.match && card.ownerId !== this.props.user._id}

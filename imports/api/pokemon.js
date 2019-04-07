@@ -117,14 +117,7 @@ function getOne(count, prev, callback) {
       const rate = resSpecies.data.capture_rate;
       let rand = Math.random();
       const compare = rate / 255;
-      /*console.log(
-        count,
-        resSpecies.data.name,
-        rate,
-        rand <= compare,
-        rand,
-        compare
-      );*/
+
       if (rand <= compare || count == 0) {
         if (rand > compare) {
           resSpecies = prev.resSpecies;
@@ -193,23 +186,16 @@ async function init() {
   if (Meteor.isServer) {
     let count = 0;
     let matrix = [];
-    Pokemon.update({}, { count: count, board: matrix });
-    /*let i = 0;
-    while (i < total / 2) {
-      let now = Math.floor(Math.random() * (721 - 1)) + 1;
-      matrix.push(now);
-      matrix.push(now);
-      i++;
-    }
-    let matrix = [];*/
+    Pokemon.update({}, { count: count, game: [], board: [] });
+
     getByRarity(total, n => {
       matrix.push(n);
       matrix.push(n);
       if (matrix.length == total) {
         // console.log(matrix);
         matrix = shuffle(matrix);
-
-        Pokemon.update({}, { count: count, board: matrix });
+        const board = Array(total).fill({ match: false });
+        Pokemon.update({}, { count: count, game: matrix, board: board });
       }
     });
   } else {
@@ -219,15 +205,33 @@ async function init() {
 
 if (Meteor.isServer) {
   if (Pokemon.find({}) == undefined || Pokemon.find({}).count() == 0) {
-    Pokemon.insert({ count: 0, board: [] });
+    Pokemon.insert({ count: 0, game: [], board: [] });
   }
   init();
   Meteor.publish("pokemon", function Publish() {
-    return Pokemon.find({}, { board: 0 });
+    return Pokemon.find({}, { fields: { board: 1 } });
   });
   Meteor.publish("collect", function Publish() {
     return Collect.find({ _id: this.userId });
   });
+}
+
+function flipBackTimeout(index) {
+  return Meteor.setTimeout(function flipBack() {
+    //flip it back after 5 seconds
+    const board = Pokemon.findOne({}).board;
+    if (!board[index].match) {
+      const key = "board." + index.toString();
+      Pokemon.update(
+        {},
+        {
+          $set: {
+            [key]: {match: false}
+          }
+        }
+      );
+    }
+  }, 5000);
 }
 
 Meteor.methods({
@@ -241,18 +245,26 @@ Meteor.methods({
     }
     check(index, Number);
 
-    let key = "board." + index.toString() + ".ownerId";
+    let key = "board." + index.toString();
     //console.log(key);
-    let count = Pokemon.findOne({}).count;
-    let board = Pokemon.findOne({}).board;
-    if (board[index].ownerId !== "") {
+    const pokedb = Pokemon.findOne({});
+    let count = pokedb.count;
+    let game = pokedb.game;
+    let board = pokedb.board;
+
+    // Lock this card
+    if (board[index].ownerId !== undefined) {
       return;
     }
+    let toReveal = game[index];
+    toReveal.ownerId = this.userId;
+    toReveal.match = board[index].match;
+
     Pokemon.update(
       {},
       {
         $set: {
-          [key]: this.userId
+          [key]: toReveal
         }
       }
     );
@@ -261,7 +273,7 @@ Meteor.methods({
     for (let i = 0; i < board.length; i++) {
       if (
         /*board[i].id == board[index].id &&*/
-        board[i].ownerId == this.userId &&
+        board[i].ownerId === this.userId &&
         !board[i].match &&
         i != index
       ) {
@@ -272,61 +284,51 @@ Meteor.methods({
     if (foundSelect.length === 2) {
       foundSelect.forEach(i => {
         Meteor.clearTimeout(timeouts[i]);
-        key = "board." + i.toString() + ".ownerId";
+        key = "board." + i.toString();
         Pokemon.update(
           {},
           {
             $set: {
-              [key]: ""
+              [key]: { match: false }
             }
           }
         );
       });
-      timeouts[index] = Meteor.setTimeout(function flipBack() {
-        //flip it back after 5 seconds
-        board = Pokemon.findOne({}).board;
-        if (!board[index].match) {
-          key = "board." + index.toString() + ".ownerId";
-          Pokemon.update(
-            {},
-            {
-              $set: {
-                [key]: ""
-              }
-            }
-          );
-        }
-      }, 5000);
+      timeouts[index] = flipBackTimeout(index);
     } else if (foundSelect.length === 1) {
       const i = foundSelect[0];
       //find two match
-      if (board[i].id == board[index].id) {
-        key = "board." + i.toString() + ".match";
+      if (game[i].id === game[index].id) {
 
+        key = "board." + i.toString();
+        let matchCard = game[i];
+        matchCard.match = true;
+        matchCard.ownerId = this.userId;
+        
         Pokemon.update(
           {},
           {
             $set: {
-              [key]: true
+              [key]: matchCard
             }
           }
         );
-        key = "board." + index.toString() + ".match";
+        key = "board." + index.toString();
 
         Pokemon.update(
           {},
           {
             $set: {
-              [key]: true
+              [key]: matchCard
             }
           }
         );
         let owner = Collect.findOne({ _id: this.userId });
-        if (owner == undefined) {
+        if (owner === undefined) {
           Collect.insert({ _id: this.userId, collect: [] });
         }
         let collect = Collect.findOne({ _id: this.userId }).collect;
-        collect.push(board[i]);
+        collect.push(game[i]);
         Collect.update({ _id: this.userId }, { collect: collect });
 
         count += 2;
@@ -343,54 +345,12 @@ Meteor.methods({
         if (i in timeouts) {
           Meteor.clearTimeout(timeouts[i]);
         }
-        timeouts[i] = Meteor.setTimeout(function flipBack() {
-          //flip it back after 5 seconds
-          board = Pokemon.findOne({}).board;
-          if (!board[i].match) {
-            key = "board." + i.toString() + ".ownerId";
-            Pokemon.update(
-              {},
-              {
-                $set: {
-                  [key]: ""
-                }
-              }
-            );
-          }
-        }, 5000);
-        timeouts[index] = Meteor.setTimeout(function flipBack() {
-          //flip it back after 5 seconds
-          board = Pokemon.findOne({}).board;
-          if (!board[index].match) {
-            key = "board." + index.toString() + ".ownerId";
-            Pokemon.update(
-              {},
-              {
-                $set: {
-                  [key]: ""
-                }
-              }
-            );
-          }
-        }, 5000);
+        timeouts[i] = flipBackTimeout(i);
+        timeouts[index] = flipBackTimeout(index);
       }
     } else {
       // no flip yet
-      timeouts[index] = Meteor.setTimeout(function flipBack() {
-        //flip it back after 5 seconds
-        board = Pokemon.findOne({}).board;
-        if (!board[index].match) {
-          key = "board." + index.toString() + ".ownerId";
-          Pokemon.update(
-            {},
-            {
-              $set: {
-                [key]: ""
-              }
-            }
-          );
-        }
-      }, 5000);
+      timeouts[index] = flipBackTimeout(index);
     }
 
     if (count == total) {

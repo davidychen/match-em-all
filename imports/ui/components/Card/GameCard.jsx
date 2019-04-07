@@ -35,10 +35,22 @@ const style = () => ({
       "linear-gradient(" + primaryColor[0] + " 50%, " + whiteColor + " 50%)",
     borderRadius: "30px",
     display: "flex",
-    "&:hover,&:focus $cardBackDivider": {
-      height: "2.4rem"
+    "&:hover, &:focus": {
+      transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
+      cursor: "pointer",
+      boxShadow:
+        "0 16px 38px -12px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.56), 0 4px 25px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.12), 0 8px 10px -5px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.2)",
+      "& $cardBackDivider": {
+        height: "2.4rem"
+      }
     },
-    "&:hover,&:focus": {
+/*    "&:hover, &:focus": {
       transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
       cursor: "pointer",
       boxShadow:
@@ -49,7 +61,7 @@ const style = () => ({
         ", 0.12), 0 8px 10px -5px rgba(" +
         hexToRgb(blackColor) +
         ", 0.2)"
-    }
+    }*/
   },
   cardBackDivider: {
     height: "1.4rem",
@@ -145,25 +157,62 @@ const style = () => ({
 });
 
 class GameCard extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.back;
     this.loaded = false;
+
+    this.state = {
+      prevBack: this.props.back,
+      prevLink: this.getLink(this.props.name)
+    };
   }
-  compare() {
-    if (!this.loaded) {
-      this.back = this.props.back;
-      this.loaded = true;
-    } else {
-      this.back = this.props.back;
-      this.selected = true;
+  getLink(name) {
+    let tempName = name;
+    switch (name) {
+      case "nidoran-m":
+        tempName = "nidoranm";
+        break;
+      case "nidoran-f":
+        tempName = "nidoranf";
+        break;
+    }
+    const imgLink = name
+      ? "http://pokestadium.com/sprites/xy/" + tempName + ".gif"
+      : "/loader.gif";
+
+    return imgLink;
+  }
+
+  updateState() {
+    clearTimeout(this.timer);
+    if (this.state.prevBack !== this.props.back) {
+      if (this.props.back) {
+        this.timer = setTimeout(() => {
+          this.setState({
+            prevBack: this.props.back,
+            prevLink: this.getLink(this.props.name)
+          });
+        }, 1000);
+      } else {
+        this.setState({
+          prevBack: this.props.back,
+          prevLink: this.getLink(this.props.name)
+        });
+      }
     }
   }
+
   componentDidMount() {
-    if (this.props.back) {
-      this.imgLink = "/question-mark.png";
-    }
+    this.updateState();
   }
+  componentDidUpdate() {
+    this.updateState();
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
   render() {
     const {
       classes,
@@ -182,18 +231,21 @@ class GameCard extends React.Component {
       [classes.cardMatched]: matched,
       [classes.cardMatchedOwn]: matchedOwn
     });
-    let tempName = name;
-    switch (name) {
-      case "nidoran-m":
-        tempName = "nidoranm";
-        break;
-      case "nidoran-f":
-        tempName = "nidoranf";
-        break;
-    }
-    this.imgLink = tempName
-      ? "http://pokestadium.com/sprites/xy/" + tempName + ".gif"
-      : "/question-mark.png";
+
+    const imgLink =
+      !this.state.prevBack && back ? this.state.prevLink : this.getLink(name);
+    if (idx === 1)
+      console.log(
+        "flip BACK: ",
+        !this.state.prevBack && back,
+        "prev: ",
+        this.state.prevLink,
+        "props: ",
+        name,
+        "now: ",
+        imgLink
+      );
+
     return (
       <div style={{ marginTop: "30px", marginBottom: "30px" }}>
         <ReactCardFlip isFlipped={back}>
@@ -210,8 +262,8 @@ class GameCard extends React.Component {
             <div className={classes.imageSquare}>
               <img
                 className={classes.sprite}
-                src={this.imgLink}
-                alt={tempName ? tempName : "guess " + idx}
+                src={imgLink}
+                alt={name ? name : "guess " + idx}
               />
               {star && (
                 <div className={classes.star}>
