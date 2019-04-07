@@ -81,6 +81,9 @@ const dashboardStyle = {
       marginBottom: "0px",
       marginTop: "0px"
     }
+  },
+  gamePadding: {
+    padding: "0 30px"
   }
 };
 

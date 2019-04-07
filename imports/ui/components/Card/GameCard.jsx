@@ -20,7 +20,7 @@ import {
 
 // core components
 import Card from "../../components/Card/Card.jsx";
-const style = () => ({
+const style = theme => ({
   cardFront: {
     //transform: "rotateY(180deg)",
     //backfaceVisibility: "visible",
@@ -33,7 +33,7 @@ const style = () => ({
     paddingBottom: "100%",
     background:
       "linear-gradient(" + primaryColor[0] + " 50%, " + whiteColor + " 50%)",
-    borderRadius: "30px",
+    borderRadius: "50%",
     display: "flex",
     "&:hover, &:focus": {
       transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
@@ -47,10 +47,10 @@ const style = () => ({
         hexToRgb(blackColor) +
         ", 0.2)",
       "& $cardBackDivider": {
-        height: "2.4rem"
+        height: "25%"
       }
-    },
-/*    "&:hover, &:focus": {
+    }
+    /*"&:hover, &:focus": {
       transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
       cursor: "pointer",
       boxShadow:
@@ -64,8 +64,8 @@ const style = () => ({
     }*/
   },
   cardBackDivider: {
-    height: "1.4rem",
-    width: "100%",
+    height: "10%",
+    width: "120%",
     backgroundColor: grayColor[6],
     transition: "width 0.3s 0.1s ease, height 0.3s 0.3s ease",
     position: "absolute",
@@ -74,10 +74,13 @@ const style = () => ({
     transform: "translate(-50%, -50%)"
   },
   cardBackCircle: {
-    width: "50%",
-    height: "50%",
+    width: "40%",
+    height: "40%",
     borderRadius: "2000rem",
-    border: "0.6rem solid " + grayColor[6],
+    border: "1vw solid " + grayColor[6],
+    [theme.breakpoints.down("sm")]: {
+      border: "2vw solid " + grayColor[6]
+    },
     backgroundColor: whiteColor,
     position: "absolute",
     top: "50%",
@@ -234,17 +237,6 @@ class GameCard extends React.Component {
 
     const imgLink =
       !this.state.prevBack && back ? this.state.prevLink : this.getLink(name);
-    if (idx === 1)
-      console.log(
-        "flip BACK: ",
-        !this.state.prevBack && back,
-        "prev: ",
-        this.state.prevLink,
-        "props: ",
-        name,
-        "now: ",
-        imgLink
-      );
 
     return (
       <div style={{ marginTop: "30px", marginBottom: "30px" }}>

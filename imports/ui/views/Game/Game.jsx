@@ -87,7 +87,7 @@ class Game extends React.Component {
     this.setState({ flip: !this.state.flip });
     Meteor.call("pokemon.flip", i);
   }
-  renderCards() {
+  renderCards(classes) {
     if (this.props.pokemon) {
       const cards = this.props.pokemon.board.map((card, idx) => {
         return (
@@ -105,13 +105,13 @@ class Game extends React.Component {
           </GridItem>
         );
       });
-      return <GridContainer>{cards}</GridContainer>;
+      return <GridContainer className={classes.gamePadding}>{cards}</GridContainer>;
     }
   }
 
   render() {
     const { classes } = this.props;
-    return <div>{this.renderCards()}</div>;
+    return <div>{this.renderCards(classes)}</div>;
   }
 }
 

@@ -38,7 +38,7 @@ const cardStyle = {
     // transformStyle: "preserve-3d",
     marginTop: "0",
     marginBottom: "0",
-    borderRadius: "30px"
+    borderRadius: "50%"
   },
   /*cardBack: {
     "&:hover": {
