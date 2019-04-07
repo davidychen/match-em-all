@@ -506,10 +506,10 @@ class Sidebar extends React.Component {
       });
     var brand = (
       <div className={logoClasses}>
-        <NavLink to={"/admin/game"} className={logoMini}>
+        <NavLink to={"/public/landing-page"} className={logoMini}>
           <img src={logo} alt="logo" className={classes.img} />
         </NavLink>
-        <NavLink to={"/admin/game"} className={logoNormal}>
+        <NavLink to={"/public/landing-page"} className={logoNormal}>
           {logoText}
         </NavLink>
       </div>

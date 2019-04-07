@@ -84,6 +84,9 @@ const dashboardStyle = {
   },
   gamePadding: {
     padding: "0 30px"
+  },
+  loading: {
+    
   }
 };
 

@@ -6,7 +6,7 @@ import axios from "axios";
 export const Pokemon = new Mongo.Collection("pokemon");
 export const Collect = new Mongo.Collection("collect");
 
-const total = 36;
+const total = 4;
 const timeouts = [];
 const legendary = new Set([
   144,
@@ -141,9 +141,11 @@ function getOne(count, prev, callback) {
                   resEvolve.data.chain,
                   resSpecies.data.name
                 );
+                const name_en = resSpecies.data.names.filter(name => name.language.name === "en")[0].name;
                 const pokeInfo = {
                   id: resSpecies.data.id,
                   name: resSpecies.data.name,
+                  name_en: name_en,
                   ownerId: "",
                   match: false,
                   color: resSpecies.data.color.name,
@@ -207,7 +209,7 @@ if (Meteor.isServer) {
   if (Pokemon.find({}) == undefined || Pokemon.find({}).count() == 0) {
     Pokemon.insert({ count: 0, game: [], board: [] });
   }
-  init();
+  init(); 
   Meteor.publish("pokemon", function Publish() {
     return Pokemon.find({}, { fields: { board: 1 } });
   });
@@ -304,7 +306,9 @@ Meteor.methods({
         let matchCard = game[i];
         matchCard.match = true;
         matchCard.ownerId = this.userId;
-        
+        matchCard.matchAt = new Date();
+        matchCard.ownerName = Meteor.user().username;
+
         Pokemon.update(
           {},
           {

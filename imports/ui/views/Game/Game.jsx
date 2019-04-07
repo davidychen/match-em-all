@@ -15,6 +15,9 @@ import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
 // import ContentCopy from "@material-ui/icons/ContentCopy";
+import Chat from "@material-ui/icons/Chat";
+import CheckCircle from "@material-ui/icons/CheckCircle";
+import Help from "@material-ui/icons/Help";
 import Store from "@material-ui/icons/Store";
 // import InfoOutline from "@material-ui/icons/InfoOutline";
 import Warning from "@material-ui/icons/Warning";
@@ -43,6 +46,8 @@ import CardHeader from "../../components/Card/CardHeader.jsx";
 import CardIcon from "../../components/Card/CardIcon.jsx";
 import CardBody from "../../components/Card/CardBody.jsx";
 import CardFooter from "../../components/Card/CardFooter.jsx";
+
+import Loader from "react-loader-spinner";
 
 import {
   dailySalesChart,
@@ -87,6 +92,127 @@ class Game extends React.Component {
     this.setState({ flip: !this.state.flip });
     Meteor.call("pokemon.flip", i);
   }
+  appendName(name, legendary) {
+    return legendary ? "&#9733; " + name + "&#9733;" : name;
+  }
+
+  calcInfo(board) {
+    let userCount = 0;
+    let nonMatchCount = 0;
+    let totalCount = 0;
+    let yourLastAt = undefined;
+    let yourLast = undefined;
+    let lastMatchAt = undefined;
+    let lastMatchUser = undefined;
+    let lastMatch = undefined;
+
+    board.map(card => {
+      if (card.match) {
+        if (card.ownerId === this.props.user._id) {
+          userCount++;
+          if (yourLast === undefined) {
+            yourLast = this.appendName(card.name_en, card.legendary);
+            yourLastAt = card.matchAt;
+          } else {
+            if (card.matchAt > yourLastAt) {
+              yourLast = this.appendName(card.name_en, card.legendary);
+              yourLastAt = card.matchAt;
+            }
+          }
+        }
+        if (lastMatch === undefined) {
+          lastMatch = this.appendName(card.name_en, card.legendary);
+          lastMatchAt = card.matchAt;
+          lastMatchUser =
+            card.ownerId === this.props.user._id ? "You" : card.ownerName;
+        } else {
+          if (card.matchAt > lastMatchAt) {
+            lastMatch = this.appendName(card.name_en, card.legendary);
+            lastMatchAt = card.matchAt;
+            lastMatchUser =
+              card.ownerId === this.props.user._id ? "You" : card.ownerName;
+          }
+        }
+      }
+      if (!card.match) {
+        nonMatchCount++;
+      }
+      totalCount++;
+    });
+    this.userCount = Math.floor(userCount / 2);
+    this.nonMatchCount = Math.floor(nonMatchCount / 2);
+    this.totalCount = Math.floor(totalCount / 2);
+    this.yourLastAt = yourLastAt;
+    this.yourLast = yourLast;
+    this.lastMatchAt = lastMatchAt;
+    this.lastMatchUser = lastMatchUser;
+    this.lastMatch = lastMatch;
+  }
+
+  renderLoading(classes) {
+    if (!this.props.pokemon) {
+      return (
+        <div className={classes.loading} style={{ color: "rgba(0,0,0,0.5)" }}>
+          Loading...
+        </div>
+      );
+    }
+  }
+
+  renderInfoBox(classes) {
+    if (this.props.pokemon) {
+      this.calcInfo(this.props.pokemon.board);
+      return (
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={6} lg={3}>
+            <Card>
+              <CardHeader color="success" stats icon>
+                <CardIcon color="success">
+                  <CheckCircle />
+                </CardIcon>
+                <p className={classes.cardCategory}>You matched</p>
+                <h3 className={classes.cardTitle}>
+                  {"" + this.userCount + "/" + this.totalCount}
+                </h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <LocalOffer />
+                  {this.yourLast
+                    ? "You just matched " + this.yourLast + "!"
+                    : "Start your match now! "}
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={6} lg={3}>
+            <Card>
+              <CardHeader color="warning" stats icon>
+                <CardIcon color="warning">
+                  <Help />
+                </CardIcon>
+                <p className={classes.cardCategory}>Unmatched</p>
+                <h3 className={classes.cardTitle}>
+                  {"" + this.nonMatchCount + "/" + this.totalCount}
+                </h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <Chat />
+                  {this.lastMatch
+                    ? this.lastMatchUser +
+                      " just matched " +
+                      this.lastMatch +
+                      "!"
+                    : "You can be the first to match! "}
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      );
+    }
+  }
   renderCards(classes) {
     if (this.props.pokemon) {
       const cards = this.props.pokemon.board.map((card, idx) => {
@@ -105,13 +231,21 @@ class Game extends React.Component {
           </GridItem>
         );
       });
-      return <GridContainer className={classes.gamePadding}>{cards}</GridContainer>;
+      return (
+        <GridContainer className={classes.gamePadding}>{cards}</GridContainer>
+      );
     }
   }
 
   render() {
     const { classes } = this.props;
-    return <div>{this.renderCards(classes)}</div>;
+    return (
+      <div>
+        {this.renderLoading(classes)}
+        {this.renderInfoBox(classes)}
+        {this.renderCards(classes)}
+      </div>
+    );
   }
 }
 
