@@ -86,7 +86,7 @@ const dashboardStyle = {
     padding: "0 30px"
   },
   loading: {
-    
+    textAlign: "center"
   }
 };
 

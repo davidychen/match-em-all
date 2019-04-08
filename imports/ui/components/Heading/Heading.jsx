@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import headingStyle from "assets/jss/material-dashboard-pro-react/components/headingStyle.jsx";
+import headingStyle from "../../assets/jss/material-dashboard-pro-react/components/headingStyle.jsx";
 
 function Heading({ ...props }) {
   const { textAlign, category, title, classes } = props;
