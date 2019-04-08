@@ -4,7 +4,8 @@ import {
   cardTitle,
   grayColor,
   whiteColor,
-  primaryColor
+  primaryColor,
+  boxShadow
 } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 import hoverCardStyle from "../../../../assets/jss/material-dashboard-pro-react/hoverCardStyle.jsx";
@@ -87,7 +88,24 @@ const dashboardStyle = {
   },
   loading: {
     textAlign: "center"
-  }
+  },
+  photo: {
+    transition: "all 300ms linear",
+    width: "34px",
+    height: "34px",
+    overflow: "hidden",
+    float: "left",
+    zIndex: "5",
+    marginRight: "11px",
+    borderRadius: "50%",
+    marginLeft: "23px",
+    ...boxShadow
+  },
+  avatarImg: {
+    width: "100%",
+    verticalAlign: "middle",
+    border: "0"
+  },
 };
 
 export default dashboardStyle;

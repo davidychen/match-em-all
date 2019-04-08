@@ -3,8 +3,11 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import axios from "axios";
 
-export const Game = new Mongo.Collection("game");
+import { Collections } from "./collections.js";
+
 export const Board = new Mongo.Collection("board");
+/*export const Players = new Mongo.Collection("players");*/
+
 export const Daily = new Mongo.Collection("daily");
 export const Types = new Mongo.Collection("types");
 export const Rarity = new Mongo.Collection("rarity");
@@ -191,28 +194,9 @@ async function getByRarity(n, callback) {
   }
 }
 
-/*async function init() {
-  if (Meteor.isServer) {
-    let matrix = [];
-    Pokemon.update({}, { game: [], board: [] });
-
-    getByRarity(total, n => {
-      matrix.push(n);
-      matrix.push(n);
-      if (matrix.length == total) {
-        // console.log(matrix);
-        matrix = shuffle(matrix);
-        const board = Array(total).fill({ match: false });
-        Pokemon.update({}, { game: matrix, board: board });
-      }
-    });
-  } else {
-    throw new Meteor.Error("not-server");
-  }
-}*/
 async function init() {
   if (Meteor.isServer) {
-    Board.remove({}, () => {
+    Board.remove({ index: { $exists: true } }, () => {
       gamePokes = [];
       getByRarity(total, n => {
         gamePokes.push(n);
@@ -230,48 +214,33 @@ async function init() {
     throw new Meteor.Error("not-server");
   }
 }
+
 if (Meteor.isServer) {
   init();
-  Meteor.publish("board", function Publish() {
+  Meteor.publish("board", function boardPublish() {
     return Board.find({});
   });
+  Meteor.publish("players", function playerPublish() {
+    return Meteor.users.find(
+      { "status.online": true },
+      {
+        fields: {
+          username: true,
+          "profile.avatarId": true,
+          "status.lastLogin.date": true
+        },
+        sort: { "status.lastLogin.date": 1 }
+      }
+    );
+  });
 }
-/*if (Meteor.isServer) {
-  if (Pokemon.find({}) == undefined || Pokemon.find({}).count() == 0) {
-    Pokemon.insert({ game: [], board: [] });
-  }
-  init();
-  Meteor.publish("pokemon", function Publish() {
-    return Pokemon.find({}, { fields: { board: 1 } });
-  });
-  Meteor.publish("collect", function Publish() {
-    return Collect.find({ _id: this.userId });
-  });
-}*/
 
-/*function flipBackTimeout(index) {
-  return Meteor.setTimeout(function flipBack() {
-    //flip it back after 5 seconds
-    const board = Pokemon.findOne({}).board;
-    if (!board[index].match) {
-      const key = "board." + index.toString();
-      Pokemon.update(
-        {},
-        {
-          $set: {
-            [key]: { match: false }
-          }
-        }
-      );
-    }
-  }, 5000);
-}*/
 function flipBackTimeout(index, userId) {
   return Meteor.setTimeout(function flipBack() {
     //flip it back after 5 seconds
     Board.update(
       { index: index, ownerId: userId, match: false },
-      { $unset: { pokemon: "", ownerId: "" } }
+      { $unset: { pokemon: 1, ownerId: 1 } }
     );
   }, 5000);
 }
@@ -287,7 +256,7 @@ Meteor.methods({
         throw new Meteor.Error("wrong-index");
       }
       const docs = Board.update(
-        { index: index, ownerId: null, match: false },
+        { index: index, ownerId: { $exists: false }, match: false },
         { $set: { ownerId: this.userId, pokemon: gamePokes[index] } }
       );
       if (docs < 1) {
@@ -305,7 +274,7 @@ Meteor.methods({
           Meteor.clearTimeout(timeouts[i]);
           Board.update(
             { index: i, ownerId: this.userId, match: false },
-            { $unset: { ownerId: "", pokemon: "" } }
+            { $unset: { ownerId: 1, pokemon: 1 } }
           );
         });
         timeouts[index] = flipBackTimeout(index, this.userId);
@@ -351,127 +320,28 @@ Meteor.methods({
       }
     }
   }
-});
-
-/*Meteor.methods({
-  "pokemon.flip"(index) {
+  /*"game.login"() {
     if (!this.userId) {
       throw new Meteor.Error("not-authorized");
     }
-    check(index, Number);
-    if (index >= total || index < 0 || Math.floor(index) !== index) {
-      throw new Meteor.Error("index wrong");
-    }
-
-    const indexStr = index.toString;
-    const boardStr = "board." + indexStr;
-
-    //console.log(key);
-    const pokedb = Pokemon.findOne({});
-    let game = pokedb.game;
-    let board = pokedb.board;
-
-    // Lock this card
-    if (board[index].ownerId !== undefined) {
-      return;
-    }
-
-    let toReveal = game[index];
-    toReveal.ownerId = this.userId;
-    toReveal.match = board[index].match;
-
-    Pokemon.update(
-      { [boardStr + ".ownerId"]: undefined },
+    console.log("IN");
+    const avatarId = Meteor.user().profile
+      ? Meteor.user().profile.avatarId
+      : undefined;
+    Players.upsert(
       {
-        $set: {
-          [boardStr]: toReveal
-        }
+        userId: this.userId,
+        username: Meteor.user().username,
+        avatarId: avatarId
       },
-      {},
-      () => {}
+      { $set: { when: new Date() } }
     );
-    // Find a matched card
-    let foundSelect = [];
-    for (let i = 0; i < board.length; i++) {
-      if (
-        
-        board[i].ownerId === this.userId &&
-        !board[i].match &&
-        i != index
-      ) {
-        foundSelect.push(i);
-      }
+  },
+  "game.logout"() {
+    if (!this.userId) {
+      throw new Meteor.Error("not-authorized");
     }
-    // Already 2 selected
-    if (foundSelect.length === 2) {
-      foundSelect.forEach(i => {
-        Meteor.clearTimeout(timeouts[i]);
-        key = "board." + i.toString();
-        Pokemon.update(
-          {},
-          {
-            $set: {
-              [key]: { match: false }
-            }
-          }
-        );
-      });
-      timeouts[index] = flipBackTimeout(index);
-    } else if (foundSelect.length === 1) {
-      const i = foundSelect[0];
-      //find two match
-      if (game[i].id === game[index].id) {
-        key = "board." + i.toString();
-        let matchCard = game[i];
-        matchCard.match = true;
-        matchCard.ownerId = this.userId;
-        matchCard.matchAt = new Date();
-        matchCard.ownerName = Meteor.user().username;
-
-        Pokemon.update(
-          {},
-          {
-            $set: {
-              [key]: matchCard
-            }
-          }
-        );
-        key = "board." + index.toString();
-
-        Pokemon.update(
-          {},
-          {
-            $set: {
-              [key]: matchCard
-            }
-          }
-        );
-        let owner = Collect.findOne({ _id: this.userId });
-        if (owner === undefined) {
-          Collect.insert({ _id: this.userId, collect: [] });
-        }
-        let collect = Collect.findOne({ _id: this.userId }).collect;
-        collect.push(game[i]);
-        Collect.update({ _id: this.userId }, { collect: collect });
-        const count = game.filter(poke => poke.match).length;
-        console.log(count);
-        if (count === total) {
-          Meteor.setTimeout(function restart() {
-            init();
-          }, 5000);
-        }
-      } else {
-        // Not Match
-        if (i in timeouts) {
-          Meteor.clearTimeout(timeouts[i]);
-        }
-        timeouts[i] = flipBackTimeout(i);
-        timeouts[index] = flipBackTimeout(index);
-      }
-    } else {
-      // no flip yet
-      timeouts[index] = flipBackTimeout(index);
-    }
-  }
+    console.log("OUT");
+    Players.remove({ userId: this.userId, username: Meteor.user().username });
+  }*/
 });
-*/

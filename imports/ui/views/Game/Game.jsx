@@ -15,9 +15,11 @@ import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
 // import ContentCopy from "@material-ui/icons/ContentCopy";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import Chat from "@material-ui/icons/Chat";
 import CheckCircle from "@material-ui/icons/CheckCircle";
 import Help from "@material-ui/icons/Help";
+import List from "@material-ui/icons/List";
 import Store from "@material-ui/icons/Store";
 // import InfoOutline from "@material-ui/icons/InfoOutline";
 import Warning from "@material-ui/icons/Warning";
@@ -162,6 +164,39 @@ class Game extends React.Component {
     this.lastMatch = lastMatch;
   }
 
+  renderAvatars(classes) {
+    if (this.props.players) {
+      const avatars = this.props.players
+        .sort((a, b) => a.status.lastLogin.date - b.status.lastLogin.date)
+        .map((player, idx) => {
+          return (
+            <Tooltip
+              id="tooltip-top"
+              title={player.username}
+              placement="bottom"
+              classes={{ tooltip: classes.tooltip }}
+              key={idx}
+            >
+              <div className={classes.photo}>
+                <img
+                  className={classes.avatarImg}
+                  src={
+                    player.profile && player.profile.avatarId
+                      ? "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+                        player.profile.avatarId +
+                        ".png"
+                      : "/default-avatar.png"
+                  }
+                  alt={"avatar " + player.username}
+                />
+              </div>
+            </Tooltip>
+          );
+        });
+      return <div>{avatars}</div>;
+    }
+  }
+
   renderLoading(classes) {
     if (!this.props.board || this.props.board.length === 0) {
       return (
@@ -238,6 +273,24 @@ class Game extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
+          <GridItem xs={12} sm={12} md={12} lg={12}>
+            <Card>
+              <CardHeader color="info" stats icon>
+                <CardIcon color="info">
+                  <AccountCircle />
+                </CardIcon>
+                <p className={classes.cardCategory}>Players</p>
+                <h3 className={classes.cardTitle}>
+                  {this.props.players.length}
+                </h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  {this.renderAvatars(classes)}
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
         </GridContainer>
       );
     }
@@ -281,15 +334,19 @@ class Game extends React.Component {
 Game.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object,
-  board: PropTypes.arrayOf(PropTypes.object)
+  board: PropTypes.arrayOf(PropTypes.object),
+  players: PropTypes.arrayOf(PropTypes.object),
+  avatars: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default withTracker(() => {
   const user = Meteor.user();
-  const handle = Meteor.subscribe("board");
+  const handleBoard = Meteor.subscribe("board");
+  const handlePlayer = Meteor.subscribe("players");
   return {
     board: Board.find({}).fetch(),
-    ready: handle.ready(),
+    players: Meteor.users.find({}).fetch(),
+    ready: handleBoard.ready() && handlePlayer.ready(),
     user: user
   };
 })(withStyles(gameStyle)(Game));
