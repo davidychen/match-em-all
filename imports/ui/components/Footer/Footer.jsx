@@ -38,14 +38,14 @@ function Footer({ ...props }) {
         </div>
         <p className={classes.right}>
           &copy; {1900 + new Date().getYear()}{" "}
-          <a href="http://davidychen.com/" className={anchor}>
+          <a href="http://davidychen.com/" rel="noopener noreferrer" target="_blank" className={anchor}>
             {"David Chen"}
           </a>
           {" and "}
-          <a href="https://simonwux.github.io/" className={anchor}>
+          <a href="https://simonwux.github.io/" rel="noopener noreferrer" target="_blank" className={anchor}>
             {"Simon Wu"}
           </a>
-          {", made with love for a better web"}
+          {", made with love for Pokemon"}
         </p>
       </div>
     </footer>

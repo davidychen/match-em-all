@@ -23,6 +23,7 @@ function CardBody({ ...props }) {
     color,
     profile,
     calendar,
+    avatar,
     ...rest
   } = props;
   const cardBodyClasses = classNames({
@@ -32,6 +33,7 @@ function CardBody({ ...props }) {
     [classes.cardBodyFormHorizontal]: formHorizontal,
     [classes.cardPricing]: pricing,
     [classes.cardSignup]: signup,
+    [classes.cardBodyAvatar]: avatar,
     [classes.cardBodyColor]: color,
     [classes.cardBodyProfile]: profile,
     [classes.cardBodyCalendar]: calendar,
@@ -54,7 +56,8 @@ CardBody.propTypes = {
   signup: PropTypes.bool,
   color: PropTypes.bool,
   profile: PropTypes.bool,
-  calendar: PropTypes.bool
+  calendar: PropTypes.bool,
+  avatar: PropTypes.bool
 };
 
 export default withStyles(cardBodyStyle)(CardBody);

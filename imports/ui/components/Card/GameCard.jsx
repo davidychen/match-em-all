@@ -78,9 +78,9 @@ const style = theme => ({
     height: "40%",
     borderRadius: "2000rem",
     border: "1vw solid " + grayColor[6],
-    [theme.breakpoints.down("sm")]: {
+    /* [theme.breakpoints.down("sm")]: {
       border: "2vw solid " + grayColor[6]
-    },
+    },*/
     backgroundColor: whiteColor,
     position: "absolute",
     top: "50%",
@@ -108,7 +108,8 @@ const style = theme => ({
     height: "20%",
     top: "10%",
     right: "10%",
-    overflow: "auto",
+    /*overflow: "auto",*/
+    zIndex: "3",
     "& img": {
       maxWidth: "100%",
       maxHeight: "100%"

@@ -10,6 +10,9 @@ const cardBodyStyle = {
     WebkitBoxFlex: "1",
     position: "relative"
   },
+  cardBodyAvatar: {
+    padding: "0 20px",
+  },
   cardBodyBackground: {
     position: "relative",
     zIndex: "2",

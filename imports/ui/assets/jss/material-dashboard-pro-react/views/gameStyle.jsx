@@ -5,12 +5,14 @@ import {
   grayColor,
   whiteColor,
   primaryColor,
+  dangerColor,
   boxShadow
 } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 import hoverCardStyle from "../../../../assets/jss/material-dashboard-pro-react/hoverCardStyle.jsx";
+import modalStyle from "../../../../assets/jss/material-dashboard-pro-react/modalStyle.jsx";
 
-const dashboardStyle = {
+const dashboardStyle = theme => ({
   ...hoverCardStyle,
   tooltip,
   cardTitle: {
@@ -60,6 +62,12 @@ const dashboardStyle = {
       marginRight: "3px"
     }
   },
+  avatar: {
+    width: "100%",
+    overflowX: "scroll",
+    paddingTop: "20px",
+    paddingBottom: "20px",
+  },
   productStats: {
     paddingTop: "7px",
     paddingBottom: "7px",
@@ -89,6 +97,22 @@ const dashboardStyle = {
   loading: {
     textAlign: "center"
   },
+  avatarNoti: {
+    position: "relative",
+  },
+  user: {
+    /*paddingBottom: "20px",*/
+    position: "relative",
+    "&:after": {
+      content: '""',
+      position: "absolute",
+      bottom: "0",
+      right: "15px",
+      height: "1px",
+      width: "calc(100% - 30px)",
+      backgroundColor: "hsla(0,0%,100%,.3)"
+    }
+  },
   photo: {
     transition: "all 300ms linear",
     width: "34px",
@@ -106,6 +130,43 @@ const dashboardStyle = {
     verticalAlign: "middle",
     border: "0"
   },
-};
+  notifications: {
+    zIndex: "4",
+    position: "absolute",
+    top: "0px",
+    border: "1px solid " + whiteColor,
+    right: "5px",
+    fontSize: "9px",
+    background: dangerColor[0],
+    color: whiteColor,
+    minWidth: "16px",
+    height: "16px",
+    borderRadius: "10px",
+    textAlign: "center",
+    lineHeight: "14px",
+    verticalAlign: "middle",
+    display: "block"
+  },
+  cardAvatar: {
+    display: "inline"
+    /*text-align: center*/
+  },
+  center: {
+    textAlign: "center"
+  },
+  right: {
+    textAlign: "right"
+  },
+  left: {
+    textAlign: "left"
+  },
+  marginRight: {
+    marginRight: "5px"
+  },
+  modalSectionTitle: {
+    marginTop: "30px"
+  },
+  ...modalStyle(theme)
+});
 
 export default dashboardStyle;

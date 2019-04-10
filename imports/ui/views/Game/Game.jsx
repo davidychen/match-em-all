@@ -2,22 +2,30 @@ import React from "react";
 import PropTypes from "prop-types";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
+import TimeAgo from "react-timeago";
 // react plugin for creating vector maps
 import { VectorMap } from "react-jvectormap";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
-import { Board } from "../../../api/pokemon.js";
+import { Board, MatchPlayers } from "../../../api/pokemon.js";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Tooltip from "@material-ui/core/Tooltip";
 import Icon from "@material-ui/core/Icon";
+import Slide from "@material-ui/core/Slide";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 
 // @material-ui/icons
 // import ContentCopy from "@material-ui/icons/ContentCopy";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Chat from "@material-ui/icons/Chat";
 import CheckCircle from "@material-ui/icons/CheckCircle";
+import Close from "@material-ui/icons/Close";
+import Favorite from "@material-ui/icons/Favorite";
 import Help from "@material-ui/icons/Help";
 import List from "@material-ui/icons/List";
 import Store from "@material-ui/icons/Store";
@@ -74,11 +82,16 @@ var mapData = {
   US: 2920
 };
 
+function Transition(props) {
+  return <Slide direction="down" {...props} />;
+}
+
 class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      flip: false
+      flip: false,
+      modal: false
     };
     this.onClick = this.onClick.bind(this);
   }
@@ -95,80 +108,51 @@ class Game extends React.Component {
     this.setState({ flip: !this.state.flip });
     Meteor.call("card.flip", i);
   }
-  appendName(name, legendary) {
-    return legendary ? "&#9733; " + name + "&#9733;" : name;
+
+  handleClickOpen() {
+    this.setState({ modal: true });
+  }
+  handleClose() {
+    this.setState({ modal: false });
   }
 
-  calcInfo(board) {
-    let userCount = 0;
-    let nonMatchCount = 0;
-    let totalCount = 0;
-    let yourLastAt = undefined;
-    let yourLast = undefined;
-    let lastMatchAt = undefined;
-    let lastMatchUser = undefined;
-    let lastMatch = undefined;
+  appendName(name, legendary) {
+    return legendary
+      ? String.fromCharCode(9733) + " " + name + " " + String.fromCharCode(9733)
+      : name;
+  }
 
-    board.map(card => {
-      if (card.match) {
-        if (card.ownerId === this.props.user._id) {
-          userCount++;
-          if (yourLast === undefined) {
-            yourLast = this.appendName(
-              card.pokemon.name_en,
-              card.pokemon.legendary
-            );
-            yourLastAt = card.matchAt;
-          } else {
-            if (card.matchAt > yourLastAt) {
-              yourLast = this.appendName(
-                card.pokemon.name_en,
-                card.pokemon.legendary
-              );
-              yourLastAt = card.matchAt;
-            }
-          }
-        }
-        if (lastMatch === undefined) {
-          lastMatch = this.appendName(
-            card.pokemon.name_en,
-            card.pokemon.legendary
-          );
-          lastMatchAt = card.matchAt;
-          lastMatchUser =
-            card.ownerId === this.props.user._id ? "You" : card.ownerName;
-        } else {
-          if (card.matchAt > lastMatchAt) {
-            lastMatch = this.appendName(
-              card.pokemon.name_en,
-              card.pokemon.legendary
-            );
-            lastMatchAt = card.matchAt;
-            lastMatchUser =
-              card.ownerId === this.props.user._id ? "You" : card.ownerName;
-          }
-        }
+  findCount(id) {
+    if (this.props.matchPlayers) {
+      const found = this.props.matchPlayers.find(el => el.ownerId === id);
+      if (found) return found.count;
+    }
+    return 0;
+  }
+
+  calcInfo() {
+    if (this.props.matchPlayers && this.props.user._id) {
+      const found = this.props.matchPlayers.find(
+        el => el.ownerId === this.props.user._id
+      );
+      if (found) {
+        this.count = found.count;
+        this.lastMatch = found.pokemon;
+        this.matchAt = <TimeAgo date={found.matchAt} />;
+        return;
       }
-      if (!card.match) {
-        nonMatchCount++;
-      }
-      totalCount++;
-    });
-    this.userCount = Math.floor(userCount / 2);
-    this.nonMatchCount = Math.floor(nonMatchCount / 2);
-    this.totalCount = Math.floor(totalCount / 2);
-    this.yourLastAt = yourLastAt;
-    this.yourLast = yourLast;
-    this.lastMatchAt = lastMatchAt;
-    this.lastMatchUser = lastMatchUser;
-    this.lastMatch = lastMatch;
+    }
+    this.count = 0;
+    this.lastMatch = "--";
+    this.matchAt = "--";
   }
 
   renderAvatars(classes) {
-    if (this.props.players) {
+    if (this.props.players && this.props.matchPlayers) {
       const avatars = this.props.players
         .sort((a, b) => a.status.lastLogin.date - b.status.lastLogin.date)
         .map((player, idx) => {
+          const count = this.findCount(player._id);
           return (
             <Tooltip
               id="tooltip-top"
@@ -177,23 +161,26 @@ class Game extends React.Component {
               classes={{ tooltip: classes.tooltip }}
               key={idx}
             >
-              <div className={classes.photo}>
-                <img
-                  className={classes.avatarImg}
-                  src={
-                    player.profile && player.profile.avatarId
-                      ? "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
-                        player.profile.avatarId +
-                        ".png"
-                      : "/default-avatar.png"
-                  }
-                  alt={"avatar " + player.username}
-                />
+              <div className={classes.user}>
+                <div className={classes.photo}>
+                  <img
+                    className={classes.avatarImg}
+                    src={
+                      player.profile && player.profile.avatarId
+                        ? "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+                          player.profile.avatarId +
+                          ".png"
+                        : "/default-avatar.png"
+                    }
+                    alt={"avatar " + player.username}
+                  />
+                </div>
+                <span className={classes.notifications}>{count}</span>
               </div>
             </Tooltip>
           );
         });
-      return <div>{avatars}</div>;
+      return <React.Fragment>{avatars}</React.Fragment>;
     }
   }
 
@@ -223,12 +210,30 @@ class Game extends React.Component {
     }
   }
 
-  renderInfoBox(classes) {
-    if (this.props.board && this.props.board.length > 0) {
-      this.calcInfo(this.props.board);
+  renderAvatarBox(classes) {
+    if (this.props.players && this.props.matchPlayers) {
       return (
         <GridContainer>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
+          <GridItem xs={12} sm={12} md={12} lg={12}>
+            <Card>
+              <CardBody avatar>
+                <div className={classes.stats + " " + classes.avatar}>
+                  {this.renderAvatars(classes)}
+                </div>
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      );
+    }
+  }
+
+  renderInfoBox(classes) {
+    if (this.props.board && this.props.matchPlayers && this.props.user) {
+      this.calcInfo();
+      return (
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={6} lg={6}>
             <Card>
               <CardHeader color="success" stats icon>
                 <CardIcon color="success">
@@ -236,57 +241,85 @@ class Game extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>You matched</p>
                 <h3 className={classes.cardTitle}>
-                  {"" + this.userCount + "/" + this.totalCount}
+                  {"" + this.count + "/" + this.props.board.length}
                 </h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
-                  <LocalOffer />
-                  {this.yourLast
-                    ? "You just matched " + this.yourLast + "!"
-                    : "Start your match now! "}
+                  <Help />
+                  <a href="#pablo" onClick={() => this.handleClickOpen()}>
+                    How to play
+                  </a>
                 </div>
+                <Dialog
+                  classes={{
+                    root: classes.center + " " + classes.modalRoot,
+                    paper: classes.modal
+                  }}
+                  open={this.state.modal}
+                  TransitionComponent={Transition}
+                  keepMounted
+                  onClose={() => this.handleClose()}
+                  aria-labelledby="classic-modal-slide-title"
+                  aria-describedby="classic-modal-slide-description"
+                >
+                  <DialogTitle
+                    id="classic-modal-slide-title"
+                    disableTypography
+                    className={classes.modalHeader}
+                  >
+                    <Button
+                      justIcon
+                      className={classes.modalCloseButton}
+                      key="close"
+                      aria-label="Close"
+                      color="transparent"
+                      onClick={() => this.handleClose("classicModal")}
+                    >
+                      <Close className={classes.modalClose} />
+                    </Button>
+                    <h4 className={classes.modalTitle}>How To Play</h4>
+                  </DialogTitle>
+                  <DialogContent
+                    id="classic-modal-slide-description"
+                    className={classes.modalBody}
+                  >
+                    <p>
+                      Turn over (by clicking them) any two cards and add them
+                      into your collection if the cards match. If two cards do
+                      not match, those cards are turned face down again.
+                    </p>
+                    <p>
+                      Blue cards are those selected by you, Green ones are matched by you, and red ones are matched by other players. 
+                    </p>
+                  </DialogContent>
+                  <DialogActions className={classes.modalFooter}>
+                    <Button
+                      onClick={() => this.handleClose("classicModal")}
+                      color="danger"
+                      simple
+                    >
+                      Close
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
+          <GridItem xs={12} sm={6} md={6} lg={6}>
             <Card>
               <CardHeader color="warning" stats icon>
                 <CardIcon color="warning">
-                  <Help />
+                  <Favorite />
                 </CardIcon>
-                <p className={classes.cardCategory}>Not matched yet</p>
-                <h3 className={classes.cardTitle}>
-                  {"" + this.nonMatchCount + "/" + this.totalCount}
-                </h3>
+                <p className={classes.cardCategory}>Last match</p>
+                <h3 className={classes.cardTitle}>{this.lastMatch}</h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
-                  <Chat />
-                  {this.lastMatch
-                    ? this.lastMatchUser +
-                      " just matched " +
-                      this.lastMatch +
-                      "!"
-                    : "You can be the first to match! "}
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={12} lg={12}>
-            <Card>
-              <CardHeader color="info" stats icon>
-                <CardIcon color="info">
-                  <AccountCircle />
-                </CardIcon>
-                <p className={classes.cardCategory}>Players</p>
-                <h3 className={classes.cardTitle}>
-                  {this.props.players.length}
-                </h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  {this.renderAvatars(classes)}
+                  <Update />
+                  {"Matched at: "}
+                  {this.matchAt}
                 </div>
               </CardFooter>
             </Card>
@@ -299,7 +332,7 @@ class Game extends React.Component {
     if (this.props.board) {
       const cards = this.props.board.map((card, idx) => {
         return (
-          <GridItem xs={6} sm={3} md={2} lg={2} key={idx}>
+          <GridItem game xs={3} sm={2} md={2} lg={2} key={idx}>
             <GameCard
               idx={idx}
               name={card.pokemon && card.pokemon.name}
@@ -323,9 +356,10 @@ class Game extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-        {this.renderLoading(classes)}
+        {this.renderAvatarBox(classes)}
         {this.renderInfoBox(classes)}
         {this.renderCards(classes)}
+        {this.renderLoading(classes)}
       </div>
     );
   }
@@ -336,6 +370,7 @@ Game.propTypes = {
   user: PropTypes.object,
   board: PropTypes.arrayOf(PropTypes.object),
   players: PropTypes.arrayOf(PropTypes.object),
+  matchPlayers: PropTypes.arrayOf(PropTypes.object),
   avatars: PropTypes.arrayOf(PropTypes.object)
 };
 
@@ -346,6 +381,7 @@ export default withTracker(() => {
   return {
     board: Board.find({}).fetch(),
     players: Meteor.users.find({}).fetch(),
+    matchPlayers: MatchPlayers.find({}).fetch(),
     ready: handleBoard.ready() && handlePlayer.ready(),
     user: user
   };

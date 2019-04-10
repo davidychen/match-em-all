@@ -606,6 +606,10 @@ const buttonStyle = {
     opacity: "0.65",
     pointerEvents: "none"
   },
+  avatar: {
+    opacity: "0.65",
+    /*cursor: "auto"*/
+  },
   lg: {
     "&$justIcon": {
       "& .fab,& .fas,& .far,& .fal,& svg,& .material-icons": {

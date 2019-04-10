@@ -6,7 +6,8 @@ import axios from "axios";
 import { Collections } from "./collections.js";
 
 export const Board = new Mongo.Collection("board");
-/*export const Players = new Mongo.Collection("players");*/
+export const MatchPlayers = new Mongo.Collection("match-players");
+export const Message = new Mongo.Collection("message");
 
 export const Daily = new Mongo.Collection("daily");
 export const Types = new Mongo.Collection("types");
@@ -15,7 +16,7 @@ export const Rarity = new Mongo.Collection("rarity");
 export const Pokemon = new Mongo.Collection("pokemon");
 export const Collect = new Mongo.Collection("collect");
 
-const total = 36;
+const total = 4;
 let gamePokes = [];
 const timeouts = {};
 const legendary = new Set([
@@ -210,6 +211,7 @@ async function init() {
         }
       });
     });
+    MatchPlayers.remove({});
   } else {
     throw new Meteor.Error("not-server");
   }
@@ -221,17 +223,20 @@ if (Meteor.isServer) {
     return Board.find({});
   });
   Meteor.publish("players", function playerPublish() {
-    return Meteor.users.find(
-      { "status.online": true },
-      {
-        fields: {
-          username: true,
-          "profile.avatarId": true,
-          "status.lastLogin.date": true
-        },
-        sort: { "status.lastLogin.date": 1 }
-      }
-    );
+    return [
+      Meteor.users.find(
+        { "status.online": true },
+        {
+          fields: {
+            username: true,
+            "profile.avatarId": true,
+            "status.lastLogin.date": true
+          },
+          sort: { "status.lastLogin.date": 1 }
+        }
+      ),
+      MatchPlayers.find({})
+    ];
   });
 }
 
@@ -300,6 +305,14 @@ Meteor.methods({
               }
             );
           });
+          MatchPlayers.update(
+            { ownerId: this.userId },
+            {
+              $inc: { count: 1 },
+              $set: { pokemon: gamePokes[index].name_en, matchAt: new Date() }
+            },
+            { upsert: true }
+          );
         }
         // NOT MATCH ...
         else {

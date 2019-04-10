@@ -5,6 +5,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
+import ScrollToTop from "react-scroll-up";
+import Sticky from "react-sticky-el";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -13,6 +15,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import AdminNavbar from "../components/Navbars/AdminNavbar.jsx";
 import Footer from "../components/Footer/Footer.jsx";
 import Sidebar from "../components/Sidebar/Sidebar.jsx";
+import ScrollUp from "../components/ScrollUp/ScrollUp.jsx";
+
 // import FixedPlugin from "../../components/FixedPlugin/FixedPlugin.jsx";
 
 import routes from "../dash-routes.js";
@@ -32,10 +36,13 @@ class Dashboard extends React.Component {
       color: "red",
       bgColor: "black",
       hasImage: true,
-      fixedClasses: "dropdown"
+      fixedClasses: "dropdown",
+      scrollReady: false,
+      scrollTop: 0
     };
     this.resizeFunction = this.resizeFunction.bind(this);
     this.mainPanelRef;
+    this.scrollTop;
   }
   componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -46,6 +53,11 @@ class Dashboard extends React.Component {
       document.body.style.overflow = "hidden";
     }
     window.addEventListener("resize", this.resizeFunction);
+
+    this.setState({ scrollReady: true });
+  }
+  scroll(x, y) {
+    this.mainPanelRef.scrollTop = y;
   }
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -106,7 +118,8 @@ class Dashboard extends React.Component {
       if (prop.layout === "/admin") {
         return (
           <Route
-            exact path={prop.layout + prop.path}
+            exact
+            path={prop.layout + prop.path}
             component={prop.component}
             key={key}
           />
@@ -126,6 +139,7 @@ class Dashboard extends React.Component {
   }
   render() {
     let mainPanelRefFunc = el => (this.mainPanelRef = el);
+    let barRefFunc = el => (this.barRef = el);
     const { classes, ...rest } = this.props;
     const mainPanel =
       classes.mainPanel +
@@ -148,23 +162,36 @@ class Dashboard extends React.Component {
           miniActive={this.state.miniActive}
           {...rest}
         />
-        <div className={mainPanel} ref={mainPanelRefFunc}>
+        <div className={mainPanel + " main-panel"} ref={mainPanelRefFunc}>
           <AdminNavbar
             sidebarMinimize={this.sidebarMinimize.bind(this)}
             miniActive={this.state.miniActive}
             brandText={this.getActiveRoute(routes)}
             handleDrawerToggle={this.handleDrawerToggle}
+            refFunc={barRefFunc}
             {...rest}
           />
           {/* On the /maps/full-screen-maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-
-          <div className={classes.content}>
-            <div className={classes.container}>
-              <Switch>{this.getRoutes(routes)}<Redirect from="*" to="/public/error-page" /></Switch>
+          <div className="block">
+            <div className={classes.content}>
+              <div className={classes.container}>
+                <Switch mode="bottom">
+                  {this.getRoutes(routes)}
+                  <Redirect from="*" to="/public/error-page" />
+                </Switch>
+              </div>
             </div>
+            {this.state.scrollReady && (
+              <Sticky mode="bottom" boundaryElement=".block" scrollElement=".main-panel">
+                <ScrollUp
+                  headerRef={this.barRef}
+                />
+              </Sticky>
+            )}
           </div>
-
-          <Footer fluid />
+          <div className="block">
+            <Footer fluid />
+          </div>
         </div>
       </div>
     );

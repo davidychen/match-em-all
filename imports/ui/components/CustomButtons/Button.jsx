@@ -17,6 +17,7 @@ function RegularButton({ ...props }) {
     children,
     fullWidth,
     disabled,
+    avatar,
     simple,
     size,
     block,
@@ -33,6 +34,7 @@ function RegularButton({ ...props }) {
     [classes.round]: round,
     [classes.fullWidth]: fullWidth,
     [classes.disabled]: disabled,
+    [classes.avatar]: avatar,
     [classes.simple]: simple,
     [classes.block]: block,
     [classes.link]: link,
@@ -40,7 +42,7 @@ function RegularButton({ ...props }) {
     [className]: className
   });
   return (
-    <Button {...rest} classes={muiClasses} className={btnClasses}>
+    <Button {...rest} disabled={avatar} classes={muiClasses} className={btnClasses}>
       {children}
     </Button>
   );
@@ -74,6 +76,7 @@ RegularButton.propTypes = {
   round: PropTypes.bool,
   fullWidth: PropTypes.bool,
   disabled: PropTypes.bool,
+  avatar: PropTypes.bool,
   block: PropTypes.bool,
   link: PropTypes.bool,
   justIcon: PropTypes.bool,
