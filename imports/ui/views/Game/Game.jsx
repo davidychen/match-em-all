@@ -316,7 +316,7 @@ class Game extends React.Component {
                 <CardIcon color="warning">
                   <Favorite />
                 </CardIcon>
-                <p className={classes.cardCategory}>Last match</p>
+                <p className={classes.cardCategory}>Last matched Pokemon</p>
                 <h3 className={classes.cardTitle}>{this.lastMatch}</h3>
               </CardHeader>
               <CardFooter stats>

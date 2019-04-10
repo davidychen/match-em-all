@@ -102,7 +102,15 @@ const defaultFont = {
   lineHeight: "1.5em"
 };
 
-const primaryColor = ["#EF4144", "#ee1515", "#9c27b0", "#ab47bc", "#8e24aa", "#af2cc5", "#7b1fa2"];
+const primaryColor = [
+  "#EF4144",
+  "#ee1515",
+  "#9c27b0",
+  "#ab47bc",
+  "#8e24aa",
+  "#af2cc5",
+  "#7b1fa2"
+];
 const warningColor = [
   "#ff9800",
   "#ffa726",
@@ -175,6 +183,27 @@ const behanceColor = "#1769ff";
 const dribbbleColor = "#ea4c89";
 const redditColor = "#ff4500";
 const selectColor = "#7efe51";
+
+const normalColor = "#A8A878";
+const fightingColor = "#C03028";
+const flyingColor = "#A890F0";
+const poisonColor = "#A8A878";
+const groundColor = "#E0C068";
+const rockColor = "#B8A038";
+const bugColor = "#A8B820";
+const ghostColor = "#705898";
+const steelColor = "#B8B8D0";
+const fireColor = "#F08030";
+const waterColor = "#6890F0";
+const grassColor = "#78C850";
+const electricColor = "#F8D030";
+const psychicColor = "#F85888";
+const iceColor = "#98D8D8";
+const dragonColor = "#7038F8";
+const darkColor = "#705848";
+const fairyColor = "#EE99AC";
+const unknownColor = "#68A090";
+const shadowColor = "#604E82";
 
 const boxShadow = {
   boxShadow:
@@ -443,5 +472,25 @@ export {
   title,
   cardTitle,
   cardSubtitle,
-  cardLink
+  cardLink,
+  normalColor,
+  fightingColor,
+  flyingColor,
+  poisonColor,
+  groundColor,
+  rockColor,
+  bugColor,
+  ghostColor,
+  steelColor,
+  fireColor,
+  waterColor,
+  grassColor,
+  electricColor,
+  psychicColor,
+  iceColor,
+  dragonColor,
+  darkColor,
+  fairyColor,
+  unknownColor,
+  shadowColor
 };

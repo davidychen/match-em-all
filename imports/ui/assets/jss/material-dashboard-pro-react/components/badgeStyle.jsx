@@ -6,8 +6,28 @@ import {
   infoColor,
   roseColor,
   grayColor,
-  whiteColor
-} from "assets/jss/material-dashboard-pro-react.jsx";
+  whiteColor,
+  normalColor,
+  fightingColor,
+  flyingColor,
+  poisonColor,
+  groundColor,
+  rockColor,
+  bugColor,
+  ghostColor,
+  steelColor,
+  fireColor,
+  waterColor,
+  grassColor,
+  electricColor,
+  psychicColor,
+  iceColor,
+  dragonColor,
+  darkColor,
+  fairyColor,
+  unknownColor,
+  shadowColor
+} from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 const badgeStyle = {
   badge: {
@@ -42,7 +62,27 @@ const badgeStyle = {
   },
   gray: {
     backgroundColor: grayColor[0]
-  }
+  },
+  normal: { backgroundColor: normalColor },
+  fighting: { backgroundColor: fightingColor },
+  flying: { backgroundColor: flyingColor },
+  poison: { backgroundColor: poisonColor },
+  ground: { backgroundColor: groundColor },
+  rock: { backgroundColor: rockColor },
+  bug: { backgroundColor: bugColor },
+  ghost: { backgroundColor: ghostColor },
+  steel: { backgroundColor: steelColor },
+  fire: { backgroundColor: fireColor },
+  water: { backgroundColor: waterColor },
+  grass: { backgroundColor: grassColor },
+  electric: { backgroundColor: electricColor },
+  psychic: { backgroundColor: psychicColor },
+  ice: { backgroundColor: iceColor },
+  dragon: { backgroundColor: dragonColor },
+  dark: { backgroundColor: darkColor },
+  fairy: { backgroundColor: fairyColor },
+  unknown: { backgroundColor: unknownColor },
+  shadow: { backgroundColor: shadowColor }
 };
 
 export default badgeStyle;

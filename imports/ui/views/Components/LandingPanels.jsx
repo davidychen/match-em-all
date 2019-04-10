@@ -1,5 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
+// nodejs library that concatenates classes
+import classNames from "classnames";
+import { Daily, Types } from "../../../api/pokemon.js";
+import moment from "moment";
+
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 
@@ -24,8 +31,14 @@ import Card from "../../components/Card/Card.jsx";
 import CardHeader from "../../components/Card/CardHeader.jsx";
 import CardBody from "../../components/Card/CardBody.jsx";
 import CardFooter from "../../components/Card/CardFooter.jsx";
+import Badge from "../../components/Badge/Badge.jsx";
 
-import {
+let Chartist = require("chartist");
+let delays = 80,
+  durations = 500;
+let delays2 = 80,
+  durations2 = 500;
+/*import {
   dailySalesChart,
   roundedLineChart,
   straightLinesChart,
@@ -34,13 +47,147 @@ import {
   multipleBarsChart,
   colouredLinesChart,
   pieChart
-} from "../../variables/charts.jsx";
+} from "../../variables/charts.jsx";*/
 
 import landingPanelStyle from "../../assets/jss/material-dashboard-pro-react/views/landingPanelStyle.jsx";
 
 class LandingPanels extends React.Component {
+  constructor() {
+    super();
+  }
+
+  getDailyChart(daily) {
+    const dailyChart = {
+      data: {
+        labels: ["M", "T", "W", "T", "F", "S", "S"],
+        series: [[0, 0, 0, 0, 0, 0, 0]]
+      },
+      options: {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 0
+        }),
+        low: 0,
+        high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        height: "300px",
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        }
+      },
+      // for animation
+      animation: {
+        draw: function(data) {
+          if (data.type === "line" || data.type === "area") {
+            data.element.animate({
+              d: {
+                begin: 600,
+                dur: 700,
+                from: data.path
+                  .clone()
+                  .scale(1, 0)
+                  .translate(0, data.chartRect.height())
+                  .stringify(),
+                to: data.path.clone().stringify(),
+                easing: Chartist.Svg.Easing.easeOutQuint
+              }
+            });
+          } else if (data.type === "point") {
+            data.element.animate({
+              opacity: {
+                begin: (data.index + 1) * delays,
+                dur: durations,
+                from: 0,
+                to: 1,
+                easing: "ease"
+              }
+            });
+          }
+        }
+      }
+    };
+    if (daily) {
+      const staringDate = moment().startOf("day").subtract(7, "days");
+      const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const labels = [];
+      const seriesOne = [];
+      console.log(daily);
+      for (let i = 0; i < 7; i++) {
+        const date = staringDate.add(1, "days");
+        const found = daily.find(el => Math.abs(moment(el.date).diff(date, "days")) < 1);
+        console.log(i, date, date.day(), found);
+        labels.push(days[date.day()]);
+        if (found) {
+          seriesOne.push(found.count);
+        } else {
+          seriesOne.push(0);
+        }
+      }
+      const minCount = Math.min(...seriesOne);
+      const maxCount = Math.floor(Math.max(...seriesOne) * 1.2);
+      dailyChart["data"] = { labels: labels, series: [seriesOne] };
+      dailyChart.options.low = minCount;
+      dailyChart.options.high = maxCount > 0 ? maxCount : 10;
+    }
+    return dailyChart;
+  }
+
+  getPieChart(classes, types) {
+    const pieChart = {
+      data: {
+        labels: ["Empty"],
+        series: [{ value: 100, className: classes.emptyFill }]
+      },
+      options: {
+        height: "300px"
+      }
+    };
+    this.legend = [];
+    if (types && types.length > 0) {
+      let counts = [];
+      let series = [];
+      types
+        .sort((a, b) => a.typeId - b.typeId)
+        .forEach(type => {
+          counts.push(type.count);
+          series.push({
+            value: type.count,
+            className: classes[type.type + "Fill"]
+          });
+          this.legend.push(type.type);
+        });
+      const sum = counts.reduce((a, b) => a + b);
+      const labels = counts.map(
+        count => "" + Math.round((count / sum) * 100) + "%"
+      );
+      pieChart["data"] = {
+        labels: labels,
+        series: series
+      };
+    }
+    return pieChart;
+  }
+
+  renderLegend(classes) {
+    if (this.legend.length > 0) {
+      const content = this.legend.map((el, idx) => (
+        <Badge color={el} key={idx}>
+          {el}
+        </Badge>
+      ));
+      return (
+        <CardFooter stats className={classes.cardFooter}>
+          <h6 className={classes.legendTitle}>Legend</h6>
+          <div className={classes.legendBadge}>{content}</div>
+        </CardFooter>
+      );
+    }
+  }
   render() {
-    const { classes } = this.props;
+    const { classes, daily, types } = this.props;
+    const pieChart = this.getPieChart(classes, types);
+    const dailyChart = this.getDailyChart(daily);
     return (
       <GridContainer justify="center" landing>
         <GridItem xs={12} sm={12} md={8}>
@@ -56,10 +203,10 @@ class LandingPanels extends React.Component {
                   <Card chart>
                     <CardHeader color="white">
                       <ChartistGraph
-                        data={dailySalesChart.data}
+                        data={dailyChart.data}
                         type="Line"
-                        options={dailySalesChart.options}
-                        listener={dailySalesChart.animation}
+                        options={dailyChart.options}
+                        listener={dailyChart.animation}
                       />
                     </CardHeader>
                     <CardBody>
@@ -93,14 +240,7 @@ class LandingPanels extends React.Component {
                         Percentage of all Pokemons&apos; Types
                       </p>
                     </CardBody>
-                    <CardFooter stats className={classes.cardFooter}>
-                      <h6 className={classes.legendTitle}>Legend</h6>
-                      <i
-                        className={"fas fa-circle " + classes.info}
-                      /> Fire{" "}
-                      <i className={"fas fa-circle " + classes.warning} /> Water{" "}
-                      <i className={"fas fa-circle " + classes.danger} /> Grass{" "}
-                    </CardFooter>
+                    {this.renderLegend(classes)}
                   </Card>
                 )
               }
@@ -113,10 +253,20 @@ class LandingPanels extends React.Component {
 }
 
 LandingPanels.propTypes = {
-  classes: PropTypes.object
+  classes: PropTypes.object,
+  daily: PropTypes.arrayOf(PropTypes.object),
+  types: PropTypes.arrayOf(PropTypes.object)
 };
 
-export default withStyles(landingPanelStyle)(LandingPanels);
+export default withTracker(() => {
+  const handleDaily = Meteor.subscribe("daily");
+  const handleTypes = Meteor.subscribe("types");
+  return {
+    daily: Daily.find({}).fetch(),
+    types: Types.find({}).fetch(),
+    ready: handleDaily.ready() && handleTypes.ready()
+  };
+})(withStyles(landingPanelStyle)(LandingPanels));
 
 /*
 import React from "react";

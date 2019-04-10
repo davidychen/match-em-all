@@ -7,7 +7,27 @@ import {
   roseColor,
   grayColor,
   cardTitle,
-  hexToRgb
+  hexToRgb,
+  normalColor,
+  fightingColor,
+  flyingColor,
+  poisonColor,
+  groundColor,
+  rockColor,
+  bugColor,
+  ghostColor,
+  steelColor,
+  fireColor,
+  waterColor,
+  grassColor,
+  electricColor,
+  psychicColor,
+  iceColor,
+  dragonColor,
+  darkColor,
+  fairyColor,
+  unknownColor,
+  shadowColor
 } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 const landingPanelStyle = () => ({
@@ -58,6 +78,44 @@ const landingPanelStyle = () => ({
   },
   cardFooter: {
     display: "block"
+  },
+  emptyFill: {
+    fill: grayColor[0]
+  },
+  normalFill: {
+    fill: normalColor
+  },
+  fightingFill: {
+    fill: fightingColor
+  },
+  flyingFill: {
+    fill: flyingColor
+  },
+  poisonFill: {
+    fill: poisonColor
+  },
+  groundFill: {
+    fill: groundColor
+  },
+  rockFill: {
+    fill: rockColor
+  },
+  bugFill: { fill: bugColor },
+  ghostFill: { fill: ghostColor },
+  steelFill: { fill: steelColor },
+  fireFill: { fill: fireColor },
+  waterFill: { fill: waterColor },
+  grassFill: { fill: grassColor },
+  electricFill: { fill: electricColor },
+  psychicFill: { fill: psychicColor },
+  iceFill: { fill: iceColor },
+  dragonFill: { fill: dragonColor },
+  darkFill: { fill: darkColor },
+  fairyFill: { fill: fairyColor },
+  unknownFill: { fill: unknownColor },
+  shadowFill: { fill: shadowColor },
+  legendBadge: {
+    marginBottom: "15px"
   }
 });
 

@@ -26,3 +26,4 @@ meteortesting:mocha
 session
 fourseven:scss
 mizzao:user-status
+momentjs:moment
