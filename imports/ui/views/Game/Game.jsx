@@ -241,7 +241,10 @@ class Game extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>You matched</p>
                 <h3 className={classes.cardTitle}>
-                  {"" + this.count + "/" + this.props.board.length}
+                  {"" +
+                    this.count +
+                    "/" +
+                    Math.floor(this.props.board.length / 2)}
                 </h3>
               </CardHeader>
               <CardFooter stats>
@@ -290,7 +293,8 @@ class Game extends React.Component {
                       not match, those cards are turned face down again.
                     </p>
                     <p>
-                      Blue cards are those selected by you, Green ones are matched by you, and red ones are matched by other players. 
+                      Blue cards are those selected by you, Green ones are
+                      matched by you, and red ones are matched by other players.
                     </p>
                   </DialogContent>
                   <DialogActions className={classes.modalFooter}>
