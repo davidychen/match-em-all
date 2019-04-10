@@ -220,7 +220,7 @@ async function init() {
 if (Meteor.isServer) {
   init();
   Meteor.publish("board", function boardPublish() {
-    return Board.find({});
+    return Board.find({}, { sort: { index: 1 } });
   });
   Meteor.publish("players", function playerPublish() {
     return [
