@@ -250,7 +250,7 @@ class Game extends React.Component {
               <CardFooter stats>
                 <div className={classes.stats}>
                   <Help />
-                  <a onClick={() => this.handleClickOpen()}>
+                  <a href="#" onClick={() => this.handleClickOpen()}>
                     How to play
                   </a>
                 </div>
