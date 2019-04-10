@@ -16,7 +16,7 @@ export const Rarity = new Mongo.Collection("rarity");
 export const Pokemon = new Mongo.Collection("pokemon");
 export const Collect = new Mongo.Collection("collect");
 
-const total = 36;
+const total = 4;
 let gamePokes = [];
 const timeouts = {};
 const legendary = new Set([
