@@ -108,15 +108,19 @@ class LandingPanels extends React.Component {
       }
     };
     if (daily) {
-      const staringDate = moment().startOf("day").subtract(7, "days");
+      const staringDate = moment()
+        .startOf("day")
+        .subtract(7, "days");
       const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const labels = [];
       const seriesOne = [];
-      console.log(daily);
       for (let i = 0; i < 7; i++) {
         const date = staringDate.add(1, "days");
-        const found = daily.find(el => Math.abs(moment(el.date).diff(date, "days")) < 1);
-        console.log(i, date, date.day(), found);
+        const found = daily.find(el => {
+          /*console.log(date.diff(moment(el.date), "days", true));*/
+          return Math.floor(date.diff(moment(el.date), "days", true)) == 0;
+        });
+
         labels.push(days[date.day()]);
         if (found) {
           seriesOne.push(found.count);
@@ -125,7 +129,7 @@ class LandingPanels extends React.Component {
         }
       }
       const minCount = Math.min(...seriesOne);
-      const maxCount = Math.floor(Math.max(...seriesOne) * 1.2);
+      const maxCount = Math.max(10, Math.floor(Math.max(...seriesOne) * 1.2));
       dailyChart["data"] = { labels: labels, series: [seriesOne] };
       dailyChart.options.low = minCount;
       dailyChart.options.high = maxCount > 0 ? maxCount : 10;
