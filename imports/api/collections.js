@@ -17,9 +17,8 @@ if (Meteor.isServer) {
       filterBy,
       Match.Where(
         value =>
-          ["all", "color", "type", "can_evolve", "legendary"].indexOf(
-            value
-          ) >= 0
+          ["all", "color", "type", "can_evolve", "legendary"].indexOf(value) >=
+          0
       )
     );
     check(filterKey, Match.OneOf(Boolean, String));
@@ -27,13 +26,8 @@ if (Meteor.isServer) {
       sortBy,
       Match.Where(
         value =>
-          [
-            "pokemonId",
-            "name_en",
-            "rate",
-            "firstAt",
-            "count"
-          ].indexOf(value) >= 0
+          ["pokemonId", "name_en", "rate", "firstAt", "count"].indexOf(value) >=
+          0
       )
     );
     check(order, Match.Where(value => [-1, 1].indexOf(value) >= 0));
@@ -56,7 +50,7 @@ if (Meteor.isServer) {
 
     let sortKey;
     if (sortBy === "rate") {
-      sortKey = { rate: -order, pokemonId: order };
+      sortKey = { legendary: order, rate: -order, pokemonId: order };
     } else if (sortBy !== "pokemonId") {
       sortKey = { [sortBy]: order, pokemonId: order };
     } else {
@@ -79,5 +73,11 @@ if (Meteor.isServer) {
     }
 
     return Collections.find(findKey, { sort: sortKey, limit: limit });
+  });
+  Meteor.publish("avatar-ids", function avatarIdsPublish() {
+    return Collections.find(
+      { ownerId: this.userId },
+      { sort: { name_en: 1 }, fields: { pokemonId: true, name_en: true } }
+    );
   });
 }

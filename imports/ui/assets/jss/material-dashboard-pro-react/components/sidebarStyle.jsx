@@ -503,6 +503,7 @@ const sidebarStyle = theme => ({
     marginRight: "11px",
     borderRadius: "50%",
     marginLeft: "23px",
+    background: whiteColor,
     ...boxShadow
   },
   photoRTL: {

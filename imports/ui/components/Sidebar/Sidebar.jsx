@@ -342,9 +342,13 @@ class Sidebar extends React.Component {
       routes,
       bgColor,
       rtlActive,
-      avatar
+      avatarId
     } = this.props;
-    const avatarImg = avatar ? avatar : "/default-avatar.png";
+    const avatarImg = avatarId
+      ? "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+        avatarId +
+        ".png"
+      : "/default-avatar.png";
     let mainPanelRefFunc = el => (this.mainPanelRef = el);
     const itemText =
       classes.itemText +
@@ -611,7 +615,8 @@ Sidebar.propTypes = {
   logo: PropTypes.string,
   logoText: PropTypes.string,
   image: PropTypes.string,
-  routes: PropTypes.arrayOf(PropTypes.object)
+  routes: PropTypes.arrayOf(PropTypes.object),
+  avatarId: PropTypes.number
 };
 
 export default withRouter(
@@ -621,7 +626,8 @@ export default withRouter(
     const loggedIn = user && userDataAvailable;
     return {
       user: user,
-      loggedIn: loggedIn
+      loggedIn: loggedIn,
+      avatarId: user && user.profile && user.profile.avatarId
     };
   })(withStyles(sidebarStyle)(Sidebar))
 );

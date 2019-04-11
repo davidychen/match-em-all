@@ -196,7 +196,19 @@ function getOne(count, prev, callback) {
                 };
 
                 callback(pokeInfo);
+              })
+              .catch(error => {
+                console.log(error);
+                Meteor.setTimeout(function restart() {
+                  init();
+                }, 60000);
               });
+          })
+          .catch(error => {
+            console.log(error);
+            Meteor.setTimeout(function restart() {
+              init();
+            }, 60000);
           });
 
         // return now;
@@ -212,6 +224,12 @@ function getOne(count, prev, callback) {
 
         getOne(count - 1, next, callback);
       }
+    })
+    .catch(error => {
+      console.log(error);
+      Meteor.setTimeout(function restart() {
+        init();
+      }, 60000);
     });
 }
 

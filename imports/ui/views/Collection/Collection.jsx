@@ -368,7 +368,7 @@ class Collection extends React.Component {
                   {/*<legend>Select</legend>*/}
 
                   <GridContainer>
-                    <GridItem xs={8} sm={4} md={4} lg={4}>
+                    <GridItem xs={8} sm={6} md={6} lg={6}>
                       <FormControl
                         fullWidth
                         className={classes.selectFormControl}
@@ -449,7 +449,7 @@ class Collection extends React.Component {
                         </Select>
                       </FormControl>
                     </GridItem>
-                    <GridItem xs={4} sm={2} md={2} lg={2}>
+                    <GridItem xs={4} sm={6} md={6} lg={6}>
                       {this.state.orderSelect === 1 && (
                         <Button
                           color="primary"
