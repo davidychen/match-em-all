@@ -146,6 +146,10 @@ class Collection extends React.Component {
       if (!stateDict.equals("filterBy", filterBy)) {
         if (["type", "color"].indexOf(filterBy) < 0) {
           stateDict.set({ filterBy: filterBy, filterKey: true, limit: 0 });
+        } else {
+          if (!stateDict.equals("filterBy", "all")) {
+            stateDict.set({ filterBy: "all", filterKey: true, limit: 0 });
+          }
         }
       }
     }
