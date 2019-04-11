@@ -170,6 +170,13 @@ const dashboardStyle = theme => ({
   modalSectionTitle: {
     marginTop: "30px"
   },
+  icons: {
+    width: "17px",
+    height: "17px"
+  },
+  orderButton: {
+    marginTop: "23px"
+  },
   ...modalStyle(theme)
 });
 

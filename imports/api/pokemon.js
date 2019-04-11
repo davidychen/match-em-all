@@ -428,7 +428,8 @@ Meteor.methods({
         }, 5000);
       }
     }
-  },
+  }
+  /*,
   "match.em.all"() {
     let range = [];
     for (let i = 0; i < total; i++) {
@@ -496,7 +497,7 @@ Meteor.methods({
       );
     });
     init();
-  }
+  }*/
   /*"game.login"() {
     if (!this.userId) {
       throw new Meteor.Error("not-authorized");

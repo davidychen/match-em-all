@@ -87,6 +87,20 @@ const customSelectStyle = {
       ...primaryBoxShadow
     }
   },
+  selectMenuItemHeader: {
+    fontSize: "13px",
+    padding: "10px 20px",
+    margin: "0 5px",
+    borderRadius: "2px",
+    transition: "all 150ms linear",
+    display: "block",
+    clear: "both",
+    fontWeight: "400",
+    lineHeight: "2",
+    whiteSpace: "nowrap",
+    color: grayColor[7],
+    paddingRight: "30px",
+  },
   selectMenuItemSelected: {
     backgroundColor: primaryColor[0] + "!important",
     color: whiteColor

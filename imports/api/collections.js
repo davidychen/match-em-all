@@ -23,14 +23,17 @@ if (Meteor.isServer) {
       )
     );
     check(filterKey, Match.OneOf(Boolean, String));
-    console.log("sort by", sortBy);
     check(
       sortBy,
       Match.Where(
         value =>
-          ["index", "name", "rarity", "firstAt", "count"].indexOf(
-            value
-          ) >= 0
+          [
+            "pokemonId",
+            "name_en",
+            "rate",
+            "firstAt",
+            "count"
+          ].indexOf(value) >= 0
       )
     );
     check(order, Match.Where(value => [-1, 1].indexOf(value) >= 0));
@@ -52,14 +55,12 @@ if (Meteor.isServer) {
     }
 
     let sortKey;
-    if (sortBy === "index") {
-      sortKey = { pokemonId: order };
-    } else if (sortBy === "name") {
-      sortKey = { name_en: order };
-    } else if (sortBy === "rarity") {
-      sortKey = { rate: -order };
+    if (sortBy === "rate") {
+      sortKey = { rate: -order, pokemonId: order };
+    } else if (sortBy !== "pokemonId") {
+      sortKey = { [sortBy]: order, pokemonId: order };
     } else {
-      sortKey = { [sortBy]: order };
+      sortKey = { pokemonId: order };
     }
     Counts.publish(
       this,
@@ -73,6 +74,9 @@ if (Meteor.isServer) {
       Collections.find({ ownerId: this.userId }),
       { noReady: true }
     );
+    if (limit === 0) {
+      findKey["_id"] = { $exists: false };
+    }
 
     return Collections.find(findKey, { sort: sortKey, limit: limit });
   });

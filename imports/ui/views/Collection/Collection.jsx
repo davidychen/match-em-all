@@ -43,13 +43,13 @@ import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import AccessTime from "@material-ui/icons/AccessTime";
 import Refresh from "@material-ui/icons/Refresh";
 import Edit from "@material-ui/icons/Edit";
 import Place from "@material-ui/icons/Place";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 import Language from "@material-ui/icons/Language";
-
 // core components
 import GridContainer from "../../components/Grid/GridContainer.jsx";
 import GridItem from "../../components/Grid/GridItem.jsx";
@@ -74,9 +74,9 @@ const stateDict = new ReactiveDict();
 stateDict.set({
   filterBy: "all",
   filterKey: true,
-  sortBy: "index",
+  sortBy: "pokemonId",
   order: 1,
-  limit: 36
+  limit: 0
 });
 
 function Transition(props) {
@@ -90,8 +90,9 @@ class Collection extends React.Component {
       flip: false,
       modal: false,
       sortSelect: "",
-      orderSelect: "",
-      filterSelect: ""
+      orderSelect: 1,
+      filterSelect: "",
+      filterOptionSelect: ""
     };
     this.onClick = this.onClick.bind(this);
   }
@@ -122,37 +123,159 @@ class Collection extends React.Component {
     stateDict.set({
       filterBy: "all",
       filterKey: true,
-      sortBy: "index",
+      sortBy: "pokemonId",
       order: 1,
-      limit: 36
+      limit: 0
     });
   }
 
   handleSort = event => {
     this.setState({ [event.target.name]: event.target.value });
-    let sortBy = "all";
-    switch (event.target.value) {
-    case "2":
-      sortBy = "index";
-      break;
-    case "3":
-      sortBy = "name";
-      break;
-    case "4":
-      sortBy = "rarity";
-      break;
-    case "5":
-      sortBy = "firstAt";
-      break;
-    case "6":
-      sortBy = "count";
-      break; 
-    }
-    console.log("client side", event.target.value, sortBy);
+
+    /*console.log("client side", event.target.value, sortBy);*/
+    const sortBy = event.target.value === "" ? "pokemonId" : event.target.value;
     if (!stateDict.equals("sortBy", sortBy)) {
-      stateDict.set({ sortBy: sortBy, limit: 36 });
+      stateDict.set({ sortBy: sortBy, limit: 0 });
     }
   };
+  handleFilter = event => {
+    if (event.target.value !== this.state[event.target.name]) {
+      this.setState({ filterOptionSelect: "" });
+      this.setState({ [event.target.name]: event.target.value });
+      const filterBy = event.target.value === "" ? "all" : event.target.value;
+      if (!stateDict.equals("filterBy", filterBy)) {
+        if (["type", "color"].indexOf(filterBy) < 0) {
+          stateDict.set({ filterBy: filterBy, filterKey: true, limit: 0 });
+        }
+      }
+    }
+  };
+
+  handleFilterOption = event => {
+    if (event.target.value !== this.state[event.target.name]) {
+      this.setState({ [event.target.name]: event.target.value });
+      const filterBy = this.state.filterSelect;
+      const filterKey = event.target.value;
+      if (filterKey === "") {
+        if (!stateDict.equals("filterBy", "all")) {
+          stateDict.set({ filterBy: "all", filterKey: true, limit: 0 });
+        }
+      } else if (!stateDict.equals("filterKey", filterKey)) {
+        stateDict.set({ filterBy: filterBy, filterKey: filterKey, limit: 0 });
+      }
+    }
+  };
+
+  handleOrder = () => {
+    stateDict.set({ order: -this.state.orderSelect, limit: 0 });
+    this.setState(state => {
+      return { orderSelect: -state.orderSelect };
+    });
+  };
+
+  optionItems(classes) {
+    let list = [];
+    if (this.state.filterSelect === "type") {
+      list = [
+        "normal",
+        "fighting",
+        "flying",
+        "poison",
+        "ground",
+        "rock",
+        "bug",
+        "ghost",
+        "steel",
+        "fire",
+        "water",
+        "grass",
+        "electric",
+        "psychic",
+        "ice",
+        "dragon",
+        "dark",
+        "fairy",
+        "unknown",
+        "shadow"
+      ];
+    } else if (this.state.filterSelect === "color") {
+      list = [
+        "black",
+        "blue",
+        "brown",
+        "gray",
+        "green",
+        "pink",
+        "purple",
+        "red",
+        "white",
+        "yellow"
+      ];
+    }
+    return list.map((el, idx) => {
+      return (
+        <MenuItem
+          classes={{
+            root: classes.selectMenuItem,
+            selected: classes.selectMenuItemSelected
+          }}
+          value={el}
+          key={idx}
+        >
+          {el.charAt(0).toUpperCase() + el.slice(1)}
+        </MenuItem>
+      );
+    });
+  }
+
+  renderFilterOption(classes) {
+    const disable = ["type", "color"].indexOf(this.state.filterSelect) < 0;
+    if (!disable) {
+      const titleName = disable
+        ? "Filter Option"
+        : "Choose " +
+          this.state.filterSelect.charAt(0).toUpperCase() +
+          this.state.filterSelect.slice(1);
+      return (
+        <GridItem xs={12} sm={6} md={6} lg={6}>
+          <FormControl
+            disabled={disable}
+            fullWidth
+            className={classes.selectFormControl}
+          >
+            <InputLabel
+              htmlFor="filter-option-select"
+              className={classes.selectLabel}
+            >
+              {titleName}
+            </InputLabel>
+            <Select
+              MenuProps={{
+                className: classes.selectMenu
+              }}
+              classes={{
+                select: classes.select
+              }}
+              value={this.state.filterOptionSelect}
+              onChange={this.handleFilterOption}
+              inputProps={{
+                name: "filterOptionSelect",
+                id: "filter-option-select"
+              }}
+            >
+              <MenuItem
+                classes={{ root: classes.selectMenuItemHeader }}
+                value=""
+              >
+                {titleName}
+              </MenuItem>
+              {this.optionItems(classes)}
+            </Select>
+          </FormControl>
+        </GridItem>
+      );
+    }
+  }
 
   renderSelection(classes) {
     return (
@@ -162,9 +285,86 @@ class Collection extends React.Component {
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                  {/*<legend>Select</legend>*/}
                   <GridContainer>
-                    <GridItem xs={12} sm={6} md={5} lg={5}>
+                    <GridItem xs={12} sm={6} md={6} lg={6}>
+                      <FormControl
+                        fullWidth
+                        className={classes.selectFormControl}
+                      >
+                        <InputLabel
+                          htmlFor="filter-select"
+                          className={classes.selectLabel}
+                        >
+                          Filter By
+                        </InputLabel>
+                        <Select
+                          MenuProps={{
+                            className: classes.selectMenu
+                          }}
+                          classes={{
+                            select: classes.select
+                          }}
+                          value={this.state.filterSelect}
+                          onChange={this.handleFilter}
+                          inputProps={{
+                            name: "filterSelect",
+                            id: "filter-select"
+                          }}
+                        >
+                          <MenuItem
+                            classes={{ root: classes.selectMenuItemHeader }}
+                            value=""
+                          >
+                            Filter By
+                          </MenuItem>
+                          <MenuItem
+                            classes={{
+                              root: classes.selectMenuItem,
+                              selected: classes.selectMenuItemSelected
+                            }}
+                            value="type"
+                          >
+                            Type
+                          </MenuItem>
+                          <MenuItem
+                            classes={{
+                              root: classes.selectMenuItem,
+                              selected: classes.selectMenuItemSelected
+                            }}
+                            value="color"
+                          >
+                            Color
+                          </MenuItem>
+                          <MenuItem
+                            classes={{
+                              root: classes.selectMenuItem,
+                              selected: classes.selectMenuItemSelected
+                            }}
+                            value="can_evolve"
+                          >
+                            Can Evolve
+                          </MenuItem>
+                          <MenuItem
+                            classes={{
+                              root: classes.selectMenuItem,
+                              selected: classes.selectMenuItemSelected
+                            }}
+                            value="legendary"
+                          >
+                            Legendary
+                          </MenuItem>
+                        </Select>
+                      </FormControl>
+                    </GridItem>
+                    {this.renderFilterOption(classes)}
+                  </GridContainer>
+                </GridItem>
+
+                <GridItem xs={12} sm={12} md={6}>
+                  {/*<legend>Select</legend>*/}
+
+                  <GridContainer>
+                    <GridItem xs={8} sm={4} md={4} lg={4}>
                       <FormControl
                         fullWidth
                         className={classes.selectFormControl}
@@ -190,10 +390,10 @@ class Collection extends React.Component {
                           }}
                         >
                           <MenuItem
-                            disabled
                             classes={{
-                              root: classes.selectMenuItem
+                              root: classes.selectMenuItemHeader
                             }}
+                            value=""
                           >
                             Sort By
                           </MenuItem>
@@ -202,7 +402,7 @@ class Collection extends React.Component {
                               root: classes.selectMenuItem,
                               selected: classes.selectMenuItemSelected
                             }}
-                            value="2"
+                            value="pokemonId"
                           >
                             Pokemon ID
                           </MenuItem>
@@ -211,7 +411,7 @@ class Collection extends React.Component {
                               root: classes.selectMenuItem,
                               selected: classes.selectMenuItemSelected
                             }}
-                            value="3"
+                            value="name_en"
                           >
                             Name
                           </MenuItem>
@@ -220,7 +420,7 @@ class Collection extends React.Component {
                               root: classes.selectMenuItem,
                               selected: classes.selectMenuItemSelected
                             }}
-                            value="4"
+                            value="rate"
                           >
                             Rarity
                           </MenuItem>
@@ -229,7 +429,7 @@ class Collection extends React.Component {
                               root: classes.selectMenuItem,
                               selected: classes.selectMenuItemSelected
                             }}
-                            value="5"
+                            value="firstAt"
                           >
                             Match Time
                           </MenuItem>
@@ -238,12 +438,36 @@ class Collection extends React.Component {
                               root: classes.selectMenuItem,
                               selected: classes.selectMenuItemSelected
                             }}
-                            value="6"
+                            value="count"
                           >
                             Count
                           </MenuItem>
                         </Select>
                       </FormControl>
+                    </GridItem>
+                    <GridItem xs={4} sm={2} md={2} lg={2}>
+                      {this.state.orderSelect === 1 && (
+                        <Button
+                          color="primary"
+                          justIcon
+                          round
+                          className={classes.orderButton}
+                          onClick={this.handleOrder.bind(this)}
+                        >
+                          <ArrowUpward className={classes.icons} />
+                        </Button>
+                      )}
+                      {this.state.orderSelect === -1 && (
+                        <Button
+                          color="primary"
+                          justIcon
+                          round
+                          className={classes.orderButton}
+                          onClick={this.handleOrder.bind(this)}
+                        >
+                          <ArrowDownward className={classes.icons} />
+                        </Button>
+                      )}
                     </GridItem>
                   </GridContainer>
                 </GridItem>
@@ -346,7 +570,7 @@ class Collection extends React.Component {
       });
       return (
         <InfiniteScroll
-          pageStart={1}
+          pageStart={0}
           loadMore={this.loadFunction.bind(this)}
           hasMore={this.props.pokemons.length < this.props.filterCount}
           loader={
@@ -379,17 +603,16 @@ class Collection extends React.Component {
   }
 
   loadFunction(page) {
-    console.log(stateDict.get("limit"));
     if (this.props.pokemons.length === stateDict.get("limit")) {
-      stateDict.set("limit", stateDict.get("limit") + 36);
+      stateDict.set("limit", stateDict.get("limit") + 18);
     }
   }
 
   render() {
-    if (this.props.ready) {
+    /*if (this.props.ready) {
       console.log(this.props.pokemons.length);
       console.log(this.props.filterCount, this.props.totalCount);
-    }
+    }*/
 
     const { classes } = this.props;
     return (
