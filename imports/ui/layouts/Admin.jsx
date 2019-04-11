@@ -41,11 +41,12 @@ class Dashboard extends React.Component {
       scrollTop: 0
     };
     this.resizeFunction = this.resizeFunction.bind(this);
+    this.mainPanelRef;
     this.scrollTop;
   }
   componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(this.state.mainPanelRef, {
+      ps = new PerfectScrollbar(this.mainPanelRef, {
         suppressScrollX: true,
         suppressScrollY: false
       });
@@ -66,7 +67,7 @@ class Dashboard extends React.Component {
     window.removeEventListener("resize", this.resizeFunction);
   }
   componentDidUpdate(e) {
-    const mainPanelRef = this.state.mainPanelRef;
+    const mainPanelRef = this.mainPanelRef;
     if (e.history.location.pathname !== e.location.pathname) {
       mainPanelRef.scrollTop = 0;
       if (this.state.mobileOpen) {
@@ -150,9 +151,14 @@ class Dashboard extends React.Component {
     }
   }
   render() {
-    let mainPanelRefFunc = el =>
+    let mainPanelRefFunc = el => {
       !this.state.mainPanelRef && this.setState({ mainPanelRef: el });
-    let barRefFunc = el => !this.state.barRef && this.setState({ barRef: el });
+      this.mainPanelRef = el;
+    };
+    let barRefFunc = el => {
+      !this.state.barRef && this.setState({ barRef: el });
+      this.barRef = el;
+    };
     const { classes, ...rest } = this.props;
     const mainPanel =
       classes.mainPanel +
