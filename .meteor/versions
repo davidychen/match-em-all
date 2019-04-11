@@ -97,6 +97,7 @@ templating-compiler@1.2.15
 templating-runtime@1.2.15
 templating-tools@1.1.2
 tmeasday:check-npm-versions@0.3.2
+tmeasday:publish-counts@0.8.0
 tracker@1.2.0
 underscore@1.0.10
 url@1.2.0

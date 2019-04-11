@@ -1,8 +1,10 @@
+import React from "react";
 /*import Buttons from "views/Components/Buttons.jsx";
 import Calendar from "views/Calendar/Calendar.jsx";
 import Charts from "views/Charts/Charts.jsx";*/
 /*import Dashboard from "./views/Dashboard/Dashboard.jsx";*/
 import Game from "./views/Game/Game.jsx";
+import Collection from "./views/Collection/Collection.jsx";
 import ErrorPage from "./views/Pages/ErrorPage.jsx";
 /*import ExtendedForms from "views/Forms/ExtendedForms.jsx";
 import ExtendedTables from "views/Tables/ExtendedTables.jsx";
@@ -40,6 +42,7 @@ import Image from "@material-ui/icons/Image";
 //import Timeline from "@material-ui/icons/Timeline";
 //import WidgetsIcon from "@material-ui/icons/Widgets";
 import VideogameAsset from "@material-ui/icons/VideogameAsset";
+import Collections from "@material-ui/icons/Collections";
 
 var dashRoutes = [
   {
@@ -47,6 +50,13 @@ var dashRoutes = [
     name: "Game",
     icon: VideogameAsset,
     component: Game,
+    layout: "/admin"
+  },
+  {
+    path: "/collection",
+    name: "Collection",
+    icon: Collections,
+    component: Collection,
     layout: "/admin"
   },
   {

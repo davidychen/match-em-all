@@ -60,33 +60,13 @@ import CardFooter from "../../components/Card/CardFooter.jsx";
 
 import Loader from "react-loader-spinner";
 
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "../../variables/charts";
-
 import gameStyle from "../../assets/jss/material-dashboard-pro-react/views/gameStyle";
-
-var mapData = {
-  AU: 760,
-  BR: 550,
-  CA: 120,
-  DE: 1300,
-  FR: 540,
-  GB: 690,
-  GE: 200,
-  IN: 200,
-  RO: 600,
-  RU: 300,
-  US: 2920
-};
 
 function Transition(props) {
   return <Slide direction="down" {...props} />;
 }
 
-class Game extends React.Component {
+class Collection extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -188,7 +168,7 @@ class Game extends React.Component {
     if (!this.props.board || this.props.board.length === 0) {
       return (
         <div>
-          <Heading title="Loading..." textAlign="center" />
+          <Heading title="Loading" textAlign="center" />
           <GridContainer>
             <GridItem xs={12}>
               <Card plain>
@@ -210,128 +190,6 @@ class Game extends React.Component {
     }
   }
 
-  renderAvatarBox(classes) {
-    if (this.props.players && this.props.matchPlayers) {
-      return (
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12} lg={12}>
-            <Card>
-              <CardBody avatar>
-                <div className={classes.stats + " " + classes.avatar}>
-                  {this.renderAvatars(classes)}
-                </div>
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      );
-    }
-  }
-
-  renderInfoBox(classes) {
-    if (this.props.board && this.props.matchPlayers && this.props.user) {
-      this.calcInfo();
-      return (
-        <GridContainer>
-          <GridItem xs={12} sm={6} md={6} lg={6}>
-            <Card>
-              <CardHeader color="success" stats icon>
-                <CardIcon color="success">
-                  <CheckCircle />
-                </CardIcon>
-                <p className={classes.cardCategory}>You matched</p>
-                <h3 className={classes.cardTitle}>
-                  {"" +
-                    this.count +
-                    "/" +
-                    Math.floor(this.props.board.length / 2)}
-                </h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <Help />
-                  <a href="#" onClick={() => this.handleClickOpen()}>
-                    How to play
-                  </a>
-                </div>
-                <Dialog
-                  classes={{
-                    root: classes.center + " " + classes.modalRoot,
-                    paper: classes.modal
-                  }}
-                  open={this.state.modal}
-                  TransitionComponent={Transition}
-                  keepMounted
-                  onClose={() => this.handleClose()}
-                  aria-labelledby="classic-modal-slide-title"
-                  aria-describedby="classic-modal-slide-description"
-                >
-                  <DialogTitle
-                    id="classic-modal-slide-title"
-                    disableTypography
-                    className={classes.modalHeader}
-                  >
-                    <Button
-                      justIcon
-                      className={classes.modalCloseButton}
-                      key="close"
-                      aria-label="Close"
-                      color="transparent"
-                      onClick={() => this.handleClose("classicModal")}
-                    >
-                      <Close className={classes.modalClose} />
-                    </Button>
-                    <h4 className={classes.modalTitle}>How To Play</h4>
-                  </DialogTitle>
-                  <DialogContent
-                    id="classic-modal-slide-description"
-                    className={classes.modalBody}
-                  >
-                    <p>
-                      Turn over (by clicking them) any two cards and add them
-                      into your collection if the cards match. If two cards do
-                      not match, those cards are turned face down again.
-                    </p>
-                    <p>
-                      Blue cards are those selected by you, Green ones are
-                      matched by you, and red ones are matched by other players.
-                    </p>
-                  </DialogContent>
-                  <DialogActions className={classes.modalFooter}>
-                    <Button
-                      onClick={() => this.handleClose("classicModal")}
-                      color="danger"
-                      simple
-                    >
-                      Close
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={6}>
-            <Card>
-              <CardHeader color="warning" stats icon>
-                <CardIcon color="warning">
-                  <Favorite />
-                </CardIcon>
-                <p className={classes.cardCategory}>Last matched Pokemon</p>
-                <h3 className={classes.cardTitle}>{this.lastMatch}</h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <Update />
-                  {"Matched at: "}
-                  {this.matchAt}
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      );
-    }
-  }
   renderCards(classes) {
     if (this.props.board) {
       const cards = this.props.board.map((card, idx) => {
@@ -360,8 +218,6 @@ class Game extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-        {this.renderAvatarBox(classes)}
-        {this.renderInfoBox(classes)}
         {this.renderCards(classes)}
         {this.renderLoading(classes)}
       </div>
@@ -369,7 +225,7 @@ class Game extends React.Component {
   }
 }
 
-Game.propTypes = {
+Collection.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object,
   board: PropTypes.arrayOf(PropTypes.object),
@@ -389,4 +245,4 @@ export default withTracker(() => {
     ready: handleBoard.ready() && handlePlayer.ready(),
     user: user
   };
-})(withStyles(gameStyle)(Game));
+})(withStyles(gameStyle)(Collection));

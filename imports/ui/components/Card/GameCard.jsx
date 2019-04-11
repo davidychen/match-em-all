@@ -157,6 +157,20 @@ const style = theme => ({
       ", 0.12), 0 8px 10px -5px rgba(" +
       hexToRgb(blackColor) +
       ", 0.2)"
+  },
+  cardCollection: {
+    "&:hover, &:focus": {
+      transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
+      cursor: "pointer",
+      boxShadow:
+        "0 16px 38px -12px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.56), 0 4px 25px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.12), 0 8px 10px -5px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.2)"
+    }
   }
 });
 
@@ -183,6 +197,23 @@ class GameCard extends React.Component {
     }
     const imgLink = name
       ? "http://pokestadium.com/sprites/xy/" + tempName + ".gif"
+      : "/loader.gif";
+
+    return imgLink;
+  }
+
+  getBackLink(name) {
+    let tempName = name;
+    switch (name) {
+      case "nidoran-m":
+        tempName = "nidoranm";
+        break;
+      case "nidoran-f":
+        tempName = "nidoranf";
+        break;
+    }
+    const imgLink = name
+      ? "http://pokestadium.com/sprites/xy/back/" + tempName + ".gif"
       : "/loader.gif";
 
     return imgLink;
@@ -217,6 +248,17 @@ class GameCard extends React.Component {
     clearTimeout(this.timer);
   }
 
+  mouseEnter() {
+    if (this.props.collection) {
+      this.setState({ turnBack: true });
+    }
+  }
+  mouseLeave() {
+    if (this.props.collection) {
+      this.setState({ turnBack: false });
+    }
+  }
+
   render() {
     const {
       classes,
@@ -227,45 +269,89 @@ class GameCard extends React.Component {
       selected,
       matched,
       matchedOwn,
-      star
+      star,
+      collection
     } = this.props;
     const gameCardFrontClasses = classNames({
       [classes.cardFront]: true,
       [classes.cardSelected]: selected,
       [classes.cardMatched]: matched,
-      [classes.cardMatchedOwn]: matchedOwn
+      [classes.cardMatchedOwn]: matchedOwn,
+      [classes.cardCollection]: collection
     });
 
     const imgLink =
       !this.state.prevBack && back ? this.state.prevLink : this.getLink(name);
+    let imgBackLink;
+    if (collection) {
+      imgBackLink = this.getBackLink(name);
+    }
 
     return (
-      <div style={{ marginTop: "30px", marginBottom: "30px" }}>
-        <ReactCardFlip isFlipped={back}>
-          <Card key="back" game className={classes.cardBack} onClick={onClick}>
-            <div className={classes.cardBackDivider} />
-            <div className={classes.cardBackCircle} />
-          </Card>
-          <Card
-            key="front"
-            game
-            className={gameCardFrontClasses}
-            onClick={onClick}
-          >
-            <div className={classes.imageSquare}>
-              <img
-                className={classes.sprite}
-                src={imgLink}
-                alt={name ? name : "guess " + idx}
-              />
-              {star && (
-                <div className={classes.star}>
-                  <img src={"/star3.png"} alt={"star " + idx} />
-                </div>
-              )}
-            </div>
-          </Card>
-        </ReactCardFlip>
+      <div
+        style={{ marginTop: "30px", marginBottom: "30px" }}
+        onMouseEnter={this.mouseEnter.bind(this)}
+        onMouseLeave={this.mouseLeave.bind(this)}
+      >
+        {collection && (
+          <ReactCardFlip isFlipped={this.state.turnBack}>
+            <Card key="back" game className={gameCardFrontClasses}>
+              <div className={classes.imageSquare}>
+                <img
+                  className={classes.sprite}
+                  src={imgBackLink}
+                  alt={name ? name : "guess " + idx}
+                />
+                {star && (
+                  <div className={classes.star}>
+                    <img src={"/star3.png"} alt={"star " + idx} />
+                  </div>
+                )}
+              </div>
+            </Card>
+            <Card key="front" game className={gameCardFrontClasses}>
+              <div className={classes.imageSquare}>
+                <img
+                  className={classes.sprite}
+                  src={imgLink}
+                  alt={name ? name : "guess " + idx}
+                />
+                {star && (
+                  <div className={classes.star}>
+                    <img src={"/star3.png"} alt={"star " + idx} />
+                  </div>
+                )}
+              </div>
+            </Card>
+          </ReactCardFlip>
+        )}
+        {!collection && (
+          <ReactCardFlip isFlipped={back}>
+            <Card
+              key="back"
+              game
+              className={classes.cardBack}
+              onClick={onClick}
+            >
+              <div className={classes.cardBackDivider} />
+              <div className={classes.cardBackCircle} />
+            </Card>
+            <Card key="front" game className={gameCardFrontClasses}>
+              <div className={classes.imageSquare}>
+                <img
+                  className={classes.sprite}
+                  src={imgLink}
+                  alt={name ? name : "guess " + idx}
+                />
+                {star && (
+                  <div className={classes.star}>
+                    <img src={"/star3.png"} alt={"star " + idx} />
+                  </div>
+                )}
+              </div>
+            </Card>
+          </ReactCardFlip>
+        )}
       </div>
     );
   }
@@ -280,7 +366,8 @@ GameCard.propTypes = {
   selected: PropTypes.bool,
   matched: PropTypes.bool,
   matchedOwn: PropTypes.bool,
-  star: PropTypes.bool
+  star: PropTypes.bool,
+  collection: PropTypes.bool
 };
 
 export default withStyles(style)(GameCard);

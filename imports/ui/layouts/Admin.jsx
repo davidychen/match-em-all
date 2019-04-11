@@ -7,7 +7,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import ScrollToTop from "react-scroll-up";
 import Sticky from "react-sticky-el";
-
+import Collection from "../views/Collection/Collection.jsx";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -41,12 +41,11 @@ class Dashboard extends React.Component {
       scrollTop: 0
     };
     this.resizeFunction = this.resizeFunction.bind(this);
-    this.mainPanelRef;
     this.scrollTop;
   }
   componentDidMount() {
     if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(this.mainPanelRef, {
+      ps = new PerfectScrollbar(this.state.mainPanelRef, {
         suppressScrollX: true,
         suppressScrollY: false
       });
@@ -57,7 +56,8 @@ class Dashboard extends React.Component {
     this.setState({ scrollReady: true });
   }
   scroll(x, y) {
-    this.mainPanelRef.scrollTop = y;
+    const mainPanelRef = this.state.mainPanelRef;
+    mainPanelRef.scrollTop = y;
   }
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -66,8 +66,9 @@ class Dashboard extends React.Component {
     window.removeEventListener("resize", this.resizeFunction);
   }
   componentDidUpdate(e) {
+    const mainPanelRef = this.state.mainPanelRef;
     if (e.history.location.pathname !== e.location.pathname) {
-      this.mainPanelRef.scrollTop = 0;
+      mainPanelRef.scrollTop = 0;
       if (this.state.mobileOpen) {
         this.setState({ mobileOpen: false });
       }
@@ -116,14 +117,25 @@ class Dashboard extends React.Component {
         return this.getRoutes(prop.views);
       }
       if (prop.layout === "/admin") {
-        return (
-          <Route
-            exact
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
+        if (prop.name === "Collection") {
+          return (
+            <Route
+              exact
+              path={prop.layout + prop.path}
+              render={() => <Collection scrollRef={this.state.mainPanelRef} />}
+              key={key}
+            />
+          );
+        } else {
+          return (
+            <Route
+              exact
+              path={prop.layout + prop.path}
+              component={prop.component}
+              key={key}
+            />
+          );
+        }
       } else {
         return null;
       }
@@ -138,8 +150,9 @@ class Dashboard extends React.Component {
     }
   }
   render() {
-    let mainPanelRefFunc = el => (this.mainPanelRef = el);
-    let barRefFunc = el => (this.barRef = el);
+    let mainPanelRefFunc = el =>
+      !this.state.mainPanelRef && this.setState({ mainPanelRef: el });
+    let barRefFunc = el => !this.state.barRef && this.setState({ barRef: el });
     const { classes, ...rest } = this.props;
     const mainPanel =
       classes.mainPanel +
@@ -182,10 +195,12 @@ class Dashboard extends React.Component {
               </div>
             </div>
             {this.state.scrollReady && (
-              <Sticky mode="bottom" boundaryElement=".block" scrollElement=".main-panel">
-                <ScrollUp
-                  headerRef={this.barRef}
-                />
+              <Sticky
+                mode="bottom"
+                boundaryElement=".block"
+                scrollElement=".main-panel"
+              >
+                <ScrollUp headerRef={this.state.barRef} />
               </Sticky>
             )}
           </div>

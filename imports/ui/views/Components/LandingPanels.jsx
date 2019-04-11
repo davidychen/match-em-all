@@ -218,7 +218,7 @@ class LandingPanels extends React.Component {
                         Daily Pokemons Matched
                       </h4>
                       <p className={classes.cardCategory}>
-                        Cumulative Number of Pokemons by Day
+                        Number of Pokemons Matched in the past week
                       </p>
                     </CardBody>
                   </Card>

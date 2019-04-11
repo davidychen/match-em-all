@@ -128,9 +128,14 @@ function shuffle(array) {
 
 function searchTree(chain, name) {
   if (chain.species.name === name) {
-    return chain.evolves_to.map(poke =>
-      parseInt(poke.species.url.match(/pokemon-species\/(.*?)\//)[1])
-    );
+    return chain.evolves_to.map(poke => {
+      return {
+        pokemonId: parseInt(
+          poke.species.url.match(/pokemon-species\/(.*?)\//)[1]
+        ),
+        name: poke.species.name
+      };
+    });
   } else if (chain.evolves_to.length !== 0) {
     let i;
     let result = undefined;
@@ -423,6 +428,74 @@ Meteor.methods({
         }, 5000);
       }
     }
+  },
+  "match.em.all"() {
+    let range = [];
+    for (let i = 0; i < total; i++) {
+      range.push(i);
+    }
+
+    range.forEach(idx => {
+      MatchPlayers.update(
+        { ownerId: this.userId },
+        {
+          $inc: { count: 1 },
+          $set: { pokemon: gamePokes[idx].name_en, matchAt: new Date() }
+        },
+        { upsert: true }
+      );
+      Collections.update(
+        {
+          ownerId: this.userId,
+          pokemonId: gamePokes[idx].id
+        },
+        {
+          $inc: { count: 1 },
+          $setOnInsert: {
+            id: gamePokes[idx].id,
+            name: gamePokes[idx].name,
+            name_en: gamePokes[idx].name_en,
+            color: gamePokes[idx].color,
+            type: gamePokes[idx].type,
+            rate: gamePokes[idx].rate,
+            legendary: gamePokes[idx].legendary,
+            evolves_to: gamePokes[idx].evolves_to,
+            firstAt: new Date()
+          }
+        },
+        { upsert: true }
+      );
+      Daily.update(
+        {
+          date: moment()
+            .startOf("day")
+            .toDate()
+        },
+        {
+          $inc: { count: 1 },
+          $setOnInsert: {
+            day: moment().day()
+          }
+        },
+        { upsert: true }
+      );
+      const types = gamePokes[idx].type;
+      const count = types.length === 0 ? 0 : 1 / types.length;
+      types.forEach(type =>
+        Types.update(
+          { type: type },
+          {
+            $inc: { count: count },
+            $setOnInsert: {
+              typeId: TYPES[type].typeId,
+              type_color: TYPES[type].type_color
+            }
+          },
+          { upsert: true }
+        )
+      );
+    });
+    init();
   }
   /*"game.login"() {
     if (!this.userId) {
