@@ -40,6 +40,9 @@ You can either use a local meteor database or a cloud database. If you need to u
 ![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/1.PNG)
 ![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/2.PNG)
 ![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/3.PNG)
+![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/4.PNG)
+![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/5.PNG)
+![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/6.PNG)
 
 # Demonstration Video
 [Youtube match em all](https://youtu.be/YLzTZ_vj-aQ)
