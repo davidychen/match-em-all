@@ -18,6 +18,9 @@ export const Pokemon = new Mongo.Collection("pokemon");
 const total = 36;
 let gamePokes = [];
 const timeouts = {};
+let initTimeout;
+const apiTimeouts = {};
+let startTime = new Date();
 const legendary = new Set([
   144,
   145,
@@ -89,6 +92,7 @@ const mythical = new Set([
   /*generation vi (4)*/
 ]);
 
+// type with colors
 const TYPES = {
   normal: { typeId: 1, type_color: "#A8A878" },
   fighting: { typeId: 2, type_color: "#C03028" },
@@ -112,6 +116,7 @@ const TYPES = {
   shadow: { typeId: 20, type_color: "#604E82" }
 };
 
+// shuffle all cards!
 function shuffle(array) {
   let ctr = array.length,
     temp,
@@ -126,6 +131,7 @@ function shuffle(array) {
   return array;
 }
 
+// search in a evolution-chain and find all pokemons that it can evolve to :)
 function searchTree(chain, name) {
   if (chain.species.name === name) {
     return chain.evolves_to.map(poke => {
@@ -147,7 +153,10 @@ function searchTree(chain, name) {
   return [];
 }
 
-function getOne(count, prev, callback) {
+// get one pokemon by getting catching rate and if not pass test, rerun!
+// using pokeapi.co: pokemon-species and pokemon
+// to get types & color & ...
+function getOne(count, prev, i, callback) {
   let pokeId = Math.floor(Math.random() * (721 - 1)) + 1;
   axios
     .get("https://pokeapi.co/api/v2/pokemon-species/" + pokeId.toString())
@@ -199,16 +208,18 @@ function getOne(count, prev, callback) {
               })
               .catch(error => {
                 console.log(error);
-                Meteor.setTimeout(function restart() {
-                  init();
-                }, 60000);
+                Meteor.clearTimeout(apiTimeouts[i]);
+                apiTimeouts[i] = Meteor.setTimeout(function restart() {
+                  getOne(count, prev, i, callback);
+                }, 5000);
               });
           })
           .catch(error => {
             console.log(error);
-            Meteor.setTimeout(function restart() {
-              init();
-            }, 60000);
+            Meteor.clearTimeout(apiTimeouts[i]);
+            apiTimeouts[i] = Meteor.setTimeout(function restart() {
+              getOne(count, prev, i, callback);
+            }, 5000);
           });
 
         // return now;
@@ -222,28 +233,39 @@ function getOne(count, prev, callback) {
           next = prev;
         }
 
-        getOne(count - 1, next, callback);
+        getOne(count - 1, next, i, callback);
       }
     })
     .catch(error => {
       console.log(error);
-      Meteor.setTimeout(function restart() {
-        init();
-      }, 60000);
+      Meteor.clearTimeout(apiTimeouts[i]);
+      apiTimeouts[i] = Meteor.setTimeout(function restart() {
+        getOne(count, prev, i, callback);
+      }, 5000);
     });
 }
 
+// Run 3 times and push the pokemon into board!
 async function getByRarity(n, callback) {
   // console.log(callback);
   for (let i = 0; i < n / 2; i++) {
-    getOne(3, undefined, callback);
+    getOne(3, undefined, i, callback);
   }
 }
-
+// Initiate Game with considering API limit: 100 API requests per IP address per minute
+//  (https://pokeapi.co/docs/v2.html)
+// Get pokemons by their rarity.. :)
 async function init() {
   if (Meteor.isServer) {
-    Board.remove({ index: { $exists: true } }, () => {
+    Board.remove({ _id: { $exists: true } }, () => {
       gamePokes = [];
+      const timeNow = new Date();
+      /*if (timeNow - startTime <= 60000) {
+        Meteor.clearTimeout(initTimeout);
+        initTimeout = Meteor.setTimeout(function restart() {
+          init();
+        }, 5000);
+      }*/
       getByRarity(total, n => {
         gamePokes.push(n);
         gamePokes.push(n);
@@ -315,6 +337,7 @@ function flipBackTimeout(index, userId) {
 }
 
 Meteor.methods({
+  // card flip with all game logics behind
   "card.flip"(index) {
     if (!this.userId) {
       throw new Meteor.Error("not-authorized");
@@ -441,103 +464,11 @@ Meteor.methods({
       }
       const matched = Board.find({ match: true }).fetch().length;
       if (matched === total) {
-        Meteor.setTimeout(function restart() {
+        Meteor.clearTimeout(initTimeout);
+        initTimeout = Meteor.setTimeout(function restart() {
           init();
         }, 5000);
       }
     }
   }
-  /*,
-  "match.em.all"() {
-    let range = [];
-    for (let i = 0; i < total; i++) {
-      range.push(i);
-    }
-
-    range.forEach(idx => {
-      MatchPlayers.update(
-        { ownerId: this.userId },
-        {
-          $inc: { count: 1 },
-          $set: { pokemon: gamePokes[idx].name_en, matchAt: new Date() }
-        },
-        { upsert: true }
-      );
-      Collections.update(
-        {
-          ownerId: this.userId,
-          pokemonId: gamePokes[idx].id
-        },
-        {
-          $inc: { count: 1 },
-          $setOnInsert: {
-            id: gamePokes[idx].id,
-            name: gamePokes[idx].name,
-            name_en: gamePokes[idx].name_en,
-            color: gamePokes[idx].color,
-            type: gamePokes[idx].type,
-            rate: gamePokes[idx].rate,
-            legendary: gamePokes[idx].legendary,
-            evolves_to: gamePokes[idx].evolves_to,
-            firstAt: new Date()
-          }
-        },
-        { upsert: true }
-      );
-      Daily.update(
-        {
-          date: moment()
-            .startOf("day")
-            .toDate()
-        },
-        {
-          $inc: { count: 1 },
-          $setOnInsert: {
-            day: moment().day()
-          }
-        },
-        { upsert: true }
-      );
-      const types = gamePokes[idx].type;
-      const count = types.length === 0 ? 0 : 1 / types.length;
-      types.forEach(type =>
-        Types.update(
-          { type: type },
-          {
-            $inc: { count: count },
-            $setOnInsert: {
-              typeId: TYPES[type].typeId,
-              type_color: TYPES[type].type_color
-            }
-          },
-          { upsert: true }
-        )
-      );
-    });
-    init();
-  }*/
-  /*"game.login"() {
-    if (!this.userId) {
-      throw new Meteor.Error("not-authorized");
-    }
-    console.log("IN");
-    const avatarId = Meteor.user().profile
-      ? Meteor.user().profile.avatarId
-      : undefined;
-    Players.upsert(
-      {
-        userId: this.userId,
-        username: Meteor.user().username,
-        avatarId: avatarId
-      },
-      { $set: { when: new Date() } }
-    );
-  },
-  "game.logout"() {
-    if (!this.userId) {
-      throw new Meteor.Error("not-authorized");
-    }
-    console.log("OUT");
-    Players.remove({ userId: this.userId, username: Meteor.user().username });
-  }*/
 });
