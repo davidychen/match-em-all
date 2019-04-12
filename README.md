@@ -1,6 +1,6 @@
 # match-em-all
 
-A flipping pokemon card game. When you flip two same card, you catch the pokemon!
+A flipping pokemon card game. When you flip two same card, you catch the pokemon! Compete with others and expand your collection! Try to Catch some rare pokemons like Groudon! We have statistics of kinds of pokemon caught every day!
 
 # Deployment
 
@@ -29,12 +29,12 @@ Which will run the front-end development server on the port 3000, then visit (ht
 
 # Database
 
-You can either use a local meteor database or a cloud database. If you need to use a cloud database, Just set your database url as variable MONGO_URL in .env as an environment variable. It has 2 collections: pokemon, collect.
+You can either use a local meteor database or a cloud database. If you need to use a cloud database, Just set your database url as variable MONGO_URL in .env as an environment variable. It has 2 collections: pokemon, collect. We are using the heroku add-on database.
 
 
 # Author
-[Shuomin Wu](https://simonwux.github.io/)
 [Yifei Chen](http://davidychen.com/HomepageDavidChen/)
+[Shuomin Wu](https://simonwux.github.io/)
 
 # Screenshots
 ![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/1.PNG)
