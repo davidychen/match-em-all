@@ -8,7 +8,7 @@ import { renderRoutes } from "../imports/startup/client/routes.js";
 
 import ReactGA from "react-ga";
 
-ReactGA.initialize("YourAnalyticsID");
+ReactGA.initialize("UA-138206885-1");
 
 Meteor.startup(() => {
   render(renderRoutes(), document.getElementById("react-root"));
