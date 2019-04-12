@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 // import ReactDOM from "react-dom";
-import { createBrowserHistory } from "history";
+import createHistory from "history/createBrowserHistory";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 // core components
@@ -13,7 +13,7 @@ import "../../ui/assets/scss/material-dashboard-pro-react.scss";
 
 import ReactGA from "react-ga";
 
-const hist = createBrowserHistory();
+const hist = createHistory();
 hist.listen(location => {
   ReactGA.set({ page: location.pathname });
   ReactGA.pageview(location.pathname);
