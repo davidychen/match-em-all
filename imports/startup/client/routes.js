@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 // import ReactDOM from "react-dom";
@@ -11,7 +11,13 @@ import AdminLayout from "../../ui/layouts/Admin.jsx";
 
 import "../../ui/assets/scss/material-dashboard-pro-react.scss";
 
+import ReactGA from "react-ga";
+
 const hist = createBrowserHistory();
+hist.listen(location => {
+  ReactGA.set({ page: location.pathname });
+  ReactGA.pageview(location.pathname);
+});
 
 function ProtectedRoute({ component: Component, ...rest }) {
   return (
@@ -38,13 +44,23 @@ ProtectedRoute.propTypes = {
   location: PropTypes.object
 };
 
-export const renderRoutes = () => (
-  <Router history={hist}>
-    <Switch>
-      <Route path="/public" component={PublicLayout} />
-      <ProtectedRoute path="/admin" component={AdminLayout} />
-      <Redirect exact from="/" to="/public/landing-page" />
-      <Redirect from="*" to="/public/error-page" />
-    </Switch>
-  </Router>
-);
+class AppRoutes extends Component {
+  componentDidMount() {
+    ReactGA.pageview(window.location.pathname);
+  }
+
+  render() {
+    return (
+      <Router history={hist}>
+        <Switch>
+          <Route path="/public" component={PublicLayout} />
+          <ProtectedRoute path="/admin" component={AdminLayout} />
+          <Redirect exact from="/" to="/public/landing-page" />
+          <Redirect from="*" to="/public/error-page" />
+        </Switch>
+      </Router>
+    );
+  }
+}
+
+export const renderRoutes = () => <AppRoutes />;

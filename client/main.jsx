@@ -6,6 +6,10 @@ import "../imports/startup/accounts-config.js";
 // import App from "../imports/ui/App.jsx";
 import { renderRoutes } from "../imports/startup/client/routes.js";
 
+import ReactGA from "react-ga";
+
+ReactGA.initialize("YourAnalyticsID");
+
 Meteor.startup(() => {
   render(renderRoutes(), document.getElementById("react-root"));
 });
