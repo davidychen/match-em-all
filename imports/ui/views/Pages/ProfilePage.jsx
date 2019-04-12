@@ -132,10 +132,10 @@ class PropfilePage extends React.Component {
         <GridItem xs={12} sm={8}>
           <Card className={classes.card}>
             <div className={classes.wizardHeader}>
-              <h3 className={classes.title}>Your Profile</h3>
-              <h5 className={classes.subtitle}>
+              <h2 className={classes.title}>Your Profile</h2>
+              <h3 className={classes.subtitle}>
                 You can make changes to your profile.
-              </h5>
+              </h3>
             </div>
             <div className={classes.content}>
               <GridContainer justify="center">
@@ -164,6 +164,7 @@ class PropfilePage extends React.Component {
                     onChange={this.handleChange}
                     name="avatar"
                     options={options}
+                    aria-label={"avatar"}
                   />
                   <Button
                     color="primary"

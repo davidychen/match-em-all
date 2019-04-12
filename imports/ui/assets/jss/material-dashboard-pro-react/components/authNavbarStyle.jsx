@@ -51,6 +51,9 @@ const pagesHeaderStyle = theme => ({
     "&:hover,&:focus": {
       background: "transparent",
       color: whiteColor
+    },
+    "& h1": {
+      fontSize: "18px"
     }
   },
   appResponsive: {

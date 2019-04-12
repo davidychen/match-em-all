@@ -161,7 +161,7 @@ class AuthNavbar extends React.Component {
             <div className={classes.flex}>
               <Link to="/">
                 <Button className={classes.title} color="transparent">
-                  Match &apos;Em All
+                  <h1>Match &apos;Em All</h1>
                 </Button>
               </Link>
             </div>

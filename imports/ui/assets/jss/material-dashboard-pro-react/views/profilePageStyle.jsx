@@ -29,10 +29,12 @@ const profilePageStyle = {
     padding: "25px 0 35px"
   },
   title: {
-    margin: "0"
+    margin: "0",
+    fontSize: "1.825em"
   },
   subtitle: {
-    margin: "5px 0 0"
+    margin: "5px 0 0",
+    fontSize: "1.25em"
   },
   wizardNavigation: {
     position: "relative"

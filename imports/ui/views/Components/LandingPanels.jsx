@@ -163,7 +163,7 @@ class LandingPanels extends React.Component {
       ));
       return (
         <CardFooter stats className={classes.cardFooter}>
-          <h6 className={classes.legendTitle}>Legend</h6>
+          <h5 className={classes.legendTitle}>Legend</h5>
           <div className={classes.legendBadge}>{content}</div>
         </CardFooter>
       );

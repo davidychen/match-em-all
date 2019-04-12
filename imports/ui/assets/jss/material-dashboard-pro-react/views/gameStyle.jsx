@@ -18,7 +18,8 @@ const dashboardStyle = theme => ({
   cardTitle: {
     ...cardTitle,
     marginTop: "0px",
-    marginBottom: "3px"
+    marginBottom: "3px",
+    fontSize: "1.825em"
   },
   cardIconTitle: {
     ...cardTitle,
@@ -37,7 +38,7 @@ const dashboardStyle = theme => ({
     paddingTop: "10px",
     marginBottom: "0",
     marginTop: "0",
-    margin: "0"
+    margin: "0",
   },
   cardProductDesciprion: {
     textAlign: "center",

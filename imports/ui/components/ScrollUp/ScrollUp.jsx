@@ -94,6 +94,7 @@ class ScrollUp extends React.Component {
         onClick={() => {
           this.scrollToTop();
         }}
+        aria-label={"go-up"}
       >
         <ArrowUpward className={classes.icons} />
       </Button>

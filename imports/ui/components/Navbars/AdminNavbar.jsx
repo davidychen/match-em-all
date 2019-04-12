@@ -58,7 +58,7 @@ function AdminNavbar({ ...props }) {
         <div className={classes.flex} ref={props.refFunc}>
           {/* Here we create navbar brand, based on route name */}
           <Button href="#" className={classes.title} color="transparent">
-            {brandText}
+            <h1>{brandText}</h1>
           </Button>
         </div>
         {/*<Hidden smDown implementation="css">

@@ -417,6 +417,7 @@ class Collection extends React.Component {
                           round
                           className={classes.orderButton}
                           onClick={this.handleOrder.bind(this)}
+                          aria-label={"order"}
                         >
                           <ArrowUpward className={classes.icons} />
                         </Button>

@@ -38,8 +38,8 @@ const headerStyle = () => ({
   },
   title: {
     ...defaultFont,
-    lineHeight: "30px",
     fontSize: "18px",
+    lineHeight: "30px",
     borderRadius: "3px",
     textTransform: "none",
     color: "inherit",
@@ -48,6 +48,11 @@ const headerStyle = () => ({
     margin: "0 !important",
     "&:hover,&:focus": {
       background: "transparent"
+    },
+    "& span": {
+      "& h1": {
+        fontSize: "18px",
+      }
     }
   },
   primary: {

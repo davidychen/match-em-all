@@ -200,12 +200,12 @@ class Game extends React.Component {
                   <CheckCircle />
                 </CardIcon>
                 <p className={classes.cardCategory}>You matched</p>
-                <h3 className={classes.cardTitle}>
+                <h2 className={classes.cardTitle}>
                   {"" +
                     this.count +
                     "/" +
                     Math.floor(this.props.board.length / 2)}
-                </h3>
+                </h2>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
@@ -277,7 +277,7 @@ class Game extends React.Component {
                   <Favorite />
                 </CardIcon>
                 <p className={classes.cardCategory}>Last matched Pokemon</p>
-                <h3 className={classes.cardTitle}>{this.lastMatch}</h3>
+                <h2 className={classes.cardTitle}>{this.lastMatch}</h2>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>

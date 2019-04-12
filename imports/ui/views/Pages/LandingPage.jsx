@@ -23,9 +23,9 @@ class LandingPage extends React.Component {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
               <h2 className={classes.title}>Gotta Match &apos;Em All</h2>
-              <h5 className={classes.description}>
+              <h3 className={classes.description}>
                 This is a Pokemon card match game!
-              </h5>
+              </h3>
             </GridItem>
           </GridContainer>
         </Parallax>
