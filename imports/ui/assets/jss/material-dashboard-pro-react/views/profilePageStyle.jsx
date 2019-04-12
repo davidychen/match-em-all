@@ -195,8 +195,9 @@ const profilePageStyle = {
           hexToRgb(blackColor) +
           ", 0.12), 0 8px 10px -5px rgba(" +
           hexToRgb(blackColor) +
-          ", 0.2)"
-      }
+          ", 0.2)",
+        borderColor: primaryColor[0]
+      },
     }
   },
   profilePicture: {},
