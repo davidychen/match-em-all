@@ -77,7 +77,10 @@ if (Meteor.isServer) {
   Meteor.publish("avatar-ids", function avatarIdsPublish() {
     return Collections.find(
       { ownerId: this.userId },
-      { sort: { name_en: 1 }, fields: { pokemonId: true, name_en: true } }
+      {
+        sort: { name_en: 1 },
+        fields: { pokemonId: true, name: true, name_en: true }
+      }
     );
   });
 }

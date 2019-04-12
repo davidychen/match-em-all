@@ -238,7 +238,7 @@ class Sidebar extends React.Component {
           </ListItem>
         );
       }
-      if (prop.layout === "/admin") {
+      if (prop.layout === "/admin" && prop.name !== "Profile") {
         const innerNavLinkClasses =
           classes.collapseItemLink +
           " " +
@@ -460,6 +460,23 @@ class Sidebar extends React.Component {
                     />
                   </NavLink>
                 </ListItem>*/}
+                <ListItem className={classes.collapseItem}>
+                  <NavLink
+                    to="/admin/profile"
+                    className={
+                      classes.itemLink + " " + classes.userCollapseLinks
+                    }
+                  >
+                    <span className={collapseItemMini}>
+                      {"MP"}
+                    </span>
+                    <ListItemText
+                      primary={"My Profile"}
+                      disableTypography={true}
+                      className={collapseItemText}
+                    />
+                  </NavLink>
+                </ListItem>
                 <ListItem className={classes.collapseItem}>
                   <a
                     onClick={this.logout}

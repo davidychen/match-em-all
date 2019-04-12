@@ -20,7 +20,7 @@ let gamePokes = [];
 const timeouts = {};
 let initTimeout;
 const apiTimeouts = {};
-let startTime = new Date();
+// let startTime = new Date();
 const legendary = new Set([
   144,
   145,
@@ -259,8 +259,8 @@ async function init() {
   if (Meteor.isServer) {
     Board.remove({ _id: { $exists: true } }, () => {
       gamePokes = [];
-      const timeNow = new Date();
-      /*if (timeNow - startTime <= 60000) {
+      /*const timeNow = new Date();
+      if (timeNow - startTime <= 60000) {
         Meteor.clearTimeout(initTimeout);
         initTimeout = Meteor.setTimeout(function restart() {
           init();

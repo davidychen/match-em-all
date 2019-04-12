@@ -33,7 +33,7 @@ Meteor.methods({
     } else {
       Meteor.users.update(
         { _id: this.userId },
-        { $set: { avatarId: id } }
+        { $set: { "profile.avatarId": id } }
       );
     }
   }

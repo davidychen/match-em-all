@@ -17,8 +17,9 @@ import LandingPage from "./views/Pages/LandingPage.jsx";
 import LoginPage from "./views/Pages/LoginPage.jsx";
 /*import Notifications from "views/Components/Notifications.jsx";
 import Panels from "views/Components/Panels.jsx";
-import PricingPage from "views/Pages/PricingPage.jsx";
-import RTLSupport from "views/Pages/RTLSupport.jsx";
+import PricingPage from "views/Pages/PricingPage.jsx";*/
+import ProfilePage from "./views/Pages/ProfilePage.jsx";
+/*import RTLSupport from "views/Pages/RTLSupport.jsx";
 import ReactTables from "views/Tables/ReactTables.jsx";*/
 import RegisterPage from "./views/Pages/RegisterPage.jsx";
 /*import RegularForms from "views/Forms/RegularForms.jsx";
@@ -33,6 +34,7 @@ import Widgets from "views/Widgets/Widgets.jsx";
 import Wizard from "views/Forms/Wizard.jsx";*/
 
 // @material-ui/icons
+import AccountBox from "@material-ui/icons/AccountBox";
 //import Apps from "@material-ui/icons/Apps";
 //import DashboardIcon from "@material-ui/icons/Dashboard";
 //import DateRange from "@material-ui/icons/DateRange";
@@ -57,6 +59,13 @@ var dashRoutes = [
     name: "Collection",
     icon: Collections,
     component: Collection,
+    layout: "/admin"
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    icon: AccountBox,
+    component: ProfilePage,
     layout: "/admin"
   },
   {
