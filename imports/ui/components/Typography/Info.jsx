@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import typographyStyle from "assets/jss/material-dashboard-pro-react/components/typographyStyle.jsx";
+import typographyStyle from "../../assets/jss/material-dashboard-pro-react/components/typographyStyle.jsx";
 
 function Info({ ...props }) {
   const { classes, children } = props;
@@ -16,7 +16,8 @@ function Info({ ...props }) {
 }
 
 Info.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  children: PropTypes.any
 };
 
 export default withStyles(typographyStyle)(Info);

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -27,5 +28,13 @@ function GridItem({ ...props }) {
     </Grid>
   );
 }
+
+GridItem.propTypes = {
+  classes: PropTypes.any,
+  children: PropTypes.any,
+  className: PropTypes.any,
+  landing: PropTypes.any,
+  game: PropTypes.any
+};
 
 export default withStyles(style)(GridItem);

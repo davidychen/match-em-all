@@ -4,7 +4,7 @@ import {
   cardTitle,
   grayColor,
   whiteColor,
-  primaryColor,
+  /*primaryColor,*/
   dangerColor,
   boxShadow
 } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
@@ -104,7 +104,7 @@ const dashboardStyle = theme => ({
     /*paddingBottom: "20px",*/
     position: "relative",
     "&:after": {
-      content: '""',
+      content: "\"\"",
       position: "absolute",
       bottom: "0",
       right: "15px",

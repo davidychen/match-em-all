@@ -8,7 +8,7 @@ const style = {
   clearfix: {
     "&:after,&:before": {
       display: "table",
-      content: '" "'
+      content: "\" \""
     },
     "&:after": {
       clear: "both"

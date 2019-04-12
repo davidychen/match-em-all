@@ -42,7 +42,8 @@ CardAvatar.propTypes = {
   profile: PropTypes.bool,
   plain: PropTypes.bool,
   testimonial: PropTypes.bool,
-  testimonialFooter: PropTypes.bool
+  testimonialFooter: PropTypes.bool,
+  classes: PropTypes.any
 };
 
 export default withStyles(cardAvatarStyle)(CardAvatar);

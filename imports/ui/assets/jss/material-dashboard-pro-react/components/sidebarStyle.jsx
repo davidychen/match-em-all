@@ -70,7 +70,7 @@ const sidebarStyle = theme => ({
       zIndex: "3",
       width: "100%",
       height: "100%",
-      content: '""',
+      content: "\"\"",
       display: "block",
       top: "0"
     }
@@ -111,7 +111,7 @@ const sidebarStyle = theme => ({
     position: "relative",
     zIndex: "4",
     "&:after": {
-      content: '""',
+      content: "\"\"",
       position: "absolute",
       bottom: "0",
       height: "1px",
@@ -192,7 +192,7 @@ const sidebarStyle = theme => ({
     color: "inherit",
     "&:before,&:after": {
       display: "table",
-      content: '" "'
+      content: "\" \""
     },
     "&:after": {
       clear: "both"
@@ -484,7 +484,7 @@ const sidebarStyle = theme => ({
     margin: "20px auto 0",
     position: "relative",
     "&:after": {
-      content: '""',
+      content: "\"\"",
       position: "absolute",
       bottom: "0",
       right: "15px",

@@ -43,7 +43,8 @@ Badge.propTypes = {
     "fairy",
     "unknown",
     "shadow"
-  ])
+  ]),
+  children: PropTypes.any
 };
 
 export default withStyles(badgeStyle)(Badge);

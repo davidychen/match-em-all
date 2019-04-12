@@ -17,7 +17,7 @@ function Card({ ...props }) {
     children,
     plain,
     game,
-    back,
+    /*back,*/
     selected,
     profile,
     blog,
@@ -80,7 +80,9 @@ Card.propTypes = {
   ]),
   product: PropTypes.bool,
   chart: PropTypes.bool,
-  login: PropTypes.bool
+  login: PropTypes.bool,
+  children: PropTypes.any,
+  
 };
 
 export default withStyles(cardStyle)(Card);

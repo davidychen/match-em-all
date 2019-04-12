@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { NavLink, Link, withRouter, Redirect } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 
@@ -74,7 +74,7 @@ class LoginPage extends React.Component {
     e.preventDefault();
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
-    Meteor.loginWithPassword({username: username}, password, err => {
+    Meteor.loginWithPassword({ username: username }, password, err => {
       if (err) {
         this.setState({
           error: err.reason,

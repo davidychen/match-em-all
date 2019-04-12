@@ -50,7 +50,8 @@ CardFooter.propTypes = {
   testimonial: PropTypes.bool,
   stats: PropTypes.bool,
   chart: PropTypes.bool,
-  product: PropTypes.bool
+  product: PropTypes.bool,
+  children: PropTypes.any
 };
 
 export default withStyles(cardFooterStyle)(CardFooter);

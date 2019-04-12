@@ -76,7 +76,9 @@ Parallax.propTypes = {
   filter: PropTypes.bool,
   children: PropTypes.node,
   style: PropTypes.string,
-  image: PropTypes.string
+  image: PropTypes.string,
+  small: PropTypes.any,
+  background: PropTypes.any
 };
 
 export default withStyles(parallaxStyle)(Parallax);

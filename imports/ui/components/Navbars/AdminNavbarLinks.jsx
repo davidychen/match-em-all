@@ -152,7 +152,7 @@ class HeaderLinks extends React.Component {
               [classes.pooperNav]: true
             })}
           >
-            {({ TransitionProps, placement }) => (
+            {({ TransitionProps /*, placement*/ }) => (
               <Grow
                 {...TransitionProps}
                 id="menu-list"

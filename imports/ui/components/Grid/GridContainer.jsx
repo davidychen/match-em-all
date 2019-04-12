@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
@@ -22,7 +22,8 @@ const style = {
     // }
   },
   landingLine: {
-    background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, " +
+    background:
+      "linear-gradient(180deg, rgba(0,0,0,0) 0%, " +
       "rgba(0,0,0,0) calc(0% + 39.2px), " +
       "rgba(" +
       hexToRgb(grayColor[6]) +
@@ -41,11 +42,23 @@ function GridContainer({ ...props }) {
     <Grid
       container
       {...rest}
-      className={classes.grid + " " + className + (landing ? " " + classes.landingLine : "")}
+      className={
+        classes.grid +
+        " " +
+        className +
+        (landing ? " " + classes.landingLine : "")
+      }
     >
       {children}
     </Grid>
   );
 }
+
+GridContainer.propTypes = {
+  classes: PropTypes.any,
+  children: PropTypes.any,
+  className: PropTypes.any,
+  landing: PropTypes.any
+};
 
 export default withStyles(style)(GridContainer);

@@ -81,7 +81,8 @@ RegularButton.propTypes = {
   link: PropTypes.bool,
   justIcon: PropTypes.bool,
   className: PropTypes.string,
-  muiClasses: PropTypes.object
+  muiClasses: PropTypes.object,
+  children: PropTypes.any
 };
 
 export default withStyles(buttonStyle)(RegularButton);

@@ -13,7 +13,7 @@ const appStyle = theme => ({
     "&:after": {
       display: "table",
       clear: "both",
-      content: '" "'
+      content: "\" \""
     }
   },
   mainPanel: {

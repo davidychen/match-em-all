@@ -4,7 +4,7 @@ import {
   cardTitle,
   grayColor,
   whiteColor,
-  primaryColor,
+  /*primaryColor,*/
   dangerColor,
   boxShadow
 } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
@@ -70,7 +70,7 @@ const dashboardStyle = theme => ({
     width: "100%",
     overflowX: "scroll",
     paddingTop: "20px",
-    paddingBottom: "20px",
+    paddingBottom: "20px"
   },
   productStats: {
     paddingTop: "7px",
@@ -102,13 +102,13 @@ const dashboardStyle = theme => ({
     textAlign: "center"
   },
   avatarNoti: {
-    position: "relative",
+    position: "relative"
   },
   user: {
     /*paddingBottom: "20px",*/
     position: "relative",
     "&:after": {
-      content: '""',
+      content: "\"\"",
       position: "absolute",
       bottom: "0",
       right: "15px",

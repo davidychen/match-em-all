@@ -37,7 +37,7 @@ const pagesStyle = theme => ({
     },
     "&:before,&:after": {
       display: "block",
-      content: '""',
+      content: "\"\"",
       position: "absolute",
       width: "100%",
       height: "100%",

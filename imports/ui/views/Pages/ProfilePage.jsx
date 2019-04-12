@@ -9,7 +9,6 @@ import { Collections } from "../../../api/collections.js";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import InputAdornment from "@material-ui/core/InputAdornment";
 
 // core components
 /*import PictureUpload from "../../components/CustomUpload/PictureUpload.jsx";
@@ -75,6 +74,9 @@ class PropfilePage extends React.Component {
   }
 
   handleChange = selectedOption => {
+    if (selectedOption == null) {
+      selectedOption = { value: 0, label: "Default" };
+    }
     if (selectedOption.value !== this.state.id) {
       const id = selectedOption.value;
       this.setState({
@@ -116,12 +118,11 @@ class PropfilePage extends React.Component {
   }
 
   render() {
-    const { classes, avatars, user, avatarId } = this.props;
+    const { classes, avatars } = this.props;
     const options = avatars.map(el => {
       return { value: el.pokemonId, label: el.name_en };
     });
     options.unshift({ value: 0, label: "Default" });
-    const { selectedOption } = this.state;
     const containerClasses = cx({
       [classes.profileContainer]: true,
       [classes.succeeded]: this.state.succeeded
@@ -149,8 +150,6 @@ class PropfilePage extends React.Component {
                     </div>
                   </div>
                 </GridItem>
-                {/*defaultValue={this.state.selectedOption}
-              value={selectedOption}*/}
                 <GridItem xs={12} sm={6}>
                   <Select
                     className="basic-single"
@@ -174,27 +173,10 @@ class PropfilePage extends React.Component {
                   >
                     Save Avatar
                   </Button>
-                  {/*2 inputs here, porps : fullWidth : true*/}
                 </GridItem>
-                {/*<GridItem xs={12} sm={12} md={12} lg={10}>
-  <Button color="rose" className={""} onClick={() => this.handleSubmit}>
-    Save
-  </Button>
-</GridItem>;*/}
               </GridContainer>
             </div>
           </Card>
-          {/*<Wizard
-            validate
-            steps={[
-              { stepName: "About", stepComponent: Step1, stepId: "about" },
-              { stepName: "Account", stepComponent: Step2, stepId: "account" },
-              { stepName: "Address", stepComponent: Step3, stepId: "address" }
-            ]}
-            title="Build Your Profile"
-            subtitle="This information will let us know more about you."
-            finishButtonClick={e => console.log(e)}
-          />*/}
         </GridItem>
       </GridContainer>
     );

@@ -45,7 +45,7 @@ const profilePageStyle = {
     backgroundColor: "rgba(" + hexToRgb(grayColor[17]) + ", 0.2)",
     "&:after,&:before": {
       display: "table",
-      content: '" "'
+      content: "\" \""
     },
     "&:after": {
       boxSizing: "border-box"
@@ -167,7 +167,7 @@ const profilePageStyle = {
   clearfix: {
     "&:after,&:before": {
       display: "table",
-      content: '" "'
+      content: "\" \""
     },
     clear: "both"
   },

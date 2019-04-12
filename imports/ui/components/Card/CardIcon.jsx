@@ -34,7 +34,8 @@ CardIcon.propTypes = {
     "info",
     "primary",
     "rose"
-  ])
+  ]),
+  children: PropTypes.any
 };
 
 export default withStyles(cardIconStyle)(CardIcon);

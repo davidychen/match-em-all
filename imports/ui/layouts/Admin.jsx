@@ -5,7 +5,6 @@ import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-import ScrollToTop from "react-scroll-up";
 import Sticky from "react-sticky-el";
 import Collection from "../views/Collection/Collection.jsx";
 // @material-ui/core components

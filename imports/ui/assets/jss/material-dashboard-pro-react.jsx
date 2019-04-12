@@ -66,7 +66,7 @@ const containerFluid = {
   marginLeft: "auto",
   "&:before,&:after": {
     display: "table",
-    content: '" "'
+    content: "\" \""
   },
   "&:after": {
     clear: "both"
@@ -89,7 +89,7 @@ const container = {
   },
   "&:before,&:after": {
     display: "table",
-    content: '" "'
+    content: "\" \""
   },
   "&:after": {
     clear: "both"
@@ -97,7 +97,7 @@ const container = {
 };
 
 const defaultFont = {
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
   fontWeight: "300",
   lineHeight: "1.5em"
 };
@@ -368,7 +368,7 @@ const tooltip = {
     ", 0.2)",
   maxWidth: "200px",
   textAlign: "center",
-  fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+  fontFamily: "\"Helvetica Neue\",Helvetica,Arial,sans-serif",
   fontSize: "12px",
   fontStyle: "normal",
   fontWeight: "400",

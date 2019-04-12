@@ -1,10 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 // react plugin for creating charts
-import ChartistGraph from "react-chartist";
-import TimeAgo from "react-timeago";
 // react plugin for creating vector maps
-import { VectorMap } from "react-jvectormap";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { Collections } from "../../../api/collections.js";
@@ -15,13 +12,6 @@ import InfiniteScroll from "react-infinite-scroller";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import Tooltip from "@material-ui/core/Tooltip";
-import Icon from "@material-ui/core/Icon";
-import Slide from "@material-ui/core/Slide";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -29,42 +19,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 // @material-ui/icons
 // import ContentCopy from "@material-ui/icons/ContentCopy";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import Chat from "@material-ui/icons/Chat";
-import CheckCircle from "@material-ui/icons/CheckCircle";
-import Close from "@material-ui/icons/Close";
-import Favorite from "@material-ui/icons/Favorite";
-import Help from "@material-ui/icons/Help";
-import List from "@material-ui/icons/List";
-import Store from "@material-ui/icons/Store";
 // import InfoOutline from "@material-ui/icons/InfoOutline";
-import Warning from "@material-ui/icons/Warning";
-import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
-import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import AccessTime from "@material-ui/icons/AccessTime";
-import Refresh from "@material-ui/icons/Refresh";
-import Edit from "@material-ui/icons/Edit";
-import Place from "@material-ui/icons/Place";
-import ArtTrack from "@material-ui/icons/ArtTrack";
-import Language from "@material-ui/icons/Language";
 // core components
 import GridContainer from "../../components/Grid/GridContainer.jsx";
 import GridItem from "../../components/Grid/GridItem.jsx";
-import Table from "../../components/Table/Table.jsx";
 import Button from "../../components/CustomButtons/Button.jsx";
-import Danger from "../../components/Typography/Danger.jsx";
 import Card from "../../components/Card/Card.jsx";
 import GameCard from "../../components/Card/GameCard.jsx";
-import GameCardFront from "../../components/Card/GameCardFront.jsx";
-import GameCardBack from "../../components/Card/GameCardBack.jsx";
-import Heading from "../../components/Heading/Heading.jsx";
-import CardHeader from "../../components/Card/CardHeader.jsx";
-import CardIcon from "../../components/Card/CardIcon.jsx";
 import CardBody from "../../components/Card/CardBody.jsx";
-import CardFooter from "../../components/Card/CardFooter.jsx";
 
 import Loader from "react-loader-spinner";
 
@@ -78,10 +42,6 @@ stateDict.set({
   order: 1,
   limit: 0
 });
-
-function Transition(props) {
-  return <Slide direction="down" {...props} />;
-}
 
 class Collection extends React.Component {
   constructor() {
@@ -105,7 +65,7 @@ class Collection extends React.Component {
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
-  onClick(i) {
+  onClick() {
     this.setState({ flip: !this.state.flip });
   }
 
@@ -483,30 +443,7 @@ class Collection extends React.Component {
     );
   }
 
-  renderLoading(classes) {
-    /*if (!this.props.ready) {
-      return (
-        <div>
-          <Heading title="Loading" textAlign="center" />
-          <GridContainer>
-            <GridItem xs={12}>
-              <Card plain>
-                <CardBody plain>
-                  <div style={{ textAlign: "center" }}>
-                    <Loader
-                      type="Watch"
-                      color="#00BFFF"
-                      height="150"
-                      width="150"
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </GridItem>
-          </GridContainer>
-        </div>
-      );
-    } else */
+  renderLoading() {
     if (this.props.ready && this.props.totalCount === 0) {
       return (
         <div>
@@ -606,17 +543,13 @@ class Collection extends React.Component {
     }
   }
 
-  loadFunction(page) {
+  loadFunction() {
     if (this.props.pokemons.length === stateDict.get("limit")) {
       stateDict.set("limit", stateDict.get("limit") + 18);
     }
   }
 
   render() {
-    /*if (this.props.ready) {
-      console.log(this.props.pokemons.length);
-      console.log(this.props.filterCount, this.props.totalCount);
-    }*/
 
     const { classes } = this.props;
     return (

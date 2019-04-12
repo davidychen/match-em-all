@@ -4,7 +4,7 @@ import {
   hexToRgb
 } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
-const pagesStyle = theme => ({
+const pagesStyle = () => ({
   wrapper: {
     height: "auto",
     minHeight: "100vh",

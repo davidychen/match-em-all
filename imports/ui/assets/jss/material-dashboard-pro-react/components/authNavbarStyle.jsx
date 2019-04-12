@@ -174,7 +174,7 @@ const pagesHeaderStyle = theme => ({
       zIndex: "3",
       width: "100%",
       height: "100%",
-      content: '""',
+      content: "\"\"",
       display: "block",
       top: "0"
     },

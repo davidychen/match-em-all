@@ -77,7 +77,11 @@ SidebarWrapper.propTypes = {
   logo: PropTypes.string,
   logoText: PropTypes.string,
   image: PropTypes.string,
-  routes: PropTypes.arrayOf(PropTypes.object)
+  routes: PropTypes.arrayOf(PropTypes.object),
+  className: PropTypes.any,
+  user: PropTypes.any,
+  headerLinks: PropTypes.any,
+  links: PropTypes.any
 };
 
 class Sidebar extends React.Component {
@@ -467,9 +471,7 @@ class Sidebar extends React.Component {
                       classes.itemLink + " " + classes.userCollapseLinks
                     }
                   >
-                    <span className={collapseItemMini}>
-                      {"MP"}
-                    </span>
+                    <span className={collapseItemMini}>{"MP"}</span>
                     <ListItemText
                       primary={"My Profile"}
                       disableTypography={true}
@@ -633,7 +635,13 @@ Sidebar.propTypes = {
   logoText: PropTypes.string,
   image: PropTypes.string,
   routes: PropTypes.arrayOf(PropTypes.object),
-  avatarId: PropTypes.number
+  avatarId: PropTypes.number,
+  location: PropTypes.any,
+  miniActive: PropTypes.any,
+  history: PropTypes.any,
+  user: PropTypes.any,
+  open: PropTypes.any,
+  handleDrawerToggle: PropTypes.any
 };
 
 export default withRouter(

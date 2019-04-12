@@ -7,7 +7,7 @@ import {
   roseColor,
   grayColor,
   cardTitle,
-  hexToRgb,
+  /*hexToRgb,*/
   normalColor,
   fightingColor,
   flyingColor,

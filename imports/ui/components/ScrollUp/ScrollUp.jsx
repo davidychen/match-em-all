@@ -1,6 +1,5 @@
 import React from "react";
 // nodejs library that concatenates classes
-import classNames from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -10,19 +9,9 @@ import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import Button from "../../components/CustomButtons/Button.jsx";
 
 // @material-ui/icons
-import {
-  grayColor,
-  whiteColor,
-  primaryColor,
-  hexToRgb,
-  blackColor,
-  selectColor,
-  dangerColor,
-  infoColor,
-  warningColor
-} from "../../assets/jss/material-dashboard-pro-react.jsx";
+import { warningColor } from "../../assets/jss/material-dashboard-pro-react.jsx";
 
-const style = theme => ({
+const style = () => ({
   scroll: {
     opacity: "1",
     background:
@@ -50,7 +39,7 @@ const style = theme => ({
   icons: {
     width: "17px",
     height: "17px"
-  },
+  }
 });
 
 class ScrollUp extends React.Component {

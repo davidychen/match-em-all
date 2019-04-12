@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { NavLink, Link, withRouter, Redirect } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { Accounts } from "meteor/accounts-base";
@@ -13,7 +13,6 @@ import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import AddAlert from "@material-ui/icons/AddAlert";
 import Face from "@material-ui/icons/Face";
-import Email from "@material-ui/icons/Email";
 // import LockOutline from "@material-ui/icons/LockOutline";
 
 // core components

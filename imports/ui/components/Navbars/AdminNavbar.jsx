@@ -14,7 +14,6 @@ import MoreVert from "@material-ui/icons/MoreVert";
 import ViewList from "@material-ui/icons/ViewList";
 
 // core components
-import AdminNavbarLinks from "./AdminNavbarLinks";
 import Button from "../../components/CustomButtons/Button.jsx";
 
 import adminNavbarStyle from "../../assets/jss/material-dashboard-pro-react/components/adminNavbarStyle.jsx";
@@ -85,7 +84,11 @@ AdminNavbar.propTypes = {
   classes: PropTypes.object.isRequired,
   color: PropTypes.oneOf(["primary", "info", "success", "warning", "danger"]),
   rtlActive: PropTypes.bool,
-  brandText: PropTypes.string
+  brandText: PropTypes.string,
+  miniActive: PropTypes.any,
+  sidebarMinimize: PropTypes.any,
+  refFunc: PropTypes.any,
+  handleDrawerToggle: PropTypes.any
 };
 
 export default withStyles(adminNavbarStyle)(AdminNavbar);
