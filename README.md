@@ -31,6 +31,16 @@ Which will run the front-end development server on the port 3000, then visit (ht
 
 You can either use a local meteor database or a cloud database. If you need to use a cloud database, Just set your database url as variable MONGO_URL in .env as an environment variable. It has 2 collections: pokemon, collect. We are using the heroku add-on database.
 
+# Color Palette (Analogous)
+- ![#9c27b0](https://placehold.it/15/9c27b0/000000?text=+) `#9c27b0`
+- ![#ff9800](https://placehold.it/15/ff9800/000000?text=+) `#ff9800`
+- ![#f44336](https://placehold.it/15/f44336/000000?text=+) `#f44336`
+- ![#4caf50](https://placehold.it/15/4caf50/000000?text=+) `#4caf50`
+- ![#00acc1](https://placehold.it/15/00acc1/000000?text=+) `#00acc1`
+
+# Font Pairing
+- Roboto (headings)
+- Open Sans (paragraphs)
 
 # Author
 [Yifei Chen](http://davidychen.com/HomepageDavidChen/)

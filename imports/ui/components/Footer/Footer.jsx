@@ -32,7 +32,7 @@ function Footer({ ...props }) {
         <div className={classes.left}>
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
-              <NavLink to={"/public/landing-page"} className={block + " " + classes.navLink}>{"Home"}</NavLink>
+              <NavLink to={"/"} className={block + " " + classes.navLink}>{"Home"}</NavLink>
             </ListItem>
           </List>
         </div>
