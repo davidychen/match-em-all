@@ -17,6 +17,7 @@ const hist = createHistory();
 hist.listen(location => {
   ReactGA.set({ page: location.pathname });
   ReactGA.pageview(location.pathname);
+  // console.log("changed");
 });
 
 function ProtectedRoute({ component: Component, ...rest }) {
@@ -29,7 +30,7 @@ function ProtectedRoute({ component: Component, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: "/public/login-page",
+              pathname: "/login-page",
               state: { from: props.location }
             }}
           />
@@ -47,16 +48,17 @@ ProtectedRoute.propTypes = {
 class AppRoutes extends Component {
   componentDidMount() {
     ReactGA.pageview(window.location.pathname);
+    console.log("mounted");
   }
 
   render() {
     return (
       <Router history={hist}>
         <Switch>
-          <Route path="/public" component={PublicLayout} />
           <ProtectedRoute path="/admin" component={AdminLayout} />
-          <Redirect exact from="/" to="/public/landing-page" />
-          <Redirect from="*" to="/public/error-page" />
+          <Route path="/" component={PublicLayout} />
+          {/*<Redirect exact from="/" to="/public/landing-page" />*/}
+          <Redirect from="*" to="/error-page" />
         </Switch>
       </Router>
     );

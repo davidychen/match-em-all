@@ -35,13 +35,9 @@ class Pages extends React.Component {
         return this.getRoutes(prop.views);
       }
       if (prop.layout === "/public") {
+        const pathname = prop.path === "/landing-page" ? "/" : prop.path;
         return (
-          <Route
-            exact
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
+          <Route exact path={pathname} component={prop.component} key={key} />
         );
       } else {
         return null;
@@ -94,7 +90,7 @@ class Pages extends React.Component {
           >
             <Switch>
               {this.getRoutes(routes)}
-              <Redirect from="*" to="/public/error-page" />
+              <Redirect from="*" to="/error-page" />
             </Switch>
             <Footer white />
           </div>

@@ -333,7 +333,7 @@ class Sidebar extends React.Component {
       if (err) {
         console.log(err.reason);
       } else {
-        this.props.history.push("/public/login-page");
+        this.props.history.push("/login-page");
       }
     });
   }
@@ -529,10 +529,10 @@ class Sidebar extends React.Component {
       });
     var brand = (
       <div className={logoClasses}>
-        <NavLink to={"/public/landing-page"} className={logoMini}>
+        <NavLink to={"/"} className={logoMini}>
           <img src={logo} alt="logo" className={classes.img} />
         </NavLink>
-        <NavLink to={"/public/landing-page"} className={logoNormal}>
+        <NavLink to={"/"} className={logoNormal}>
           {logoText}
         </NavLink>
       </div>

@@ -54,7 +54,7 @@ class AuthNavbar extends React.Component {
       if (err) {
         console.log(err.reason);
       } else {
-        this.props.history.push("/public/login-page");
+        this.props.history.push("/login-page");
       }
     });
   }
@@ -67,9 +67,9 @@ class AuthNavbar extends React.Component {
       <List className={classes.list}>
         <ListItem className={classes.listItem}>
           <NavLink
-            to={"/public/landing-page"}
+            to={"/"}
             className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute("/public/landing-page")
+              [classes.navLinkActive]: this.activeRoute("/")
             })}
           >
             <Dashboard className={classes.listItemIcon} />
@@ -83,9 +83,9 @@ class AuthNavbar extends React.Component {
         {!this.props.loggedIn && (
           <ListItem className={classes.listItem}>
             <NavLink
-              to={"/public/register-page"}
+              to={"/register-page"}
               className={cx(classes.navLink, {
-                [classes.navLinkActive]: this.activeRoute("/public/register-page")
+                [classes.navLinkActive]: this.activeRoute("/register-page")
               })}
             >
               <PersonAdd className={classes.listItemIcon} />
@@ -100,9 +100,9 @@ class AuthNavbar extends React.Component {
         {!this.props.loggedIn && (
           <ListItem className={classes.listItem}>
             <NavLink
-              to={"/public/login-page"}
+              to={"/login-page"}
               className={cx(classes.navLink, {
-                [classes.navLinkActive]: this.activeRoute("/public/login-page")
+                [classes.navLinkActive]: this.activeRoute("/login-page")
               })}
             >
               <Fingerprint className={classes.listItemIcon} />
