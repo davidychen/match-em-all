@@ -8,11 +8,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 
 // core components
-import CustomInput from "components/CustomInput/CustomInput.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
+import CustomInput from "../../../components/CustomInput/CustomInput.jsx";
+import GridContainer from "../../../components/Grid/GridContainer.jsx";
+import GridItem from "../../../components/Grid/GridItem.jsx";
 
-import customSelectStyle from "assets/jss/material-dashboard-pro-react/customSelectStyle.jsx";
+import customSelectStyle from "../../../assets/jss/material-dashboard-pro-react/customSelectStyle.jsx";
 
 const style = {
   infoText: {

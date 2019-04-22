@@ -63,6 +63,15 @@ const style = () => ({
         ", 0.2)"
     }*/
   },
+  cardInactiveBack: {
+    position: "relative",
+    overflow: "hidden",
+    paddingBottom: "100%",
+    background:
+      "linear-gradient(" + primaryColor[0] + " 50%, " + whiteColor + " 50%)",
+    borderRadius: "50%",
+    display: "flex"
+  },
   cardBackDivider: {
     height: "10%",
     width: "120%",
@@ -161,7 +170,7 @@ const style = () => ({
   cardCollection: {
     "&:hover, &:focus": {
       transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
-      cursor: "pointer",
+      
       boxShadow:
         "0 16px 38px -12px rgba(" +
         hexToRgb(blackColor) +
@@ -171,6 +180,9 @@ const style = () => ({
         hexToRgb(blackColor) +
         ", 0.2)"
     }
+  },
+  pointer: {
+    cursor: "pointer",
   }
 });
 
@@ -188,12 +200,12 @@ class GameCard extends React.Component {
   getLink(name) {
     let tempName = name;
     switch (name) {
-    case "nidoran-m":
-      tempName = "nidoranm";
-      break;
-    case "nidoran-f":
-      tempName = "nidoranf";
-      break;
+      case "nidoran-m":
+        tempName = "nidoranm";
+        break;
+      case "nidoran-f":
+        tempName = "nidoranf";
+        break;
     }
     const imgLink = name
       ? "http://pokestadium.com/sprites/xy/" + tempName + ".gif"
@@ -205,12 +217,12 @@ class GameCard extends React.Component {
   getBackLink(name) {
     let tempName = name;
     switch (name) {
-    case "nidoran-m":
-      tempName = "nidoranm";
-      break;
-    case "nidoran-f":
-      tempName = "nidoranf";
-      break;
+      case "nidoran-m":
+        tempName = "nidoranm";
+        break;
+      case "nidoran-f":
+        tempName = "nidoranf";
+        break;
     }
     const imgLink = name
       ? "http://pokestadium.com/sprites/xy/back/" + tempName + ".gif"
@@ -270,7 +282,8 @@ class GameCard extends React.Component {
       matched,
       matchedOwn,
       star,
-      collection
+      collection,
+      inactive
     } = this.props;
     const gameCardFrontClasses = classNames({
       [classes.cardFront]: true,
@@ -293,7 +306,13 @@ class GameCard extends React.Component {
         onMouseEnter={this.mouseEnter.bind(this)}
         onMouseLeave={this.mouseLeave.bind(this)}
       >
-        {collection && (
+        {inactive && (
+          <Card key="back" game className={classes.cardInactiveBack}>
+            <div className={classes.cardBackDivider} />
+            <div className={classes.cardBackCircle} />
+          </Card>
+        )}
+        {!inactive && collection && (
           <ReactCardFlip isFlipped={this.state.turnBack}>
             <Card key="back" game className={gameCardFrontClasses}>
               <div className={classes.imageSquare}>
@@ -325,7 +344,7 @@ class GameCard extends React.Component {
             </Card>
           </ReactCardFlip>
         )}
-        {!collection && (
+        {!inactive && !collection && (
           <ReactCardFlip isFlipped={back}>
             <Card
               key="back"
@@ -367,7 +386,8 @@ GameCard.propTypes = {
   matched: PropTypes.bool,
   matchedOwn: PropTypes.bool,
   star: PropTypes.bool,
-  collection: PropTypes.bool
+  collection: PropTypes.bool,
+  inactive: PropTypes.bool
 };
 
 export default withStyles(style)(GameCard);

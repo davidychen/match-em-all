@@ -48,7 +48,7 @@ ProtectedRoute.propTypes = {
 class AppRoutes extends Component {
   componentDidMount() {
     ReactGA.pageview(window.location.pathname);
-    console.log("mounted");
+    // console.log("mounted");
   }
 
   render() {

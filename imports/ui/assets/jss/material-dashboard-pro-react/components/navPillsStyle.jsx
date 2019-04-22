@@ -169,6 +169,18 @@ const navPillsStyle = theme => ({
         ", 0.4)"
     }
   },
+  white: {
+    "&,&:hover": {
+      color: grayColor[0],
+      backgroundColor: whiteColor,
+      boxShadow:
+        "0 4px 20px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.14), 0 7px 10px -5px rgba(" +
+        hexToRgb(grayColor[6]) +
+        ", 0.4)"
+    }
+  },
   alignCenter: {
     alignItems: "center",
     justifyContent: "center"

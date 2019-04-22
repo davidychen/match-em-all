@@ -23,11 +23,22 @@ class NavPills extends React.Component {
       active: props.active
     };
   }
+  componentDidUpdate() {
+    if (this.props.active !== this.state.active) {
+      this.setState({ active: this.props.active });
+    }
+  }
   handleChange = (event, active) => {
-    this.setState({ active });
+    this.setState({ active: active });
+    if (this.props.controlActive) {
+      this.props.controlActive(active);
+    }
   };
   handleChangeIndex = index => {
     this.setState({ active: index });
+    if (this.props.controlActive) {
+      this.props.controlActive(index);
+    }
   };
   render() {
     const {
@@ -37,7 +48,8 @@ class NavPills extends React.Component {
       color,
       horizontal,
       alignCenter,
-      landing
+      landing,
+      controlActive
     } = this.props;
     const flexContainerClasses = classNames({
       [classes.flexContainer]: true,
@@ -137,7 +149,8 @@ NavPills.propTypes = {
     "success",
     "info",
     "rose",
-    "black"
+    "black",
+    "white"
   ]),
   direction: PropTypes.string,
   horizontal: PropTypes.shape({
@@ -145,7 +158,8 @@ NavPills.propTypes = {
     contentGrid: PropTypes.object
   }),
   alignCenter: PropTypes.bool,
-  landing: PropTypes.bool
+  landing: PropTypes.bool,
+  controlActive: PropTypes.func
 };
 
 export default withStyles(navPillsStyle)(NavPills);

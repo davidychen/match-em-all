@@ -58,6 +58,28 @@ const landingPageStyle = theme => ({
       fontSize: "55px"
     }
   },
+  cards: {
+    textAlign: "center"
+  },
+  card: {
+    /*color: "rgba(" + hexToRgb(whiteColor) + ", 0.76)",
+    margin: "10px auto 0",*/
+    width: "130px",
+    height: "130px",
+    padding: "0 10px",
+    display: "inline-block",
+    /*border: "1px solid " + grayColor[11],
+    borderRadius: "50%",
+    lineHeight: "174px",
+    "& svg": {
+      width: "55px",
+      height: "55px"
+    },
+    "& .fab,& .fas,& .far,& .fal,& .material-icons": {
+      width: "55px",
+      fontSize: "55px"
+    }*/
+  },
   iconWhite: {
     color: whiteColor
   },

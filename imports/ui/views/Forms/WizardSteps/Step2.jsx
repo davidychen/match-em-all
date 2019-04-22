@@ -9,11 +9,11 @@ import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox";
 
 // core components
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "../../../components/Grid/GridContainer.jsx";
+import GridItem from "../../../components/Grid/GridItem.jsx";
 
-import customSelectStyle from "assets/jss/material-dashboard-pro-react/customSelectStyle.jsx";
-import customCheckboxRadioSwitch from "assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx";
+import customSelectStyle from "../../../assets/jss/material-dashboard-pro-react/customSelectStyle.jsx";
+import customCheckboxRadioSwitch from "../../../assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx";
 
 const style = {
   infoText: {

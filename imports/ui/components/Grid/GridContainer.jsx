@@ -33,11 +33,23 @@ const style = {
       ",1) calc(0% + 85px), " +
       "rgba(0,0,0,0) calc(0% + 85.8px), " +
       "rgba(0,0,0,0) 100%)"
+  },
+  landingTitle: {
+    background: "linear-gradient(to right, #ee1515, #EF4144)",
+    padding: "20px",
+    marginBottom: "20px"
   }
 };
 
 function GridContainer({ ...props }) {
-  const { classes, children, className, landing, ...rest } = props;
+  const {
+    classes,
+    children,
+    className,
+    landing,
+    landingTitle,
+    ...rest
+  } = props;
   return (
     <Grid
       container
@@ -46,7 +58,8 @@ function GridContainer({ ...props }) {
         classes.grid +
         " " +
         className +
-        (landing ? " " + classes.landingLine : "")
+        (landing ? " " + classes.landingLine : "") +
+        (landingTitle ? " " + classes.landingTitle : "")
       }
     >
       {children}
@@ -58,7 +71,8 @@ GridContainer.propTypes = {
   classes: PropTypes.any,
   children: PropTypes.any,
   className: PropTypes.any,
-  landing: PropTypes.any
+  landing: PropTypes.any,
+  landingTitle: PropTypes.any
 };
 
 export default withStyles(style)(GridContainer);
