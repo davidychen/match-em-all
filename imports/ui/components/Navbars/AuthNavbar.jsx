@@ -41,6 +41,9 @@ class AuthNavbar extends React.Component {
   };
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
+    if (routeName === "/") {
+      return this.props.location.pathname === "/";
+    }
     return this.props.location.pathname.indexOf(routeName) > -1 ? true : false;
   }
   componentDidUpdate(e) {

@@ -169,7 +169,6 @@ class EvolveCard extends React.Component {
   }
 
   updateState() {
-
     if (this.props.evolved && (!this.state.evolved && !this.state.evolving)) {
       this.setState(() => {
         return {
@@ -187,7 +186,7 @@ class EvolveCard extends React.Component {
           this.setState({ evolving: false, evolved: true, back: false });
           this.props.evolveFunc();
         }
-      }, 300);
+      }, 250);
     }
   }
 
@@ -217,10 +216,11 @@ class EvolveCard extends React.Component {
     const name = evolved ? this.getLink(evolve_name) : this.getLink(begin_name);
 
     const card = (
-      <ReactCardFlip isFlipped={this.state.back}
-      flipSpeedBackToFront={0.2}
-        flipSpeedFrontToBack={0.2}>
-
+      <ReactCardFlip
+        isFlipped={this.state.back}
+        flipSpeedBackToFront={0.2}
+        flipSpeedFrontToBack={0.2}
+      >
         <Card key="back" game className={classes.cardPngBack}>
           <div className={classes.imageSquare}>
             <img
