@@ -707,7 +707,7 @@ class Collection extends React.Component {
           <h4 className={classes.cardTitle}>{pokemon.name_en}</h4>
           {types}
           <GridContainer justify="center" className={classes.modalP}>
-            <GridItem xs={12} sm={6} md={6} lg={6}>
+            <GridItem xs={12} sm={12} md={12} lg={12}>
               <p>{"Count: " + pokemon.count}</p>
               <p>
                 {"Debut Time: "}
