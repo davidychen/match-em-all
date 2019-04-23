@@ -5,12 +5,14 @@ import LandingPage from "./views/Pages/LandingPage.jsx";
 import LoginPage from "./views/Pages/LoginPage.jsx";
 import ProfilePage from "./views/Pages/ProfilePage.jsx";
 import RegisterPage from "./views/Pages/RegisterPage.jsx";
+import SharePage from "./views/Pages/SharePage.jsx";
 
 // @material-ui/icons
 import AccountBox from "@material-ui/icons/AccountBox";
 import Image from "@material-ui/icons/Image";
 import VideogameAsset from "@material-ui/icons/VideogameAsset";
 import Collections from "@material-ui/icons/Collections";
+import Share from "@material-ui/icons/Share";
 
 var dashRoutes = [
   {
@@ -32,6 +34,13 @@ var dashRoutes = [
     name: "Profile",
     icon: AccountBox,
     component: ProfilePage,
+    layout: "/admin"
+  },
+  {
+    path: "/share",
+    name: "Share",
+    icon: Share,
+    component: SharePage,
     layout: "/admin"
   },
   {

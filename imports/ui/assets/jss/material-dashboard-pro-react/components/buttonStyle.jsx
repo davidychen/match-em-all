@@ -18,7 +18,10 @@ import {
   behanceColor,
   dribbbleColor,
   redditColor,
-  hexToRgb
+  hexToRgb,
+  whatsappColor,
+  lineColor,
+  weiboColor
 } from "../../../../assets/jss/material-dashboard-pro-react.jsx";
 
 const buttonStyle = {
@@ -503,6 +506,78 @@ const buttonStyle = {
         ", 0.2)"
     }
   },
+  whatsapp: {
+    backgroundColor: whatsappColor,
+    color: whiteColor,
+    boxShadow:
+      "0 2px 2px 0 rgba(" +
+      hexToRgb(whatsappColor) +
+      ", 0.14), 0 3px 1px -2px rgba(" +
+      hexToRgb(whatsappColor) +
+      ", 0.2), 0 1px 5px 0 rgba(" +
+      hexToRgb(whatsappColor) +
+      ", 0.12)",
+    "&:hover,&:focus": {
+      backgroundColor: whatsappColor,
+      color: whiteColor,
+      boxShadow:
+        "0 14px 26px -12px rgba(" +
+        hexToRgb(whatsappColor) +
+        ", 0.42), 0 4px 23px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.12), 0 8px 10px -5px rgba(" +
+        hexToRgb(whatsappColor) +
+        ", 0.2)"
+    }
+  },
+  line: {
+    backgroundColor: lineColor,
+    color: whiteColor,
+    boxShadow:
+      "0 2px 2px 0 rgba(" +
+      hexToRgb(lineColor) +
+      ", 0.14), 0 3px 1px -2px rgba(" +
+      hexToRgb(lineColor) +
+      ", 0.2), 0 1px 5px 0 rgba(" +
+      hexToRgb(lineColor) +
+      ", 0.12)",
+    "&:hover,&:focus": {
+      backgroundColor: lineColor,
+      color: whiteColor,
+      boxShadow:
+        "0 14px 26px -12px rgba(" +
+        hexToRgb(lineColor) +
+        ", 0.42), 0 4px 23px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.12), 0 8px 10px -5px rgba(" +
+        hexToRgb(lineColor) +
+        ", 0.2)"
+    }
+  },
+  weibo: {
+    backgroundColor: weiboColor,
+    color: whiteColor,
+    boxShadow:
+      "0 2px 2px 0 rgba(" +
+      hexToRgb(weiboColor) +
+      ", 0.14), 0 3px 1px -2px rgba(" +
+      hexToRgb(weiboColor) +
+      ", 0.2), 0 1px 5px 0 rgba(" +
+      hexToRgb(weiboColor) +
+      ", 0.12)",
+    "&:hover,&:focus": {
+      backgroundColor: weiboColor,
+      color: whiteColor,
+      boxShadow:
+        "0 14px 26px -12px rgba(" +
+        hexToRgb(weiboColor) +
+        ", 0.42), 0 4px 23px 0px rgba(" +
+        hexToRgb(blackColor) +
+        ", 0.12), 0 8px 10px -5px rgba(" +
+        hexToRgb(weiboColor) +
+        ", 0.2)"
+    }
+  },
   simple: {
     "&,&:focus,&:hover": {
       color: whiteColor,
@@ -593,6 +668,21 @@ const buttonStyle = {
       "&,&:focus,&:hover,&:visited": {
         color: redditColor
       }
+    },
+    "&$whatsapp": {
+      "&,&:focus,&:hover,&:visited": {
+        color: whatsappColor
+      }
+    },
+    "&$line": {
+      "&,&:focus,&:hover,&:visited": {
+        color: lineColor
+      }
+    },
+    "&$weibo": {
+      "&,&:focus,&:hover,&:visited": {
+        color: weiboColor
+      }
     }
   },
   transparent: {
@@ -607,7 +697,7 @@ const buttonStyle = {
     pointerEvents: "none"
   },
   avatar: {
-    opacity: "0.65",
+    opacity: "0.65"
     /*cursor: "auto"*/
   },
   lg: {

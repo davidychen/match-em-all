@@ -98,8 +98,14 @@ if (Meteor.isServer) {
       sortBy,
       Match.Where(
         value =>
-          ["pokemonId", "name_en", "rate", "firstAt", "count"].indexOf(value) >=
-          0
+          [
+            "pokemonId",
+            "name_en",
+            "rate",
+            "firstAt",
+            "lastAt",
+            "count"
+          ].indexOf(value) >= 0
       )
     );
     check(order, Match.Where(value => [-1, 1].indexOf(value) >= 0));
@@ -206,7 +212,9 @@ function getById(pokeId, callback) {
               "https://pokeapi.co/api/v2/evolution-chain/" + chainId.toString()
             )
             .then(resEvolve => {
-              const type = resType.data.types.map(t => t.type.name);
+              const type = resType.data.types.map(t => {
+                return t.type.name;
+              });
               const evolves_to = searchTree(
                 resEvolve.data.chain,
                 resSpecies.data.name
@@ -292,6 +300,9 @@ Meteor.methods({
             {
               $inc: { count: 1 },
               $setOnInsert: {
+                firstAt: new Date()
+              },
+              $set: {
                 name: pokeInfo.name,
                 name_en: pokeInfo.name_en,
                 color: pokeInfo.color,
@@ -299,7 +310,7 @@ Meteor.methods({
                 rate: pokeInfo.rate,
                 legendary: pokeInfo.legendary,
                 evolves_to: pokeInfo.evolves_to,
-                firstAt: new Date()
+                lastAt: new Date()
               }
             },
             { upsert: true }

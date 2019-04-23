@@ -68,6 +68,7 @@ class Collection extends React.Component {
       legendary: false,
       count: "???",
       firstAt: "???",
+      lastAt: "???",
       evolves_to: []
     };
     this.state = {
@@ -492,7 +493,16 @@ class Collection extends React.Component {
                             }}
                             value="firstAt"
                           >
-                            Match Time
+                            First Match Time
+                          </MenuItem>
+                          <MenuItem
+                            classes={{
+                              root: classes.selectMenuItem,
+                              selected: classes.selectMenuItemSelected
+                            }}
+                            value="lastAt"
+                          >
+                            Last Match Time
                           </MenuItem>
                           <MenuItem
                             classes={{
@@ -715,6 +725,16 @@ class Collection extends React.Component {
                   "???"
                 ) : (
                   <TimeAgo date={pokemon.firstAt} />
+                )}
+              </p>
+              <p>
+                {"Last Match: "}
+                {pokemon.lastAt === "???" ? (
+                  "???"
+                ) : pokemon.lastAt == undefined ? (
+                  <TimeAgo date={pokemon.firstAt} />
+                ) : (
+                  <TimeAgo date={pokemon.lastAt} />
                 )}
               </p>
             </GridItem>

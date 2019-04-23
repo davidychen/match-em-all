@@ -182,6 +182,10 @@ const tumblrColor = "#35465c";
 const behanceColor = "#1769ff";
 const dribbbleColor = "#ea4c89";
 const redditColor = "#ff4500";
+const whatsappColor = "#25D366";
+const lineColor = "#00c300";
+const weiboColor = "#df2029";
+
 const selectColor = "#7efe51";
 
 const normalColor = "#A8A878";
@@ -492,5 +496,8 @@ export {
   darkColor,
   fairyColor,
   unknownColor,
-  shadowColor
+  shadowColor,
+  whatsappColor,
+  lineColor,
+  weiboColor
 };

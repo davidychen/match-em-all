@@ -32,20 +32,40 @@ function Footer({ ...props }) {
         <div className={classes.left}>
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
-              <NavLink to={"/"} className={block + " " + classes.navLink}>{"Home"}</NavLink>
+              <NavLink to={"/"} className={block + " " + classes.navLink}>
+                {"Home"}
+              </NavLink>
             </ListItem>
           </List>
         </div>
         <p className={classes.right}>
           &copy; {1900 + new Date().getYear()}{" "}
-          <a href="http://davidychen.com/" rel="noopener noreferrer" target="_blank" className={anchor}>
+          <a
+            href="http://davidychen.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+            className={anchor}
+          >
             {"David Chen"}
           </a>
           {" and "}
-          <a href="https://simonwux.github.io/" rel="noopener noreferrer" target="_blank" className={anchor}>
+          <a
+            href="https://simonwux.github.io/"
+            rel="noopener noreferrer"
+            target="_blank"
+            className={anchor}
+          >
             {"Simon Wu"}
           </a>
-          {", made with love for Pokemon"}
+          {", made with love for Pokemon and "}
+          <a
+            href="https://johnguerra.co/classes/webDevelopment_spring_2019/"
+            rel="noopener noreferrer"
+            target="_blank"
+            className={anchor}
+          >
+            {"CS6510"}
+          </a>
         </p>
       </div>
     </footer>

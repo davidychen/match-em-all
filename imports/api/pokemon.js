@@ -10,8 +10,8 @@ export const Board = new Mongo.Collection("board");
 export const MatchPlayers = new Mongo.Collection("match-players");
 export const Message = new Mongo.Collection("message");
 
-export const Daily = new Mongo.Collection("daily");
-export const Types = new Mongo.Collection("types");
+// export const Daily = new Mongo.Collection("daily");
+// export const Types = new Mongo.Collection("types");
 
 export const Pokemon = new Mongo.Collection("pokemon");
 
@@ -171,7 +171,9 @@ function getOne(count, prev, i, callback) {
         }
 
         axios
-          .get("https://pokeapi.co/api/v2/pokemon/" + pokeId.toString())
+          .get(
+            "https://pokeapi.co/api/v2/pokemon/" + resSpecies.data.id.toString()
+          )
           .then(resType => {
             const chainUrl = resSpecies.data.evolution_chain.url;
             const chainId = parseInt(
@@ -183,7 +185,9 @@ function getOne(count, prev, i, callback) {
                   chainId.toString()
               )
               .then(resEvolve => {
-                const type = resType.data.types.map(t => t.type.name);
+                const type = resType.data.types.map(t => {
+                  return t.type.name;
+                });
                 const evolves_to = searchTree(
                   resEvolve.data.chain,
                   resSpecies.data.name
@@ -197,7 +201,7 @@ function getOne(count, prev, i, callback) {
                   name_en: name_en,
                   color: resSpecies.data.color.name,
                   type: type,
-                  rate: rate,
+                  rate: resSpecies.data.capture_rate,
                   legendary:
                     legendary.has(resSpecies.data.id) ||
                     mythical.has(resSpecies.data.id),
@@ -308,22 +312,22 @@ if (Meteor.isServer) {
       MatchPlayers.find({})
     ];
   });
-  Meteor.publish("daily", function dailyPublish() {
-    return Daily.find(
-      {
-        date: {
-          $gt: moment()
-            .endOf("day")
-            .subtract(7, "days")
-            .toDate()
-        }
-      },
-      { sort: { date: 1 } }
-    );
-  });
-  Meteor.publish("types", function typesPublish() {
-    return Types.find({}, { sort: { typeId: 1 } });
-  });
+  // Meteor.publish("daily", function dailyPublish() {
+  //   return Daily.find(
+  //     {
+  //       date: {
+  //         $gt: moment()
+  //           .endOf("day")
+  //           .subtract(7, "days")
+  //           .toDate()
+  //       }
+  //     },
+  //     { sort: { date: 1 } }
+  //   );
+  // });
+  // Meteor.publish("types", function typesPublish() {
+  //   return Types.find({}, { sort: { typeId: 1 } });
+  // });
 }
 
 function flipBackTimeout(index, userId) {
@@ -407,7 +411,8 @@ Meteor.methods({
             },
             {
               $inc: { count: 1 },
-              $setOnInsert: {
+              $setOnInsert: { firstAt: new Date() },
+              $set: {
                 name: gamePokes[index].name,
                 name_en: gamePokes[index].name_en,
                 color: gamePokes[index].color,
@@ -415,40 +420,40 @@ Meteor.methods({
                 rate: gamePokes[index].rate,
                 legendary: gamePokes[index].legendary,
                 evolves_to: gamePokes[index].evolves_to,
-                firstAt: new Date()
+                lastAt: new Date()
               }
             },
             { upsert: true }
           );
-          Daily.update(
-            {
-              date: moment()
-                .startOf("day")
-                .toDate()
-            },
-            {
-              $inc: { count: 1 },
-              $setOnInsert: {
-                day: moment().day()
-              }
-            },
-            { upsert: true }
-          );
-          const types = gamePokes[index].type;
-          const count = types.length === 0 ? 0 : 1 / types.length;
-          types.forEach(type =>
-            Types.update(
-              { type: type },
-              {
-                $inc: { count: count },
-                $setOnInsert: {
-                  typeId: TYPES[type].typeId,
-                  type_color: TYPES[type].type_color
-                }
-              },
-              { upsert: true }
-            )
-          );
+          // Daily.update(
+          //   {
+          //     date: moment()
+          //       .startOf("day")
+          //       .toDate()
+          //   },
+          //   {
+          //     $inc: { count: 1 },
+          //     $setOnInsert: {
+          //       day: moment().day()
+          //     }
+          //   },
+          //   { upsert: true }
+          // );
+          // const types = gamePokes[index].type;
+          // const count = types.length === 0 ? 0 : 1 / types.length;
+          // types.forEach(type =>
+          //   Types.update(
+          //     { type: type },
+          //     {
+          //       $inc: { count: count },
+          //       $setOnInsert: {
+          //         typeId: TYPES[type].typeId,
+          //         type_color: TYPES[type].type_color
+          //       }
+          //     },
+          //     { upsert: true }
+          //   )
+          // );
         }
         // NOT MATCH ...
         else {
