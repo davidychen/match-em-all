@@ -6,11 +6,23 @@ const modalStyle = theme => ({
     alignItems: "unset",
     justifyContent: "unset"
   },
+  modalGray: {
+    backgroundColor: "#e6e6e6"
+  },
   modal: {
     [theme.breakpoints.up("sm")]: {
       maxWidth: "500px",
       margin: "auto"
     },
+    /**/
+    minWidth: "50%",
+    [theme.breakpoints.down("sm")]: {
+      width: "80%"
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%"
+    },
+    /**/
     borderRadius: "6px",
     marginTop: "100px !important",
     overflow: "visible",
@@ -51,6 +63,16 @@ const modalStyle = theme => ({
   },
   modalBody: {
     paddingTop: "24px",
+    paddingRight: "24px",
+    paddingBottom: "16px",
+    paddingLeft: "24px",
+    position: "relative",
+    overflow: "visible"
+  },
+  modalNoTopBody: {
+    margin: "auto",
+    /*paddingTop: "24px",*/
+    minWidth: "80%",
     paddingRight: "24px",
     paddingBottom: "16px",
     paddingLeft: "24px",

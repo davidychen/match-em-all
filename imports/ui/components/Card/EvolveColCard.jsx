@@ -13,8 +13,8 @@ import {
   primaryColor,
   hexToRgb,
   blackColor,
-  selectColor
-  // dangerColor,
+  selectColor,
+  dangerColor
   // infoColor
 } from "../../assets/jss/material-dashboard-pro-react.jsx";
 
@@ -36,8 +36,26 @@ const style = () => ({
         ", 0.2)"
     }
   },
+  cardShadow: {
+    boxShadow:
+      "0 16px 38px -12px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.28), 0 4px 25px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.06), 0 8px 10px -5px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.1)"
+  },
   cardPngBack: {
-    overflow: "hidden"
+    overflow: "hidden",
+    boxShadow:
+      "0 16px 38px -12px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.56), 0 4px 25px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.12), 0 8px 10px -5px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.2)"
   },
   cardBack: {
     //zIndex: "2",
@@ -106,11 +124,24 @@ const style = () => ({
     opacity: "0",
     transition: "all 250ms linear"
   },
-  cardEvolved: {
+  cardSuccess: {
     transition: "all 0.3s ease 0.4s",
     boxShadow:
       "0 0 5px 10px " +
       selectColor +
+      ", 0 16px 38px -12px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.56), 0 4px 25px 0px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.12), 0 8px 10px -5px rgba(" +
+      hexToRgb(blackColor) +
+      ", 0.2)"
+  },
+  cardFail: {
+    transition: "all 0.3s ease 0.4s",
+    boxShadow:
+      "0 0 5px 10px " +
+      dangerColor[0] +
       ", 0 16px 38px -12px rgba(" +
       hexToRgb(blackColor) +
       ", 0.56), 0 4px 25px 0px rgba(" +
@@ -125,13 +156,10 @@ class EvolveCard extends React.Component {
   constructor(props) {
     super(props);
 
-    this.evolved = this.props.evolved;
     this.state = {
       back: false,
-      evolving: false,
-      evolved: false
+      evolving: false
     };
-    this.counter = 7;
   }
 
   getLink(name) {
@@ -168,60 +196,59 @@ class EvolveCard extends React.Component {
     return imgLink;
   }
 
-  updateState() {
-    if (this.props.evolved && (!this.state.evolved && !this.state.evolving)) {
-      this.setState(() => {
-        return {
-          back: true,
-          evolving: true
-        };
-      });
-      this.timer = setInterval(() => {
+  startSpinning() {
+    if (this.props.evolving) {
+      this.setState({ evolving: true });
+      this.interval = setInterval(() => {
         this.setState(state => {
           return { back: !state.back };
         });
-        this.counter--;
-        if (this.counter === 0) {
-          clearInterval(this.timer);
-          this.setState({ evolving: false, evolved: true, back: false });
-          this.props.evolveFunc();
-        }
       }, 250);
+    } else {
+      clearInterval(this.interval);
+      this.setState({ back: false, evolving: false });
     }
   }
 
   componentDidMount() {
-    this.updateState();
+    // this.updateState();
+    this.startSpinning();
   }
-  componentDidUpdate() {
-    this.updateState();
+  componentDidUpdate(prevProps) {
+    // this.updateState();
+    if (prevProps.evolving !== this.props.evolving) {
+      this.startSpinning();
+    }
   }
   componentWillUnmount() {
-    clearInterval(this.timer);
+    clearInterval(this.interval);
   }
 
   render() {
     const {
       classes,
       idx,
-      begin_name,
-      evolve_name,
+      name,
       star,
-      evolved,
-      noTopMargin
+      noTopMargin,
+      before,
+      success,
+      shadow
     } = this.props;
+    const evolving = this.state.evolving;
     const gameCardFrontClasses = classNames({
       [classes.cardFront]: true,
-      [classes.cardEvolved]: evolved
+      [classes.cardSuccess]: !before && !evolving && success,
+      [classes.cardFail]: !before && !evolving && !success,
+      [classes.cardShadow]: shadow
     });
 
-    const imgLink = this.state.evolving
-      ? "/card-back.png"
-      : evolved
-      ? this.getLink(evolve_name)
-      : this.getLink(begin_name);
+    const gameCardBackClasses = classNames({
+      [classes.cardPngBack]: true,
+      [classes.cardShadow]: shadow
+    });
 
-    const name = evolved ? this.getLink(evolve_name) : this.getLink(begin_name);
+    const imgLink = evolving ? "/card-back-round.png" : this.getLink(name);
 
     const card = (
       <ReactCardFlip
@@ -229,11 +256,11 @@ class EvolveCard extends React.Component {
         flipSpeedBackToFront={0.2}
         flipSpeedFrontToBack={0.2}
       >
-        <Card key="back" game className={classes.cardPngBack}>
+        <Card key="back" game className={gameCardBackClasses}>
           <div className={classes.imageSquare}>
             <img
               className={classes.sprite}
-              src={"/card-back.png"}
+              src={"/card-back-round.png"}
               alt={"card back"}
             />
           </div>
@@ -241,9 +268,7 @@ class EvolveCard extends React.Component {
         <Card
           key="front"
           game
-          className={
-            this.state.evolving ? classes.cardPngBack : gameCardFrontClasses
-          }
+          className={evolving ? gameCardBackClasses : gameCardFrontClasses}
         >
           <div className={classes.imageSquare}>
             <img
@@ -277,13 +302,15 @@ class EvolveCard extends React.Component {
 
 EvolveCard.propTypes = {
   classes: PropTypes.object.isRequired,
+  shadow: PropTypes.bool,
   idx: PropTypes.number,
-  begin_name: PropTypes.string,
-  evolve_name: PropTypes.string,
-  evolved: PropTypes.bool,
+  name: PropTypes.string,
   star: PropTypes.bool,
   evolveFunc: PropTypes.func,
-  noTopMargin: PropTypes.bool
+  noTopMargin: PropTypes.bool,
+  before: PropTypes.bool,
+  evolving: PropTypes.bool,
+  success: PropTypes.bool
 };
 
 export default withStyles(style)(EvolveCard);

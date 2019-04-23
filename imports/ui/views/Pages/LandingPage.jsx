@@ -200,7 +200,9 @@ class LandingPage extends React.Component {
                             classes.marginTop30
                           }`}
                         >
-                          {"Found " + (this.state.card0 + this.state.card1)}
+                          {"Found " +
+                            (this.state.card0 + this.state.card1) +
+                            "/2"}
                         </h3>
                         <p className={classes.cardDescription}>
                           Flip the cards above by clicking and they will turn
@@ -300,18 +302,15 @@ class LandingPage extends React.Component {
                             classes.marginTop30
                           }`}
                         >
-                          Legendary Pokemons
+                          Xerneas and Yveltal
                         </h3>
                         <p className={classes.cardDescription}>
                           Do you want to match them all?
                         </p>
                         <Link to="/register-page">
-                        <Button
-                          round
-                          color="primary"
-                        >
-                          Get Started Now
-                        </Button>
+                          <Button round color="primary">
+                            Get Started Now
+                          </Button>
                         </Link>
                       </CardBody>
                     </Card>

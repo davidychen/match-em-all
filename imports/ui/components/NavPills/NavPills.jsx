@@ -49,7 +49,7 @@ class NavPills extends React.Component {
       horizontal,
       alignCenter,
       landing,
-      controlActive
+      // controlActive
     } = this.props;
     const flexContainerClasses = classNames({
       [classes.flexContainer]: true,

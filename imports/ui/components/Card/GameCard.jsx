@@ -170,7 +170,7 @@ const style = () => ({
   cardCollection: {
     "&:hover, &:focus": {
       transition: "all 300ms cubic-bezier(0.34, 1.61, 0.7, 1)",
-      
+
       boxShadow:
         "0 16px 38px -12px rgba(" +
         hexToRgb(blackColor) +
@@ -182,7 +182,7 @@ const style = () => ({
     }
   },
   pointer: {
-    cursor: "pointer",
+    cursor: "pointer"
   }
 });
 
@@ -283,14 +283,16 @@ class GameCard extends React.Component {
       matchedOwn,
       star,
       collection,
-      inactive
+      inactive,
+      pointer
     } = this.props;
     const gameCardFrontClasses = classNames({
       [classes.cardFront]: true,
       [classes.cardSelected]: selected,
       [classes.cardMatched]: matched,
       [classes.cardMatchedOwn]: matchedOwn,
-      [classes.cardCollection]: collection
+      [classes.cardCollection]: collection,
+      [classes.pointer]: pointer
     });
 
     const imgLink =
@@ -314,7 +316,12 @@ class GameCard extends React.Component {
         )}
         {!inactive && collection && (
           <ReactCardFlip isFlipped={this.state.turnBack}>
-            <Card key="back" game className={gameCardFrontClasses}>
+            <Card
+              key="back"
+              game
+              className={gameCardFrontClasses}
+              onClick={onClick}
+            >
               <div className={classes.imageSquare}>
                 <img
                   className={classes.sprite}
@@ -328,7 +335,12 @@ class GameCard extends React.Component {
                 )}
               </div>
             </Card>
-            <Card key="front" game className={gameCardFrontClasses}>
+            <Card
+              key="front"
+              game
+              className={gameCardFrontClasses}
+              onClick={onClick}
+            >
               <div className={classes.imageSquare}>
                 <img
                   className={classes.sprite}
@@ -387,7 +399,8 @@ GameCard.propTypes = {
   matchedOwn: PropTypes.bool,
   star: PropTypes.bool,
   collection: PropTypes.bool,
-  inactive: PropTypes.bool
+  inactive: PropTypes.bool,
+  pointer: PropTypes.bool
 };
 
 export default withStyles(style)(GameCard);

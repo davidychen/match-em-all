@@ -177,6 +177,18 @@ const dashboardStyle = theme => ({
   orderButton: {
     marginTop: "23px"
   },
+  modalCard:{
+    width: "130px",
+    height: "130px",
+    padding: "0 10px",
+    margin: "auto"
+  },
+  modalP: {
+    marginTop: "10px",
+    "& p": {
+      margin: "0"
+    }
+  },
   ...modalStyle(theme)
 });
 

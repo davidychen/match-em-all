@@ -157,7 +157,7 @@ function searchTree(chain, name) {
 // using pokeapi.co: pokemon-species and pokemon
 // to get types & color & ...
 function getOne(count, prev, i, callback) {
-  let pokeId = Math.floor(Math.random() * (721 - 1)) + 1;
+  let pokeId = Math.floor(Math.random() * 721) + 1;
   axios
     .get("https://pokeapi.co/api/v2/pokemon-species/" + pokeId.toString())
     .then(resSpecies => {
@@ -408,7 +408,6 @@ Meteor.methods({
             {
               $inc: { count: 1 },
               $setOnInsert: {
-                id: gamePokes[index].id,
                 name: gamePokes[index].name,
                 name_en: gamePokes[index].name_en,
                 color: gamePokes[index].color,

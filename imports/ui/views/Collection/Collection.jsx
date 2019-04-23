@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import TimeAgo from "react-timeago";
 // react plugin for creating charts
 // react plugin for creating vector maps
 import { Meteor } from "meteor/meteor";
@@ -16,19 +17,28 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import Slide from "@material-ui/core/Slide";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 
 // @material-ui/icons
 // import ContentCopy from "@material-ui/icons/ContentCopy";
 // import InfoOutline from "@material-ui/icons/InfoOutline";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
+import Close from "@material-ui/icons/Close";
 // core components
 import GridContainer from "../../components/Grid/GridContainer.jsx";
 import GridItem from "../../components/Grid/GridItem.jsx";
 import Button from "../../components/CustomButtons/Button.jsx";
 import Card from "../../components/Card/Card.jsx";
 import GameCard from "../../components/Card/GameCard.jsx";
+import EvolveColCard from "../../components/Card/EvolveColCard.jsx";
 import CardBody from "../../components/Card/CardBody.jsx";
+import CardAvatar from "../../components/Card/CardAvatar.jsx";
+import Badge from "../../components/Badge/Badge.jsx";
 
 import Loader from "react-loader-spinner";
 
@@ -43,17 +53,36 @@ stateDict.set({
   limit: 0
 });
 
+function Transition(props) {
+  return <Slide direction="down" {...props} />;
+}
+
 class Collection extends React.Component {
   constructor() {
     super();
+    this.defaultPokemon = {
+      pokemonId: 0,
+      name: "",
+      name_en: "???",
+      type: ["unknown"],
+      legendary: false,
+      count: "???",
+      firstAt: "???",
+      evolves_to: []
+    };
     this.state = {
       flip: false,
       modal: false,
       sortSelect: "",
       orderSelect: 1,
       filterSelect: "",
-      filterOptionSelect: ""
+      filterOptionSelect: "",
+      modalPokemon: this.defaultPokemon,
+      before: true,
+      evolving: false,
+      success: false
     };
+
     this.onClick = this.onClick.bind(this);
   }
   state = {
@@ -65,15 +94,74 @@ class Collection extends React.Component {
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
-  onClick() {
-    this.setState({ flip: !this.state.flip });
+  onClick(i) {
+    // this.setState({ flip: !this.state.flip });
+    // console.log(i);
+    this.setState({ modal: i });
   }
 
-  handleClickOpen() {
-    this.setState({ modal: true });
+  handleClickOpen(i) {
+    // console.log(i);
+    if (i >= 0 && i < this.props.pokemons.length) {
+      clearTimeout(this.modalTimeout);
+      this.setState({ modal: true, modalPokemon: this.props.pokemons[i] });
+    }
   }
   handleClose() {
-    this.setState({ modal: false });
+    this.setState({
+      modal: false,
+      before: true,
+      evolving: false,
+      success: false
+    });
+    this.modalTimeout = setTimeout(() => {
+      this.setState({ modalPokemon: this.defaultPokemon });
+    }, 1000);
+    clearTimeout(this.evolveTimeout);
+  }
+
+  handleSubmit() {
+    if (this.state.modalPokemon.pokemonId > 0) {
+      this.prevPokemon = this.state.modalPokemon;
+      this.setState({
+        modalPokemon: this.defaultPokemon,
+        before: false,
+        evolving: true,
+        success: false
+      });
+      Meteor.call(
+        "pokemon.evolve",
+        this.state.modalPokemon.pokemonId,
+        (err, res) => {
+          if (err) {
+            console.log(err);
+            this.setState({
+              modalPokemon: this.defaultPokemon,
+              before: false,
+              evolving: false,
+              success: false
+            });
+          }
+          if (res) {
+            // console.log(res);
+            this.evolveTimeout = setTimeout(() => {
+              this.setState({
+                modalPokemon: res,
+                before: false,
+                evolving: false,
+                success: true
+              });
+            }, 1000);
+          }
+        }
+      );
+    }
+  }
+
+  evolved() {
+    this.setState({
+      ["pokemon.reveal"]: true
+    });
   }
 
   componentDidMount() {}
@@ -87,6 +175,8 @@ class Collection extends React.Component {
       order: 1,
       limit: 0
     });
+    clearTimeout(this.evolveTimeout);
+    clearTimeout(this.modalTimeout);
   }
 
   handleSort = event => {
@@ -135,6 +225,13 @@ class Collection extends React.Component {
     this.setState(state => {
       return { orderSelect: -state.orderSelect };
     });
+  };
+
+  padZero = (num, padlen, padchar) => {
+    let pad_char = typeof padchar !== "undefined" ? padchar : "0";
+    let pad_len = typeof padlen !== "undefined" ? padlen : 3;
+    let pad = new Array(1 + pad_len).join(pad_char);
+    return "#" + (pad + num).slice(-pad.length);
   };
 
   optionItems(classes) {
@@ -503,9 +600,10 @@ class Collection extends React.Component {
             <GameCard
               idx={idx}
               name={pokemon.name}
-              onClick={this.onClick.bind(this, pokemon.pokemonId)}
+              onClick={() => this.handleClickOpen(idx)}
               star={pokemon.legendary}
               collection
+              pointer
             />
           </GridItem>
         );
@@ -544,6 +642,119 @@ class Collection extends React.Component {
     }
   }
 
+  renderModal(classes) {
+    const pokemon = this.state.modalPokemon;
+    const can_evolve = pokemon.evolves_to.length > 0;
+    const disable = pokemon.count < 3;
+
+    const types = pokemon.type.map((el, idx) => (
+      <Badge color={el} key={idx}>
+        {el}
+      </Badge>
+    ));
+
+    return (
+      <Dialog
+        classes={{
+          root: classes.center + " " + classes.modalRoot,
+          paper: classes.modal
+        }}
+        open={this.state.modal}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => this.handleClose()}
+        aria-labelledby={"collection-modal"}
+        aria-describedby={pokemon.name + " with ID of " + pokemon.pokemonId}
+      >
+        <DialogTitle
+          id="collection-modal"
+          disableTypography
+          className={classes.modalHeader}
+        >
+          <Button
+            justIcon
+            className={classes.modalCloseButton}
+            key="close"
+            aria-label="Close"
+            color="transparent"
+            onClick={() => this.handleClose()}
+          >
+            <Close className={classes.modalClose} />
+          </Button>
+          <CardAvatar profile>
+            <EvolveColCard
+              idx={pokemon.pokemonId}
+              name={pokemon.name}
+              star={pokemon.legendary}
+              noTopMargin
+              before={this.state.before}
+              evolving={this.state.evolving}
+              success={this.state.success}
+              shadow
+            />
+          </CardAvatar>
+          {/*<h4 className={classes.modalTitle}>
+            {this.padZero(pokemon.pokemonId) + "\t " + pokemon.name_en}
+          </h4>*/}
+        </DialogTitle>
+        <DialogContent
+          id="collection-modal-description"
+          className={classes.modalNoTopBody}
+        >
+          <h6 className={classes.cardCategory}>
+            {this.padZero(pokemon.pokemonId)}
+          </h6>
+          <h4 className={classes.cardTitle}>{pokemon.name_en}</h4>
+          {types}
+          <GridContainer justify="center" className={classes.modalP}>
+            <GridItem xs={12} sm={6} md={6} lg={6}>
+              <p>{"Count: " + pokemon.count}</p>
+              <p>
+                {"Debut Time: "}
+                {pokemon.firstAt === "???" ? (
+                  "???"
+                ) : (
+                  <TimeAgo date={pokemon.firstAt} />
+                )}
+              </p>
+            </GridItem>
+          </GridContainer>
+          {/*<p>{"Count: " + pokemon.count}</p>
+          <p>
+            {"Matched at: "}
+            <TimeAgo date={pokemon.firstAt} />
+          </p>
+          <p className={classes.description}>
+            Don't be scared of the truth because we need to restart the human
+            foundation in truth And I love you like Kanye loves Kanye I love
+            Rick Owens’ bed design but the back is...
+          </p>
+          <Button color="rose" round>
+            Follow
+          </Button>*/}
+        </DialogContent>
+        <DialogActions
+          className={classes.modalFooter + " " + classes.modalFooterCenter}
+        >
+          {can_evolve && (
+            <Button
+              onClick={() => this.handleSubmit()}
+              color="primary"
+              round
+              disabled={disable}
+            >
+              Evolve
+            </Button>
+          )}
+
+          <Button onClick={() => this.handleClose()} color="primary" simple>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+
   loadFunction() {
     if (this.props.pokemons.length === stateDict.get("limit")) {
       stateDict.set("limit", stateDict.get("limit") + 18);
@@ -551,13 +762,13 @@ class Collection extends React.Component {
   }
 
   render() {
-
     const { classes } = this.props;
     return (
       <div>
         {this.renderSelection(classes)}
         {this.renderCards(classes)}
         {this.renderLoading(classes)}
+        {this.renderModal(classes)}
       </div>
     );
   }
