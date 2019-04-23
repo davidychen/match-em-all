@@ -205,7 +205,7 @@ class Dashboard extends React.Component {
                 boundaryElement=".block"
                 scrollElement=".main-panel"
               >
-                <ScrollUp headerRef={this.state.barRef} />
+                <ScrollUp headerRef={this.barRef} />
               </Sticky>
             )}
           </div>
