@@ -102,7 +102,7 @@ class PropfilePage extends React.Component {
                       <TwitterShareButton
                         url={shareUrl}
                         title={title}
-                        hashtags={["#pokemon"]}
+                        hashtags={["pokemon"]}
                         className="share-button"
                       >
                         <Button justIcon round color="twitter">
@@ -226,11 +226,11 @@ class PropfilePage extends React.Component {
                         </Button>
                       </LineShareButton>
                     </div>
-                    {/*<div className={classes.oneButton}>
+                    <div className={classes.oneButton}>
                       <WeiboShareButton
                         url={shareUrl}
                         title={title}
-                        pic="https://github.com/davidychen/match-em-all/raw/master/public/og-image.jpg"
+                        image="https://github.com/davidychen/match-em-all/raw/master/public/og-image.jpg"
                         className="share-button"
                       >
                         <Button justIcon round color="weibo">
@@ -241,7 +241,7 @@ class PropfilePage extends React.Component {
                           />
                         </Button>
                       </WeiboShareButton>
-                    </div>*/}
+                    </div>
                   </div>
                 </GridItem>
               </GridContainer>
