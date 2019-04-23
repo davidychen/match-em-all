@@ -233,7 +233,7 @@ class EvolveCard extends React.Component {
           <div className={classes.imageSquare}>
             <img
               className={classes.sprite}
-              src={"/card-back.png"}
+              src={"/card-back-round.png"}
               alt={"card back"}
             />
           </div>
