@@ -46,7 +46,7 @@ const wizardStyle = {
     backgroundColor: "rgba(" + hexToRgb(grayColor[17]) + ", 0.2)",
     "&:after,&:before": {
       display: "table",
-      content: '" "'
+      content: "\" \""
     },
     "&:after": {
       boxSizing: "border-box"
@@ -168,7 +168,7 @@ const wizardStyle = {
   clearfix: {
     "&:after,&:before": {
       display: "table",
-      content: '" "'
+      content: "\" \""
     },
     clear: "both"
   }

@@ -137,12 +137,12 @@ class EvolveCard extends React.Component {
   getLink(name) {
     let tempName = name;
     switch (name) {
-      case "nidoran-m":
-        tempName = "nidoranm";
-        break;
-      case "nidoran-f":
-        tempName = "nidoranf";
-        break;
+    case "nidoran-m":
+      tempName = "nidoranm";
+      break;
+    case "nidoran-f":
+      tempName = "nidoranf";
+      break;
     }
     const imgLink = name
       ? "http://pokestadium.com/sprites/xy/" + tempName + ".gif"
@@ -154,12 +154,12 @@ class EvolveCard extends React.Component {
   getBackLink(name) {
     let tempName = name;
     switch (name) {
-      case "nidoran-m":
-        tempName = "nidoranm";
-        break;
-      case "nidoran-f":
-        tempName = "nidoranf";
-        break;
+    case "nidoran-m":
+      tempName = "nidoranm";
+      break;
+    case "nidoran-f":
+      tempName = "nidoranf";
+      break;
     }
     const imgLink = name
       ? "http://pokestadium.com/sprites/xy/back/" + tempName + ".gif"
@@ -218,8 +218,8 @@ class EvolveCard extends React.Component {
     const imgLink = this.state.evolving
       ? "/card-back.png"
       : evolved
-      ? this.getLink(evolve_name)
-      : this.getLink(begin_name);
+        ? this.getLink(evolve_name)
+        : this.getLink(begin_name);
 
     const name = evolved ? this.getLink(evolve_name) : this.getLink(begin_name);
 

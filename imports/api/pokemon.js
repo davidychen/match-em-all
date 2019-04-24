@@ -2,7 +2,7 @@ import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import axios from "axios";
-import moment from "moment";
+// import moment from "moment";
 
 import { Collections } from "./collections.js";
 
@@ -93,28 +93,28 @@ const mythical = new Set([
 ]);
 
 // type with colors
-const TYPES = {
-  normal: { typeId: 1, type_color: "#A8A878" },
-  fighting: { typeId: 2, type_color: "#C03028" },
-  flying: { typeId: 3, type_color: "#A890F0" },
-  poison: { typeId: 4, type_color: "#A040A0" },
-  ground: { typeId: 5, type_color: "#E0C068" },
-  rock: { typeId: 6, type_color: "#B8A038" },
-  bug: { typeId: 7, type_color: "#A8B820" },
-  ghost: { typeId: 8, type_color: "#705898" },
-  steel: { typeId: 9, type_color: "#B8B8D0" },
-  fire: { typeId: 10, type_color: "#F08030" },
-  water: { typeId: 11, type_color: "#6890F0" },
-  grass: { typeId: 12, type_color: "#78C850" },
-  electric: { typeId: 13, type_color: "#F8D030" },
-  psychic: { typeId: 14, type_color: "#F85888" },
-  ice: { typeId: 15, type_color: "#98D8D8" },
-  dragon: { typeId: 16, type_color: "#7038F8" },
-  dark: { typeId: 17, type_color: "#705848" },
-  fairy: { typeId: 18, type_color: "#EE99AC" },
-  unknown: { typeId: 19, type_color: "#68A090" },
-  shadow: { typeId: 20, type_color: "#604E82" }
-};
+// const TYPES = {
+//   normal: { typeId: 1, type_color: "#A8A878" },
+//   fighting: { typeId: 2, type_color: "#C03028" },
+//   flying: { typeId: 3, type_color: "#A890F0" },
+//   poison: { typeId: 4, type_color: "#A040A0" },
+//   ground: { typeId: 5, type_color: "#E0C068" },
+//   rock: { typeId: 6, type_color: "#B8A038" },
+//   bug: { typeId: 7, type_color: "#A8B820" },
+//   ghost: { typeId: 8, type_color: "#705898" },
+//   steel: { typeId: 9, type_color: "#B8B8D0" },
+//   fire: { typeId: 10, type_color: "#F08030" },
+//   water: { typeId: 11, type_color: "#6890F0" },
+//   grass: { typeId: 12, type_color: "#78C850" },
+//   electric: { typeId: 13, type_color: "#F8D030" },
+//   psychic: { typeId: 14, type_color: "#F85888" },
+//   ice: { typeId: 15, type_color: "#98D8D8" },
+//   dragon: { typeId: 16, type_color: "#7038F8" },
+//   dark: { typeId: 17, type_color: "#705848" },
+//   fairy: { typeId: 18, type_color: "#EE99AC" },
+//   unknown: { typeId: 19, type_color: "#68A090" },
+//   shadow: { typeId: 20, type_color: "#604E82" }
+// };
 
 // shuffle all cards!
 function shuffle(array) {
@@ -476,3 +476,5 @@ Meteor.methods({
     }
   }
 });
+
+

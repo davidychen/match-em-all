@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 // @material-ui/icons
 import Face from "@material-ui/icons/Face";
@@ -60,22 +61,22 @@ class Step1 extends React.Component {
   }
   change(event, stateName, type, stateNameEqualTo) {
     switch (type) {
-      case "email":
-        if (this.verifyEmail(event.target.value)) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        break;
-      case "length":
-        if (this.verifyLength(event.target.value, stateNameEqualTo)) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        break;
-      default:
-        break;
+    case "email":
+      if (this.verifyEmail(event.target.value)) {
+        this.setState({ [stateName + "State"]: "success" });
+      } else {
+        this.setState({ [stateName + "State"]: "error" });
+      }
+      break;
+    case "length":
+      if (this.verifyLength(event.target.value, stateNameEqualTo)) {
+        this.setState({ [stateName + "State"]: "success" });
+      } else {
+        this.setState({ [stateName + "State"]: "error" });
+      }
+      break;
+    default:
+      break;
     }
     this.setState({ [stateName]: event.target.value });
   }
@@ -105,12 +106,10 @@ class Step1 extends React.Component {
       <GridContainer justify="center">
         <GridItem xs={12} sm={12}>
           <h4 className={classes.infoText}>
-            Let's start with the basic information (with validation)
+            Let&apos;s start with the basic information (with validation)
           </h4>
         </GridItem>
-        <GridItem xs={12} sm={4}>
-          
-        </GridItem>
+        <GridItem xs={12} sm={4} />
         <GridItem xs={12} sm={6}>
           <CustomInput
             success={this.state.firstnameState === "success"}
@@ -191,5 +190,9 @@ class Step1 extends React.Component {
     );
   }
 }
+
+Step1.propTypes = {
+  classes: PropTypes.object.isRequired
+};
 
 export default withStyles(style)(Step1);

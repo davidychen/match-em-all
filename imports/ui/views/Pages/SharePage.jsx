@@ -1,11 +1,7 @@
 import React from "react";
-import cx from "classnames";
+// import cx from "classnames";
 import PropTypes from "prop-types";
-import Select from "react-select";
-
-import { Meteor } from "meteor/meteor";
-import { withTracker } from "meteor/react-meteor-data";
-import { Collections } from "../../../api/collections.js";
+// import Select from "react-select";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -25,36 +21,11 @@ import {
   LinkedinShareButton,
   TwitterShareButton,
   PinterestShareButton,
-  VKShareButton,
-  OKShareButton,
-  TelegramShareButton,
   WhatsappShareButton,
   RedditShareButton,
   EmailShareButton,
-  TumblrShareButton,
-  LivejournalShareButton,
-  MailruShareButton,
-  ViberShareButton,
-  WorkplaceShareButton,
   LineShareButton,
-  WeiboShareButton,
-  FacebookIcon,
-  TwitterIcon,
-  GooglePlusIcon,
-  LinkedinIcon,
-  PinterestIcon,
-  VKIcon,
-  OKIcon,
-  TelegramIcon,
-  WhatsappIcon,
-  RedditIcon,
-  TumblrIcon,
-  MailruIcon,
-  EmailIcon,
-  LivejournalIcon,
-  ViberIcon,
-  WorkplaceIcon,
-  LineIcon
+  WeiboShareButton
 } from "react-share";
 
 import sharePageStyle from "../../assets/jss/material-dashboard-pro-react/views/sharePageStyle.jsx";
@@ -198,7 +169,7 @@ class PropfilePage extends React.Component {
                     <div className={classes.oneButton}>
                       <EmailShareButton
                         url={shareUrl}
-                        subject={"Let's play " +title}
+                        subject={"Let's play " + title}
                         body="I would love to invite you playing with me together!"
                         className="share-button"
                       >

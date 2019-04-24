@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -128,5 +129,9 @@ class Step3 extends React.Component {
     );
   }
 }
+
+Step3.propTypes = {
+  classes: PropTypes.object.isRequired
+};
 
 export default withStyles(style)(Step3);

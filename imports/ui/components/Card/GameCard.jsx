@@ -200,12 +200,12 @@ class GameCard extends React.Component {
   getLink(name) {
     let tempName = name;
     switch (name) {
-      case "nidoran-m":
-        tempName = "nidoranm";
-        break;
-      case "nidoran-f":
-        tempName = "nidoranf";
-        break;
+    case "nidoran-m":
+      tempName = "nidoranm";
+      break;
+    case "nidoran-f":
+      tempName = "nidoranf";
+      break;
     }
     const imgLink = name
       ? "http://pokestadium.com/sprites/xy/" + tempName + ".gif"
@@ -217,12 +217,12 @@ class GameCard extends React.Component {
   getBackLink(name) {
     let tempName = name;
     switch (name) {
-      case "nidoran-m":
-        tempName = "nidoranm";
-        break;
-      case "nidoran-f":
-        tempName = "nidoranf";
-        break;
+    case "nidoran-m":
+      tempName = "nidoranm";
+      break;
+    case "nidoran-f":
+      tempName = "nidoranf";
+      break;
     }
     const imgLink = name
       ? "http://pokestadium.com/sprites/xy/back/" + tempName + ".gif"

@@ -290,7 +290,7 @@ Meteor.methods({
         { $inc: { count: -3 } }
       );
 
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         getById(evolveId, pokeInfo => {
           Collections.update(
             {
@@ -326,3 +326,6 @@ Meteor.methods({
     }
   }
 });
+
+
+

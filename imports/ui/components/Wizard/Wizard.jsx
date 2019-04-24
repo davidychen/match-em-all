@@ -49,6 +49,7 @@ class Wizard extends React.Component {
     this.previousButtonClick = this.previousButtonClick.bind(this);
     this.finishButtonClick = this.finishButtonClick.bind(this);
     this.updateWidth = this.updateWidth.bind(this);
+    this.wizardRef;
   }
   componentDidMount() {
     this.refreshAnimation(0);
@@ -188,14 +189,14 @@ class Wizard extends React.Component {
     var total = this.props.steps.length;
     var li_width = 100 / total;
     var total_steps = this.props.steps.length;
-    var move_distance = this.refs.wizard.children[0].offsetWidth / total_steps;
+    var move_distance = this.wizardRef.children[0].offsetWidth / total_steps;
     var index_temp = index;
     var vertical_level = 0;
 
     var mobile_device = window.innerWidth < 600 && total > 3;
 
     if (mobile_device) {
-      move_distance = this.refs.wizard.children[0].offsetWidth / 2;
+      move_distance = this.wizardRef.children[0].offsetWidth / 2;
       index_temp = index % 2;
       li_width = 50;
     }
@@ -230,8 +231,12 @@ class Wizard extends React.Component {
   }
   render() {
     const { classes, title, subtitle, color, steps } = this.props;
+    let wizardRefFunc = el => {
+      // !this.state.barRef && this.setState({ barRef: el });
+      this.wizardRef = el;
+    };
     return (
-      <div className={classes.wizardContainer} ref="wizard">
+      <div className={classes.wizardContainer} ref={wizardRefFunc}>
         <Card className={classes.card}>
           <div className={classes.wizardHeader}>
             <h3 className={classes.title}>{title}</h3>
