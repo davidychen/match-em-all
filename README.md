@@ -1,10 +1,10 @@
 # Gotta Match 'Em All
 
-> A flipping pokemon card game. When you flip two same card, you catch the pokemon! Compete with others and expand your collection! Try to Catch some rare pokemons like Groudon! We have statistics of kinds of pokemon caught every day!
+> A flipping pokemon card game. When you flip two same card, you catch the pokemon! Compete with others and expand your collection! Try to Catch some rare pokemons like Groudon! 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/davidychen/match-em-all/blob/master/LICENSE)
 [![Commit pre Month](https://img.shields.io/github/commit-activity/m/davidychen/match-em-all.svg)](https://github.com/davidychen/match-em-all/commits/master)
-[![Forks](https://img.shields.io/github/forks/davidychen/match-em-all.svg?label=Fork)](https://github.com/davidychen/match-em-all/network/members)
+[![Forks](https://img.shields.io/github/forks/davidychen/match-em-all.svg?style=social)](https://github.com/davidychen/match-em-all/network/members)
 [![Stars](https://img.shields.io/github/stars/davidychen/match-em-all.svg?style=social)](https://github.com/davidychen/match-em-all/stargazers)
 
 ## Getting Started
