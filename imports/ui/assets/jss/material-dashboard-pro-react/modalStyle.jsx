@@ -15,13 +15,13 @@ const modalStyle = theme => ({
       margin: "auto"
     },
     /**/
-    minWidth: "50%",
-    [theme.breakpoints.down("sm")]: {
-      width: "80%"
-    },
-    [theme.breakpoints.down("xs")]: {
-      width: "100%"
-    },
+    minWidth: "300px",
+    // [theme.breakpoints.down("sm")]: {
+    //   width: "80%"
+    // },
+    // [theme.breakpoints.down("xs")]: {
+    //   width: "100%"
+    // },
     /**/
     borderRadius: "6px",
     marginTop: "100px !important",
