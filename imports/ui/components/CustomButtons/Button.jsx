@@ -42,7 +42,12 @@ function RegularButton({ ...props }) {
     [className]: className
   });
   return (
-    <Button {...rest} disabled={avatar} classes={muiClasses} className={btnClasses}>
+    <Button
+      {...rest}
+      disabled={disabled || avatar}
+      classes={muiClasses}
+      className={btnClasses}
+    >
       {children}
     </Button>
   );

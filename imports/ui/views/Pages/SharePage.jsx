@@ -60,7 +60,12 @@ class PropfilePage extends React.Component {
                         hashtag="#pokemon"
                         className="share-button"
                       >
-                        <Button justIcon round color="facebook">
+                        <Button
+                          justIcon
+                          round
+                          color="facebook"
+                          aria-label={"facebook"}
+                        >
                           <i
                             className={
                               classes.socialButtonsIcons + " fab fa-facebook"
@@ -76,7 +81,12 @@ class PropfilePage extends React.Component {
                         hashtags={["pokemon"]}
                         className="share-button"
                       >
-                        <Button justIcon round color="twitter">
+                        <Button
+                          justIcon
+                          round
+                          color="twitter"
+                          aria-label={"twitter"}
+                        >
                           <i
                             className={
                               classes.socialButtonsIcons + " fab fa-twitter"
@@ -92,7 +102,12 @@ class PropfilePage extends React.Component {
                         separator=":: "
                         className="share-button"
                       >
-                        <Button justIcon round color="whatsapp">
+                        <Button
+                          justIcon
+                          round
+                          color="whatsapp"
+                          aria-label={"whatsapp"}
+                        >
                           <i
                             className={
                               classes.socialButtonsIcons + " fab fa-whatsapp"
@@ -106,7 +121,12 @@ class PropfilePage extends React.Component {
                         url={shareUrl}
                         className="share-button"
                       >
-                        <Button justIcon round color="google">
+                        <Button
+                          justIcon
+                          round
+                          color="google"
+                          aria-label={"google"}
+                        >
                           <i
                             className={
                               classes.socialButtonsIcons + " fab fa-google"
@@ -123,7 +143,12 @@ class PropfilePage extends React.Component {
                         // windowHeight={600}
                         className="share-button"
                       >
-                        <Button justIcon round color="linkedin">
+                        <Button
+                          justIcon
+                          round
+                          color="linkedin"
+                          aria-label={"linkedin"}
+                        >
                           <i
                             className={
                               classes.socialButtonsIcons + " fab fa-linkedin"
@@ -140,7 +165,12 @@ class PropfilePage extends React.Component {
                         // windowHeight={730}
                         className="share-button"
                       >
-                        <Button justIcon round color="pinterest">
+                        <Button
+                          justIcon
+                          round
+                          color="pinterest"
+                          aria-label={"pinterest"}
+                        >
                           <i
                             className={
                               classes.socialButtonsIcons + " fab fa-pinterest"
@@ -157,7 +187,12 @@ class PropfilePage extends React.Component {
                         // windowHeight={460}
                         className="share-button"
                       >
-                        <Button justIcon round color="reddit">
+                        <Button
+                          justIcon
+                          round
+                          color="reddit"
+                          aria-label={"reddit"}
+                        >
                           <i
                             className={
                               classes.socialButtonsIcons + " fab fa-reddit"
@@ -173,7 +208,12 @@ class PropfilePage extends React.Component {
                         body="I would love to invite you playing with me together!"
                         className="share-button"
                       >
-                        <Button justIcon round color="warning">
+                        <Button
+                          justIcon
+                          round
+                          color="warning"
+                          aria-label={"email"}
+                        >
                           <i
                             className={
                               classes.socialButtonsIcons + " fas fa-envelope"
@@ -188,7 +228,7 @@ class PropfilePage extends React.Component {
                         title={title}
                         className="share-button"
                       >
-                        <Button justIcon round color="line">
+                        <Button justIcon round color="line" aria-label={"line"}>
                           <i
                             className={
                               classes.socialButtonsIcons + " fab fa-line"
@@ -204,7 +244,12 @@ class PropfilePage extends React.Component {
                         image="https://github.com/davidychen/match-em-all/raw/master/public/og-image.jpg"
                         className="share-button"
                       >
-                        <Button justIcon round color="weibo">
+                        <Button
+                          justIcon
+                          round
+                          color="weibo"
+                          aria-label={"weibo"}
+                        >
                           <i
                             className={
                               classes.socialButtonsIcons + " fab fa-weibo"

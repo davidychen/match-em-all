@@ -408,6 +408,7 @@ class Sidebar extends React.Component {
               to={"#"}
               className={classes.itemLink + " " + classes.userCollapseButton}
               onClick={() => this.openCollapse("openAvatar")}
+              tabIndex={"-1"}
             >
               <ListItemText
                 primary={this.props.user.username}
@@ -529,10 +530,10 @@ class Sidebar extends React.Component {
       });
     var brand = (
       <div className={logoClasses}>
-        <NavLink to={"/"} className={logoMini}>
+        <NavLink to={"/"} className={logoMini} tabIndex={"-1"}>
           <img src={logo} alt="logo" className={classes.img} />
         </NavLink>
-        <NavLink to={"/"} className={logoNormal}>
+        <NavLink to={"/"} className={logoNormal} tabIndex={"-1"}>
           {logoText}
         </NavLink>
       </div>
@@ -580,6 +581,7 @@ class Sidebar extends React.Component {
               <div
                 className={classes.background}
                 style={{ backgroundImage: "url(" + image + ")" }}
+                // tabIndex={this.props.open ? undefined : "-1"}
               />
             ) : null}
           </Drawer>

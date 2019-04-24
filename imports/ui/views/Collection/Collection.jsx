@@ -674,7 +674,7 @@ class Collection extends React.Component {
         keepMounted
         onClose={() => this.handleClose()}
         aria-labelledby={"collection-modal"}
-        aria-describedby={pokemon.name + " with ID of " + pokemon.pokemonId}
+        aria-describedby={"collection-modal-description"}
       >
         <DialogTitle
           id="collection-modal"

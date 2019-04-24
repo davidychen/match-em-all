@@ -40,6 +40,7 @@ function AdminNavbar({ ...props }) {
                 round
                 color="white"
                 onClick={props.sidebarMinimize}
+                aria-label={"minimize"}
               >
                 <ViewList className={classes.sidebarMiniIcon} />
               </Button>
@@ -49,6 +50,7 @@ function AdminNavbar({ ...props }) {
                 round
                 color="white"
                 onClick={props.sidebarMinimize}
+                aria-label={"minimize"}
               >
                 <MoreVert className={classes.sidebarMiniIcon} />
               </Button>

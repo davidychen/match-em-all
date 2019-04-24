@@ -113,7 +113,12 @@ class LoginPage extends React.Component {
                   className={`${classes.cardHeader} ${classes.textCenter}`}
                   color="primary"
                 >
-                  <h4 className={classes.cardTitle}>Log in</h4>
+                  <h1
+                    className={classes.cardTitle}
+                    style={{ fontSize: "1.3em" }}
+                  >
+                    Log in
+                  </h1>
                 </CardHeader>
                 <CardBody>
                   <Snackbar

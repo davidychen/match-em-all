@@ -148,10 +148,12 @@ class LandingPage extends React.Component {
       <div className={classes.container}>
         <GridContainer justify="center" landingTitle>
           <GridItem xs={12} sm={12} md={6}>
-            <h2 className={classes.title}>Gotta Match &apos;Em All</h2>
-            <h3 className={classes.description}>
+            <h1 className={classes.title} style={{ fontSize: "2.6em" }}>
+              Gotta Match &apos;Em All
+            </h1>
+            <h2 className={classes.description}>
               This is a Pokemon card match game!
-            </h3>
+            </h2>
           </GridItem>
         </GridContainer>
         <GridContainer justify="center">
@@ -169,12 +171,15 @@ class LandingPage extends React.Component {
                   tabContent: (
                     <Card pricing raised>
                       <CardBody pricing>
-                        <h4 className={classes.cardTitle}>
+                        <h3
+                          className={classes.cardTitle}
+                          style={{ fontSize: "1.3em" }}
+                        >
                           {"Find the matching " +
                             this.begin_name.charAt(0).toUpperCase() +
                             this.begin_name.slice(1) +
                             "s"}
-                        </h4>
+                        </h3>
                         <div className={classes.cards}>
                           <div className={classes.card}>
                             <GameCard
@@ -212,6 +217,7 @@ class LandingPage extends React.Component {
                           round
                           color="primary"
                           onClick={this.goCollection.bind(this)}
+                          disabled={this.state.activePill !== 0}
                         >
                           Check Collection
                         </Button>
@@ -225,11 +231,14 @@ class LandingPage extends React.Component {
                   tabContent: (
                     <Card pricing raised>
                       <CardBody pricing>
-                        <h4 className={classes.cardTitle}>
+                        <h3
+                          className={classes.cardTitle}
+                          style={{ fontSize: "1.3em" }}
+                        >
                           {this.state.matched
                             ? "All matched pokemons will show in your collection"
                             : "You need match one first"}
-                        </h4>
+                        </h3>
                         <div className={classes.cards}>
                           <div className={classes.card}>
                             {!this.state.matched ? (
@@ -261,7 +270,9 @@ class LandingPage extends React.Component {
                           color={this.state.moreButton ? "success" : "primary"}
                           onClick={this.evolve.bind(this)}
                           disabled={
-                            !this.state.matched || this.state.disableButton
+                            !this.state.matched ||
+                            this.state.disableButton ||
+                            this.state.activePill !== 1
                           }
                         >
                           {this.state.moreButton ? "More!" : "Evolve!"}
@@ -276,9 +287,12 @@ class LandingPage extends React.Component {
                   tabContent: (
                     <Card pricing raised>
                       <CardBody pricing>
-                        <h4 className={classes.cardTitle}>
+                        <h3
+                          className={classes.cardTitle}
+                          style={{ fontSize: "1.3em" }}
+                        >
                           You will match even more Pokemons
-                        </h4>
+                        </h3>
                         <div className={classes.cards}>
                           <div className={classes.card}>
                             <GameCard
@@ -307,8 +321,17 @@ class LandingPage extends React.Component {
                         <p className={classes.cardDescription}>
                           Do you want to match them all?
                         </p>
-                        <Link to="/register-page">
-                          <Button round color="primary">
+                        <Link
+                          to="/register-page"
+                          tabIndex={
+                            this.state.activePill !== 2 ? "-1" : undefined
+                          }
+                        >
+                          <Button
+                            round
+                            color="primary"
+                            disabled={this.state.activePill !== 2}
+                          >
                             Get Started Now
                           </Button>
                         </Link>
