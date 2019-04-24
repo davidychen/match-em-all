@@ -67,12 +67,20 @@ Deployment is using heroku. The link is here: https://match-em-all.herokuapp.com
 - Open Sans (paragraphs)
 
 ## Authors
-* [**Yifei Chen**](https://davidychen.com/)
+* [**Yifei Chen**](https://www.davidychen.com/)
 * [**Shuomin Wu**](https://simonwux.github.io/)
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+## Contributing
+
+1. Fork it (<https://github.com/davidychen/match-em-all>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
 
 ## Class Link
 [CS-5610 Web Development Spring 2019](http://johnguerra.co/classes/webDevelopment_spring_2019/)
