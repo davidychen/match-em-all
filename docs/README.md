@@ -102,7 +102,7 @@ User | Hard to find (0) <br> Easy to find (10) | Bad display (0) <br> Clear disp
 --- | --- | --- | ---
 1 | 8 | 1 | Add search to collection, Add base stats to display
 2 | 3 | 8 | Display card too wide on desktop
-**Mean** | **8** | **1** | **--**
+**Mean** | **6** | **5** | **--**
 
 ---
 
@@ -114,7 +114,7 @@ User | Overall | Difficult to Use (0) <br> Easy to Use (10) | Boring (0) <br> Ex
 --- | --- |--- | --- | ---
 1 | 9 | 9 | 5 | Need more hard work
 2 | 9 | 9 | 9 | -- 
-**Mean** | **3** | **3** | **--**
+**Mean** | **9** | **9** | **7** | **--**
 
 2. **Rate the instructions located throughout the site:**
 
@@ -122,7 +122,7 @@ User |  Unhelpful (0) <br> Helpful (10) | Comment
 --- | --- | --- 
 1 | 10 | --
 2 | 8 | Game itself is straightforward, Title takes too much attention, then instruction lose important
-**Mean** | **3** | **--**
+**Mean** | **9** | **--**
 
 3. **Rate your agreement with the following statement.**
 
@@ -132,7 +132,7 @@ User |  Strongly Disagree (0) <br> Strongly Agree (10) | Comment <br> (where did
 --- | --- | --- 
 1 | 10 | --
 2 | 10 | --
-**Mean** | **3** | **--**
+**Mean** | **10** | **--**
 
 4. **Do you still have any unanswered questions about how the game works at this point?**
 
