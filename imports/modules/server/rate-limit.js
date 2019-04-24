@@ -21,8 +21,8 @@ const assignLimits = ({ methods, limit, timeRange }) => {
       },
       type: "method",
       name(name) {
-        console.log(name, _.contains(methodNames, name));
-        console.log(methodNames);
+        // console.log(name, _.contains(methodNames, name));
+        // console.log(methodNames);
         return methodNames.includes(name);
       }
     },
