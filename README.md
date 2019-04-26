@@ -56,6 +56,9 @@ Deployment is using heroku. The link is here: <https://match-em-all.herokuapp.co
 ### Demonstration Video
 [Youtube match em all](https://youtu.be/KXSKQ-x-RoY)
 
+### Usability Report
+[Report](docs/README.md)
+
 ### Color Palette (Analogous)
 - ![#9c27b0](https://placehold.it/15/9c27b0/000000?text=+) `#9c27b0`
 - ![#ff9800](https://placehold.it/15/ff9800/000000?text=+) `#ff9800`
