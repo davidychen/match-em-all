@@ -40,20 +40,21 @@ You can either use a local meteor database or a cloud database. If you need to u
 
 ## Deployment
 
-Deployment is using heroku. The link is here: https://match-em-all.herokuapp.com/.
+Deployment is using heroku. The link is here: <https://match-em-all.herokuapp.com/>.
 
 ## Style
 
 ### Screenshots
-![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/1.PNG)
-![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/2.PNG)
-![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/3.PNG)
-![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/4.PNG)
-![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/5.PNG)
-![ScreenShot](https://github.com/davidychen/match-em-all/blob/master/screenshots/6.PNG)
+![Landing](screenshots/landing-page.png)
+![Login](screenshots/2.PNG)
+![Game](screenshots/game-page.png)
+![Collection1](screenshots/collection-page-1.png)
+![Collection2](screenshots/collection-page-2.png)
+![Profile](screenshots/profile-page.png)
+![Share](screenshots/share-page.png)
 
 ### Demonstration Video
-[Youtube match em all](https://youtu.be/YLzTZ_vj-aQ)
+[Youtube match em all](https://youtu.be/KXSKQ-x-RoY)
 
 ### Color Palette (Analogous)
 - ![#9c27b0](https://placehold.it/15/9c27b0/000000?text=+) `#9c27b0`

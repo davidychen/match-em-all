@@ -216,7 +216,7 @@ class EvolveCard extends React.Component {
     });
 
     const imgLink = this.state.evolving
-      ? "/card-back.png"
+      ? "/card-back-round.png"
       : evolved
         ? this.getLink(evolve_name)
         : this.getLink(begin_name);

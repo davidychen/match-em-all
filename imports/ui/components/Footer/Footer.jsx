@@ -41,7 +41,7 @@ function Footer({ ...props }) {
         <p className={classes.right}>
           &copy; {1900 + new Date().getYear()}{" "}
           <a
-            href="http://davidychen.com/"
+            href="https://www.davidychen.com/"
             rel="noopener noreferrer"
             target="_blank"
             className={anchor}
@@ -64,7 +64,7 @@ function Footer({ ...props }) {
             target="_blank"
             className={anchor}
           >
-            {"CS6510"}
+            {"CS5610"}
           </a>
         </p>
       </div>
