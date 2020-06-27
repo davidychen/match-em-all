@@ -208,7 +208,7 @@ class GameCard extends React.Component {
       break;
     }
     const imgLink = name
-      ? "http://pokestadium.com/sprites/xy/" + tempName + ".gif"
+      ? "https://www.smogon.com/dex/media/sprites/xy/" + tempName + ".gif"
       : "/loader.gif";
 
     return imgLink;
@@ -224,8 +224,9 @@ class GameCard extends React.Component {
       tempName = "nidoranf";
       break;
     }
+    // Suppose to be back image here :( Couldn't find one
     const imgLink = name
-      ? "http://pokestadium.com/sprites/xy/back/" + tempName + ".gif"
+      ? "https://www.smogon.com/dex/media/sprites/xy/" + tempName + ".gif"
       : "/loader.gif";
 
     return imgLink;

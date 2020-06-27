@@ -21,6 +21,7 @@ const timeouts = {};
 let initTimeout;
 const apiTimeouts = {};
 // let startTime = new Date();
+// https://bulbapedia.bulbagarden.net/wiki/Legendary_Pok%C3%A9mon
 const legendary = new Set([
   144,
   145,
@@ -64,9 +65,22 @@ const legendary = new Set([
   /*generation v (35)*/
   716,
   717,
-  718
+  718,
   /*generation vi (38)*/
+  772,
+  773,
+  785,
+  786,
+  787,
+  788,
+  789,
+  790,
+  791,
+  792,
+  800
+  /*generation vii (49)*/
 ]);
+// https://bulbapedia.bulbagarden.net/wiki/Mythical_Pok%C3%A9mon
 const mythical = new Set([
   151,
   /*generation i (1)*/
@@ -88,8 +102,11 @@ const mythical = new Set([
   /*generation v (4)*/
   719,
   720,
-  721
+  721,
   /*generation vi (4)*/
+  801,
+  802,
+  807
 ]);
 
 // type with colors
@@ -157,7 +174,7 @@ function searchTree(chain, name) {
 // using pokeapi.co: pokemon-species and pokemon
 // to get types & color & ...
 function getOne(count, prev, i, callback) {
-  let pokeId = Math.floor(Math.random() * 721) + 1;
+  let pokeId = Math.floor(Math.random() * 807) + 1;
   axios
     .get("https://pokeapi.co/api/v2/pokemon-species/" + pokeId.toString())
     .then(resSpecies => {
