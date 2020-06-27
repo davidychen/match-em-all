@@ -198,17 +198,17 @@ class GameCard extends React.Component {
     };
   }
   getLink(name) {
-    let tempName = name;
-    switch (name) {
-    case "nidoran-m":
-      tempName = "nidoranm";
-      break;
-    case "nidoran-f":
-      tempName = "nidoranf";
-      break;
-    }
+    // let tempName = name;
+    // switch (name) {
+    // case "nidoran-m":
+    //   tempName = "nidoranm";
+    //   break;
+    // case "nidoran-f":
+    //   tempName = "nidoranf";
+    //   break;
+    // }
     const imgLink = name
-      ? "https://www.smogon.com/dex/media/sprites/xy/" + tempName + ".gif"
+      ? "https://www.smogon.com/dex/media/sprites/xy/" + name + ".gif"
       : "/loader.gif";
 
     return imgLink;
