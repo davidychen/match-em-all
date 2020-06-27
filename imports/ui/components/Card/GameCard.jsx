@@ -215,18 +215,18 @@ class GameCard extends React.Component {
   }
 
   getBackLink(name) {
-    let tempName = name;
-    switch (name) {
-    case "nidoran-m":
-      tempName = "nidoranm";
-      break;
-    case "nidoran-f":
-      tempName = "nidoranf";
-      break;
-    }
+    // let tempName = name;
+    // switch (name) {
+    // case "nidoran-m":
+    //   tempName = "nidoranm";
+    //   break;
+    // case "nidoran-f":
+    //   tempName = "nidoranf";
+    //   break;
+    // }
     // Suppose to be back image here :( Couldn't find one
     const imgLink = name
-      ? "https://www.smogon.com/dex/media/sprites/xy/" + tempName + ".gif"
+      ? "https://www.smogon.com/dex/media/sprites/xy/" + name + ".gif"
       : "/loader.gif";
 
     return imgLink;
