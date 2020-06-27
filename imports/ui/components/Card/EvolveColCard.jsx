@@ -173,7 +173,7 @@ class EvolveCard extends React.Component {
       break;
     }
     const imgLink = name
-      ? "http://pokestadium.com/sprites/xy/" + tempName + ".gif"
+      ? "https://www.smogon.com/dex/media/sprites/xy/" + tempName + ".gif"
       : "/loader.gif";
 
     return imgLink;
@@ -189,8 +189,9 @@ class EvolveCard extends React.Component {
       tempName = "nidoranf";
       break;
     }
+    // suppose to be back
     const imgLink = name
-      ? "http://pokestadium.com/sprites/xy/back/" + tempName + ".gif"
+      ? "https://www.smogon.com/dex/media/sprites/xy/" + tempName + ".gif"
       : "/loader.gif";
 
     return imgLink;
