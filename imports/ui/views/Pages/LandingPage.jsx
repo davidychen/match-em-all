@@ -39,6 +39,8 @@ import NavPills from "../../components/NavPills/NavPills.jsx";
 import GameCard from "../../components/Card/GameCard.jsx";
 import EvolveCard from "../../components/Card/EvolveCard.jsx";
 
+const max_generation = 7
+
 const start_pokemons = [
   "bulbasaur",
   "charmander",
@@ -57,7 +59,10 @@ const start_pokemons = [
   "oshawott",
   "chespin",
   "fennekin",
-  "froakie"
+  "froakie",
+  "rowlet",
+  "litten",
+  "popplio"
 ];
 const evolve_pokemons = [
   "ivysaur",
@@ -77,15 +82,45 @@ const evolve_pokemons = [
   "dewott",
   "quilladin",
   "braixen",
-  "frogadier"
+  "frogadier",
+  "dartrix",
+  "torracat",
+  "brionne"
 ];
+
+const legendary_pokemons = [
+  // I
+  "charizard",
+  "venusaur",
+  // II
+  "ho-oh",
+  "lugia",
+  // III
+  "groudon",
+  "kyogre",
+  // IV
+  "dialga",
+  "palkia",
+  // V
+  "reshiram",
+  "zekrom",
+  // VI
+  "xerneas",
+  "yveltal",
+  // VII
+  "solgaleo",
+  "lunala"
+]
 
 class LandingPage extends React.Component {
   constructor(props) {
     super(props);
-    this.idx = Math.floor(Math.random() * start_pokemons.length);
+    this.generation = Math.floor(Math.random() * max_generation);
+    this.idx = 3 * this.generation + Math.floor(Math.random() * 3);
     this.begin_name = start_pokemons[this.idx];
     this.evolve_name = evolve_pokemons[this.idx];
+    this.legedary_name1 = legendary_pokemons[this.generation * 2];
+    this.legedary_name2 = legendary_pokemons[this.generation * 2 + 1];
     this.state = {
       card0: false,
       card1: false,
@@ -297,7 +332,7 @@ class LandingPage extends React.Component {
                           <div className={classes.card}>
                             <GameCard
                               idx={this.idx}
-                              name={"xerneas"}
+                              name={this.legedary_name1}
                               star
                               collection
                             />
@@ -305,7 +340,7 @@ class LandingPage extends React.Component {
                           <div className={classes.card}>
                             <GameCard
                               idx={this.idx}
-                              name={"yveltal"}
+                              name={this.legedary_name2}
                               star
                               collection
                             />
@@ -316,7 +351,13 @@ class LandingPage extends React.Component {
                             classes.marginTop30
                           }`}
                         >
-                          Xerneas and Yveltal
+                          {
+                            this.legedary_name1.charAt(0).toUpperCase() +
+                            this.legedary_name1.slice(1) +
+                            " and " +
+                            this.legedary_name2.charAt(0).toUpperCase() +
+                            this.legedary_name2.slice(1) +
+                          }
                         </h3>
                         <p className={classes.cardDescription}>
                           Do you want to match them all?
