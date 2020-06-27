@@ -356,7 +356,7 @@ class LandingPage extends React.Component {
                             this.legedary_name1.slice(1) +
                             " and " +
                             this.legedary_name2.charAt(0).toUpperCase() +
-                            this.legedary_name2.slice(1) +
+                            this.legedary_name2.slice(1)
                           }
                         </h3>
                         <p className={classes.cardDescription}>
