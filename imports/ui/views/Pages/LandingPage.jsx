@@ -333,7 +333,7 @@ class LandingPage extends React.Component {
                             <GameCard
                               idx={this.idx}
                               name={this.legedary_name1}
-                              star
+                              star={this.generation != 0}
                               collection
                             />
                           </div>
